@@ -1,9 +1,12 @@
-﻿using ItsAllAboutTheGame.Data.Models;
+﻿using ItsAllAboutTheGame.Data.Configurations;
+using ItsAllAboutTheGame.Data.Models;
+using ItsAllAboutTheGame.Data.Models.Abstract;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Data
 {
@@ -14,12 +17,62 @@ namespace ItsAllAboutTheGame.Data
         {
         }
 
+        public DbSet<CreditCard> CreditCards { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Deposit> Deposits { get; set; }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            this.ApplyAuditInfoRules();
+            this.ApplyDeletionRules();
+
+            return await base.SaveChangesAsync();
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<IdentityRole>()
+                .HasData(new IdentityRole { Name = "Admin" });
+            builder.ApplyConfiguration(new CreditCardConfiguration());
+            builder.ApplyConfiguration(new DepositConfiguration());
+            builder.ApplyConfiguration(new TransactionConfiguration());
+            builder.ApplyConfiguration(new UserConfiguration());
+
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+        }
+
+        private void ApplyDeletionRules()
+        {
+            var entitiesForDeletion = this.ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Deleted && e.Entity is IDeletable);
+
+            foreach (var entry in entitiesForDeletion)
+            {
+                var entity = (IDeletable)entry.Entity;
+                entity.DeletedOn = DateTime.Now;
+                entity.IsDeleted = true;
+                entry.State = EntityState.Modified;
+            }
+        }
+
+        private void ApplyAuditInfoRules()
+        {
+            var newlyCreatedEntities = this.ChangeTracker.Entries()
+                .Where(e => e.Entity is IAuditable && ((e.State == EntityState.Added) || (e.State == EntityState.Modified)));
+
+            foreach (var entry in newlyCreatedEntities)
+            {
+                var entity = (IAuditable)entry.Entity;
+
+                if (entry.State == EntityState.Added && entity.CreatedOn == null)
+                {
+                    entity.CreatedOn = DateTime.Now;
+                }
+                else
+                {
+                    entity.ModifiedOn = DateTime.Now;
+                }
+            }
         }
     }
 }

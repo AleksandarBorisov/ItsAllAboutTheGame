@@ -1,9 +1,6 @@
 ﻿using ItsAllAboutTheGame.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ItsAllAboutTheGame.Data.Configurations
 {
@@ -11,11 +8,20 @@ namespace ItsAllAboutTheGame.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasMany(c => c.Cards)
-                .WithOne(u => u.CardHolder);
+            builder.HasOne(user => user.Deposit)
+                .WithOne(deposit => deposit.User)
+                .HasForeignKey<Deposit>(deposit => deposit.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(pc => pc.)
-                .WithOne(u => u)
+            builder.HasMany(user => user.Cards)
+                .WithOne(card => card.User)
+                .HasForeignKey(user => user.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(user => user.Transactions)
+                .WithOne(transaction => transaction.User)
+                .HasForeignKey(user => user.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

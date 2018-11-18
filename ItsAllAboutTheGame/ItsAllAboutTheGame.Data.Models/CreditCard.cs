@@ -1,15 +1,25 @@
 ﻿using ItsAllAboutTheGame.Data.Models.Abstract;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace ItsAllAboutTheGame.Data.Models
 {
     public class CreditCard : IAuditable, IDeletable
-    {
+    {//Every Card's currecny will be in USD and cannot be changed, because it comes from the PaySave API
+
         [Key]
         public int Id { get; set; }
+
+        [Required]
+        public string UserId { get; set; }
+
+        [Required]
+        public User User { get; set; }
+
+        [Required]
+        public string PaymentToken { get; set; }
+
+        public string CardName { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime? DeletedOn { get; set; }
@@ -21,31 +31,5 @@ namespace ItsAllAboutTheGame.Data.Models
 
         [DataType(DataType.DateTime)]
         public DateTime? CreatedOn { get; set; }
-
-        [Required]
-        [MinLength(16), MaxLength(16)]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "Card must contain only digits.")]
-        public string CardNumber { get; set; }
-
-        [Required]
-        [MinLength(3), MaxLength(4)]
-        [RegularExpression(@"^[0-9]+$", ErrorMessage = "CVV must contain only digits.")]
-        public string CVV { get; set; }
-
-        public string UserId { get; set; }
-
-        public User CardHolder { get; set; }
-
-        [Required]
-        public string CurrencyId { get; set; }
-
-        public Currency Currency { get; set; }
-
-        [Required]   
-        [RegularExpression(@"^([1-9]|1[012])$")]
-        public int MonthOfExpiration { get; set; }
-
-        [Required]
-        public int YearOfExpiration { get; set; }
     }
 }
