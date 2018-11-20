@@ -13,6 +13,8 @@ using Microsoft.Extensions.Options;
 using ItsAllAboutTheGame.Models;
 using ItsAllAboutTheGame.Models.AccountViewModels;
 using ItsAllAboutTheGame.Services;
+using ItsAllAboutTheGame.Data.Models;
+using Microsoft.AspNetCore.Http.Authentication;
 
 namespace ItsAllAboutTheGame.Controllers
 {
@@ -20,14 +22,14 @@ namespace ItsAllAboutTheGame.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
         public AccountController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger)
         {
@@ -57,6 +59,7 @@ namespace ItsAllAboutTheGame.Controllers
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -209,6 +212,7 @@ namespace ItsAllAboutTheGame.Controllers
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+
             return View();
         }
 
@@ -218,9 +222,11 @@ namespace ItsAllAboutTheGame.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+
+
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new User { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -256,6 +262,7 @@ namespace ItsAllAboutTheGame.Controllers
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
             // Request a redirect to the external login provider.
+
             var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return Challenge(properties, provider);
@@ -271,6 +278,8 @@ namespace ItsAllAboutTheGame.Controllers
                 return RedirectToAction(nameof(Login));
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
+
+
             if (info == null)
             {
                 return RedirectToAction(nameof(Login));
@@ -283,6 +292,7 @@ namespace ItsAllAboutTheGame.Controllers
                 _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
                 return RedirectToLocal(returnUrl);
             }
+
             if (result.IsLockedOut)
             {
                 return RedirectToAction(nameof(Lockout));
@@ -291,10 +301,13 @@ namespace ItsAllAboutTheGame.Controllers
             {
                 // If the user does not have an account, then ask the user to create an account.
                 ViewData["ReturnUrl"] = returnUrl;
-                ViewData["LoginProvider"] = info.LoginProvider;
+                ViewData["LoginProvider"] = info.LoginProvider;                
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
+                var name = info.Principal.FindFirstValue(ClaimTypes.Name).Split().ToArray();
+                return View("ExternalLogin", new ExternalLoginViewModel { Email = email, FirstName = name[0],
+                LastName = name[1]});
             }
+
         }
 
         [HttpPost]
@@ -310,7 +323,11 @@ namespace ItsAllAboutTheGame.Controllers
                 {
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new User { UserName = model.Email, Email = model.Email, FirstName = model.FirstName,
+                LastName = model.LastName};
+
+
+
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace ItsAllAboutTheGame.Data.Models
 {
@@ -20,25 +19,32 @@ namespace ItsAllAboutTheGame.Data.Models
         [DataType(DataType.DateTime)]
         public DateTime? CreatedOn { get; set; }
 
+        [Required]
+        [MaxLength(50, ErrorMessage = "FirstName cannot be more than 50 characters")]
         public string FirstName { get; set; }
 
+        [Required]
+        [MaxLength(50, ErrorMessage = "LastName cannot be more than 50 characters")]
         public string LastName { get; set; }
 
         public IEnumerable<CreditCard> Cards { get; set; }
 
+        public IEnumerable<Transaction> Transactions { get; set; }
+
         public string Image { get; set; }
 
-        [Required]
+        [Range(1,31, ErrorMessage = "Day must be an integer number between 1 and 31")]
         public int DayOfBirth { get; set; }
 
-        [Required]
+        [Range(1,12, ErrorMessage = "Month must be an integer number between 1 and 12")]
         public int MonthOfBirth { get; set; }
 
-        [Required]
+        [RegularExpression(@"^[0-9]{4}$", ErrorMessage = "Year must be a four digit integer number")]
         public int YearOfBirth { get; set; }
 
-        public string UserCurrencyId  { get; set; }
+        [Required]
+        public Deposit Deposit { get; set; }
 
-        public UserCurrency UserCurrency { get; set; }
+        public int DepositId { get; set; }
     }
 }

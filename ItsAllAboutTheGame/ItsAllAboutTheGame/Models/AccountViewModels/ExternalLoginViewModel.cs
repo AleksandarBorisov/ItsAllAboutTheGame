@@ -1,3 +1,4 @@
+using ItsAllAboutTheGame.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,5 +12,14 @@ namespace ItsAllAboutTheGame.Models.AccountViewModels
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
+
+        //[Required]
+        //public Deposit Deposit { get; set; }
     }
 }
