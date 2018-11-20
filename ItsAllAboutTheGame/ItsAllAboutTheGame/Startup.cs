@@ -32,15 +32,17 @@ namespace ItsAllAboutTheGame
 
             services.AddResponseCaching();
 
-            services.AddMvc(options =>
-            {
-                options.CacheProfiles.Add("Default",
-                new CacheProfile()
-                {
-                    Duration = 3600
-                });
-            });
-            services.AddMemoryCache();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //services.AddMvc(options =>
+            //{
+            //    options.CacheProfiles.Add("Default",
+            //    new CacheProfile()
+            //    {
+            //        Duration = 3600
+            //    });
+            //});
+            //services.AddMemoryCache();
 
             //services.AddScoped<IProjectionService, ProjectionService>();
         }
