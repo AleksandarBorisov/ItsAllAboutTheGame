@@ -40,11 +40,13 @@ namespace ItsAllAboutTheGame
                 .AddEntityFrameworkStores<ItsAllAboutTheGameDbContext>()
                 .AddDefaultTokenProviders();
 
+
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
                 facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
                 facebookOptions.Fields.Add("name");
+                
             })
             .AddGoogle(googleOptions =>
             {
@@ -57,6 +59,12 @@ namespace ItsAllAboutTheGame
             services.AddMvc();
            
 
+
+            services.AddResponseCaching();
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
             //services.AddMvc(options =>
             //{
             //    options.CacheProfiles.Add("Default",
@@ -66,6 +74,9 @@ namespace ItsAllAboutTheGame
             //    });
             //});
             services.AddMemoryCache();
+
+
+
 
             services.AddScoped<IEmailSender, EmailSender>();
 
