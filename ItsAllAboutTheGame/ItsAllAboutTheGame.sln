@@ -10,6 +10,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItsAllAboutTheGame.Data.Models", "ItsAllAboutTheGame.Data.Models\ItsAllAboutTheGame.Data.Models.csproj", "{3A7D3795-E373-4500-82B7-EDAD5BA9800A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItsAllAboutTheGame.Services.Data", "ItsAllAboutTheGame.Services.Data\ItsAllAboutTheGame.Services.Data.csproj", "{9C682CE1-ADC3-43B6-B22A-8C3651B444EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItsAllAboutTheGame.Services.External", "ItsAllAboutTheGame.Services.External\ItsAllAboutTheGame.Services.External.csproj", "{6494C68B-2F1D-47D0-89E9-81F84BD10B9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +34,10 @@ Global
 		{9C682CE1-ADC3-43B6-B22A-8C3651B444EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C682CE1-ADC3-43B6-B22A-8C3651B444EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C682CE1-ADC3-43B6-B22A-8C3651B444EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6494C68B-2F1D-47D0-89E9-81F84BD10B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6494C68B-2F1D-47D0-89E9-81F84BD10B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6494C68B-2F1D-47D0-89E9-81F84BD10B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6494C68B-2F1D-47D0-89E9-81F84BD10B9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
