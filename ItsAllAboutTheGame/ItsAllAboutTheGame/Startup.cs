@@ -5,13 +5,22 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ItsAllAboutTheGame.Data;
+
+using ItsAllAboutTheGame.Models;
+using ItsAllAboutTheGame.Services;
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+
 using ItsAllAboutTheGame.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 namespace ItsAllAboutTheGame
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,14 +35,36 @@ namespace ItsAllAboutTheGame
 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ItsAllAboutTheGameDbContext>()
                 .AddDefaultTokenProviders();
+
+
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                facebookOptions.Fields.Add("name");
+                
+            })
+            .AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            });
+
+            services.AddResponseCaching();
+
+            services.AddMvc();
+           
+
 
             services.AddResponseCaching();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
             //services.AddMvc(options =>
             //{
             //    options.CacheProfiles.Add("Default",
@@ -42,9 +73,15 @@ namespace ItsAllAboutTheGame
             //        Duration = 3600
             //    });
             //});
-            //services.AddMemoryCache();
+            services.AddMemoryCache();
+
+
+
+
+            services.AddScoped<IEmailSender, EmailSender>();
 
             //services.AddScoped<IProjectionService, ProjectionService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,9 +96,8 @@ namespace ItsAllAboutTheGame
             else
             {
                 app.UseExceptionHandler("/Error/Index");
-            }
+            }        
 
-            //app.UseNotFoundExceptionHandler();
 
             app.UseStaticFiles();
 

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ItsAllAboutTheGame.Data.Migrations
 {
     [DbContext(typeof(ItsAllAboutTheGameDbContext))]
-    [Migration("20181118155836_Initial")]
+    [Migration("20181119145804_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -207,7 +207,7 @@ namespace ItsAllAboutTheGame.Data.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-                        new { Id = "c5026b8c-e0c0-44ff-9ec7-bc9c8c8bdf3c", ConcurrencyStamp = "2a57f645-cbc5-4d16-87e3-6f15820c62ca", Name = "Admin" }
+                        new { Id = "56341e0e-6c94-4606-9bb5-357364d566fb", ConcurrencyStamp = "34c45e07-fd3d-4c94-8c83-84fd962828b7", Name = "Admin" }
                     );
                 });
 

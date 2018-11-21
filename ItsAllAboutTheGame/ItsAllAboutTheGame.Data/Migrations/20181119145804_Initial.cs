@@ -239,7 +239,7 @@ namespace ItsAllAboutTheGame.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c5026b8c-e0c0-44ff-9ec7-bc9c8c8bdf3c", "2a57f645-cbc5-4d16-87e3-6f15820c62ca", "Admin", null });
+                values: new object[] { "56341e0e-6c94-4606-9bb5-357364d566fb", "34c45e07-fd3d-4c94-8c83-84fd962828b7", "Admin", null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
