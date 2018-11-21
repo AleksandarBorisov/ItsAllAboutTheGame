@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using ItsAllAboutTheGame.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Facebook;
+using ItsAllAboutTheGame.Services.Data.Contracts;
+using ItsAllAboutTheGame.Services.Data;
 
 namespace ItsAllAboutTheGame
 {
@@ -79,6 +81,7 @@ namespace ItsAllAboutTheGame
 
 
             services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IUserService, UserService>();
 
             //services.AddScoped<IProjectionService, ProjectionService>();
 

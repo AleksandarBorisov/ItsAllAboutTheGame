@@ -15,6 +15,7 @@ using ItsAllAboutTheGame.Models.AccountViewModels;
 using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Data.Models;
 using Microsoft.AspNetCore.Http.Authentication;
+using ItsAllAboutTheGame.Services.Data.Contracts;
 
 namespace ItsAllAboutTheGame.Controllers
 {
@@ -26,17 +27,20 @@ namespace ItsAllAboutTheGame.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IUserService _userService;
 
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IUserService userService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _emailSender = emailSender;
-            _logger = logger;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+            this._emailSender = emailSender;
+            this._logger = logger;
+            this._userService = userService;
         }
 
         [TempData]
@@ -226,8 +230,10 @@ namespace ItsAllAboutTheGame.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                // call service to register and create a new user
+                var user = this._userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth);
+                
+                var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
@@ -304,10 +310,8 @@ namespace ItsAllAboutTheGame.Controllers
                 ViewData["LoginProvider"] = info.LoginProvider;                
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
                 var name = info.Principal.FindFirstValue(ClaimTypes.Name).Split().ToArray();
-                return View("ExternalLogin", new ExternalLoginViewModel { Email = email, FirstName = name[0],
-                LastName = name[1]});
+                return View("ExternalLogin", new ExternalLoginViewModel { Email = email});
             }
-
         }
 
         [HttpPost]
@@ -323,8 +327,7 @@ namespace ItsAllAboutTheGame.Controllers
                 {
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
-                var user = new User { UserName = model.Email, Email = model.Email, FirstName = model.FirstName,
-                LastName = model.LastName};
+                var user = new User { UserName = model.Email, Email = model.Email};
 
 
 

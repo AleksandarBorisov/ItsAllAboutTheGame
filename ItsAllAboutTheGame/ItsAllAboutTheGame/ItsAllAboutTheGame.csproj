@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ItsAllAboutTheGame.Data.Models\ItsAllAboutTheGame.Data.Models.csproj" />
     <ProjectReference Include="..\ItsAllAboutTheGame.Data\ItsAllAboutTheGame.Data.csproj" />
+    <ProjectReference Include="..\ItsAllAboutTheGame.Services.Data\ItsAllAboutTheGame.Services.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

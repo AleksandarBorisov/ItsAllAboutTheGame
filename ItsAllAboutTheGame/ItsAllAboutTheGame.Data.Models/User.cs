@@ -33,14 +33,9 @@ namespace ItsAllAboutTheGame.Data.Models
 
         public string Image { get; set; }
 
-        [Range(1,31, ErrorMessage = "Day must be an integer number between 1 and 31")]
-        public int DayOfBirth { get; set; }
-
-        [Range(1,12, ErrorMessage = "Month must be an integer number between 1 and 12")]
-        public int MonthOfBirth { get; set; }
-
-        [RegularExpression(@"^[0-9]{4}$", ErrorMessage = "Year must be a four digit integer number")]
-        public int YearOfBirth { get; set; }
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime DateOfBirth { get; set; }
 
         [Required]
         public Deposit Deposit { get; set; }
