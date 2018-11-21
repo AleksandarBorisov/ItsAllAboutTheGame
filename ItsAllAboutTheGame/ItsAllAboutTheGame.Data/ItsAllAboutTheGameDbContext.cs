@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Data
@@ -21,12 +22,11 @@ namespace ItsAllAboutTheGame.Data
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Deposit> Deposits { get; set; }
 
-        public async Task<int> SaveChangesAsync()
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             this.ApplyAuditInfoRules();
             this.ApplyDeletionRules();
-
-            return await base.SaveChangesAsync();
+            return await base.SaveChangesAsync(cancellationToken);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

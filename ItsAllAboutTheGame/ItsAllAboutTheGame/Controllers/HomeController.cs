@@ -10,9 +10,19 @@ namespace ItsAllAboutTheGame.Controllers
 {
     public class HomeController : Controller
     {
+        public HomeController()
+        {
+
+        }
+
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+
+
+            return Ok();
+
+            //return View();
         }
 
         public IActionResult About()

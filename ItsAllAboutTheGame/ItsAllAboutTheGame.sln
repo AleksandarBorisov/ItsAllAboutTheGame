@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItsAllAboutTheGame", "ItsAllAboutTheGame\ItsAllAboutTheGame.csproj", "{F1826AFD-8C89-4F53-8A39-6E4D5A8DEAC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItsAllAboutTheGame", "ItsAllAboutTheGame\ItsAllAboutTheGame.csproj", "{F1826AFD-8C89-4F53-8A39-6E4D5A8DEAC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItsAllAboutTheGame.Data", "ItsAllAboutTheGame.Data\ItsAllAboutTheGame.Data.csproj", "{B0A90249-44EF-4644-90D8-364FE982B2C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItsAllAboutTheGame.Data", "ItsAllAboutTheGame.Data\ItsAllAboutTheGame.Data.csproj", "{B0A90249-44EF-4644-90D8-364FE982B2C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItsAllAboutTheGame.Data.Models", "ItsAllAboutTheGame.Data.Models\ItsAllAboutTheGame.Data.Models.csproj", "{3A7D3795-E373-4500-82B7-EDAD5BA9800A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItsAllAboutTheGame.Data.Models", "ItsAllAboutTheGame.Data.Models\ItsAllAboutTheGame.Data.Models.csproj", "{3A7D3795-E373-4500-82B7-EDAD5BA9800A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItsAllAboutTheGame.Services.External", "ItsAllAboutTheGame.Services.External\ItsAllAboutTheGame.Services.External.csproj", "{6494C68B-2F1D-47D0-89E9-81F84BD10B9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{3A7D3795-E373-4500-82B7-EDAD5BA9800A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A7D3795-E373-4500-82B7-EDAD5BA9800A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A7D3795-E373-4500-82B7-EDAD5BA9800A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6494C68B-2F1D-47D0-89E9-81F84BD10B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6494C68B-2F1D-47D0-89E9-81F84BD10B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6494C68B-2F1D-47D0-89E9-81F84BD10B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6494C68B-2F1D-47D0-89E9-81F84BD10B9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

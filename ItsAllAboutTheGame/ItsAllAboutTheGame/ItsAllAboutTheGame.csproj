@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.6" PrivateAssets="All" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ItsAllAboutTheGame.Data.Models\ItsAllAboutTheGame.Data.Models.csproj" />
     <ProjectReference Include="..\ItsAllAboutTheGame.Data\ItsAllAboutTheGame.Data.csproj" />
+    <ProjectReference Include="..\ItsAllAboutTheGame.Services.External\ItsAllAboutTheGame.Services.External.csproj" />
   </ItemGroup>
 
   <ItemGroup>
