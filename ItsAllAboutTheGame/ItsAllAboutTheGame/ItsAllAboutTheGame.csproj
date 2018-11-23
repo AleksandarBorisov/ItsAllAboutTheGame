@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>aspnet-ItsAllAboutTheGame-99F36170-C96B-4F40-B7AF-A5BBCD5A5520</UserSecretsId>
+    <ApplicationIcon />
+    <OutputType>WinExe</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
 

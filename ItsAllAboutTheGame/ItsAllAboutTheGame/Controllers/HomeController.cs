@@ -20,9 +20,9 @@ namespace ItsAllAboutTheGame.Controllers
         {
 
 
-            return Ok();
+            //return Ok();
 
-            //return View();
+            return View();
         }
 
         public IActionResult About()

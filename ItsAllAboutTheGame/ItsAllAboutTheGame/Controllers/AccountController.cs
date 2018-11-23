@@ -16,6 +16,7 @@ using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Data.Models;
 using Microsoft.AspNetCore.Http.Authentication;
 using ItsAllAboutTheGame.Services.Data.Contracts;
+using System.Text;
 
 namespace ItsAllAboutTheGame.Controllers
 {
@@ -62,13 +63,14 @@ namespace ItsAllAboutTheGame.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
+            this.ViewData["ReturnUrl"] = returnUrl;
 
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+                var result = await this._signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -231,9 +233,10 @@ namespace ItsAllAboutTheGame.Controllers
             if (ModelState.IsValid)
             {
                 // call service to register and create a new user
-                var user = this._userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth);
-                
-                var result = await _userManager.CreateAsync(user);
+                var user = await this._userService.RegisterUser(model.Email, model.FirstName, model.LastName,
+                    model.Password, model.DateOfBirth, model.UserCurrency);
+
+                var result = await this._userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
@@ -276,7 +279,7 @@ namespace ItsAllAboutTheGame.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        public async Task<IActionResult> ExternalLoginCallback( string returnUrl = null, string remoteError = null)
         {
             if (remoteError != null)
             {
@@ -308,9 +311,8 @@ namespace ItsAllAboutTheGame.Controllers
                 // If the user does not have an account, then ask the user to create an account.
                 ViewData["ReturnUrl"] = returnUrl;
                 ViewData["LoginProvider"] = info.LoginProvider;                
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                var name = info.Principal.FindFirstValue(ClaimTypes.Name).Split().ToArray();
-                return View("ExternalLogin", new ExternalLoginViewModel { Email = email});
+
+                return View("ExternalLogin");
             }
         }
 
@@ -327,7 +329,8 @@ namespace ItsAllAboutTheGame.Controllers
                 {
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
-                var user = new User { UserName = model.Email, Email = model.Email};
+
+                var user = await this._userService.RegisterUserWithLoginProvider(info, model.UserCurrency, model.DateOfBirth, model.Password);
 
 
 

@@ -47,8 +47,7 @@ namespace ItsAllAboutTheGame
             {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
                 facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-                facebookOptions.Fields.Add("name");
-                
+                facebookOptions.Fields.Add("name");               
             })
             .AddGoogle(googleOptions =>
             {
