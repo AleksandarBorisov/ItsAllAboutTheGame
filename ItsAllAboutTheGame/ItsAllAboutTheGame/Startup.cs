@@ -5,20 +5,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ItsAllAboutTheGame.Data;
-
-using ItsAllAboutTheGame.Models;
 using ItsAllAboutTheGame.Services;
-using Microsoft.AspNetCore.Rewrite;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-
 using ItsAllAboutTheGame.Data.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication.Facebook;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data;
 using ItsAllAboutTheGame.Services.External.Contracts;
 using ItsAllAboutTheGame.Services.External;
+using ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService;
+using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
 
 namespace ItsAllAboutTheGame
 {
@@ -49,8 +44,7 @@ namespace ItsAllAboutTheGame
             {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
                 facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-                facebookOptions.Fields.Add("name");
-                
+                facebookOptions.Fields.Add("name");               
             })
             .AddGoogle(googleOptions =>
             {
@@ -58,11 +52,11 @@ namespace ItsAllAboutTheGame
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
 
-            services.AddResponseCaching();
-
             services.AddMvc();
 
             services.AddHttpClient();
+          
+            services.AddResponseCaching();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -82,7 +76,9 @@ namespace ItsAllAboutTheGame
 
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IUserService, UserService>();
-            
+            services.AddScoped<IForeignExchangeService, ForeignExchangeService>();
+            services.AddScoped<IJsonDeserializer, JsonDeserializer>();
+
             services.AddScoped<IForeignExchangeApiCaller, ForeignExchangeApiCaller>();
 
         }

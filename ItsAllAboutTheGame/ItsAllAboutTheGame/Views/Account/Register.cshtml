@@ -26,6 +26,29 @@
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="DateOfBirth"></label>
+                <input asp-for="DateOfBirth" type="date" />
+            </div>
+            <div class="form-group">
+                <label asp-for="UserCurrency"></label>
+                <select asp-for="UserCurrency">
+                    <option value="EUR">EUR</option>
+                    <option value="USD">USD</option>
+                    <option value="BGN">BGN</option>
+                    <option value="GBP">GBP</option>
+                </select>
+            </div>
             <button type="submit" class="btn btn-default">Register</button>
         </form>
     </div>

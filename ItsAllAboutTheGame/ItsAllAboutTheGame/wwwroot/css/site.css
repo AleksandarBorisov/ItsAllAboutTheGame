@@ -19,21 +19,28 @@ header,
     height: 100px;
 }
 
+
+
 .navbar-collapse {
     float: left;
     width: 100%;
     clear: both;
 }
 
+#first-nav {
+    display: flex;
+    justify-content: space-between;
+}
+
 #second-nav {
     margin-top: 124px;
 }
 
-body {
+/*body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-image: url("https://lh4.googleusercontent.com/proxy/NFEYF7mxUBcIrx2fwpzD52XXQ6r9RxtDFAbDL8lXpLAbQcDcMR0W6N5OSgZQ7ektHchqifHPk_eF9FapJ8K8XuvZCEzh0lI4LPvAej-E0-XZ5zjemjBCpfGFjB2GHS6rOGFi7duYxvHF=s0-d");
-}
+}*/
 
 .top-nav-collapse {
     background-color: #24355C;

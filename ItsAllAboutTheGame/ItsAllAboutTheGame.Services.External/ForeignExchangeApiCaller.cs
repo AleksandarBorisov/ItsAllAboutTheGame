@@ -37,11 +37,11 @@ namespace ItsAllAboutTheGame.Services.External
             }
             catch (HttpRequestException httpRequestException)
             {
-                throw new Exception($"Error getting convertion rates from ForeignExchangeApi: {httpRequestException.Message}");
+                throw new HttpRequestException($"Error getting convertion rates from ForeignExchangeApi: {httpRequestException.Message}");
             }
             catch (HttpStatusCodeException httpStatusCodeException)
             {
-                throw new Exception($"ForeignExchangeApi returned status code: {httpStatusCodeException.Message}");
+                throw new HttpStatusCodeException($"ForeignExchangeApi returned status code: {httpStatusCodeException.Message}");
             }
         }
     }

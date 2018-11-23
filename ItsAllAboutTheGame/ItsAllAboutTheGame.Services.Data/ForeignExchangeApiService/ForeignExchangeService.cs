@@ -1,11 +1,12 @@
-﻿using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
+﻿using ItsAllAboutTheGame.Services.Data.Contracts;
+using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using ItsAllAboutTheGame.Services.External.Contracts;
 using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService
 {
-    public class ForeignExchangeService
+    public class ForeignExchangeService : IForeignExchangeService
     {
         private IJsonDeserializer jsonDeserializer;
         private IForeignExchangeApiCaller foreignExchangeApiCaller;

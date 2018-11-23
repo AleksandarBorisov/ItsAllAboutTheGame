@@ -29,15 +29,23 @@
 </head>
 <body>
     <header>
+        <!--First Navbar-->
         <nav id="first-nav" class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
-            <img id="logo" class="left" src="~/images/CardsLogo.png" />
+            <div>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
+                    <div class="mask waves-effect waves-light">
+                        <img id="logo" class="left img-fluid" src="~/images/CardsLogo.png" />
+                    </div>
+                </a>
+            </div>
+            <div>
+                @await Html.PartialAsync("_LoginPartial")
+            </div>
         </nav>
-
-        <!--Navbar-->
+        <!--First Navbar-->
+        <!--Second Navbar-->
         <nav id="second-nav" class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
             <div class="container ">
-                <!-- Navbar brand -->
-                <a class="navbar-brand" href="#"></a>
                 <!-- Collapse button -->
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
                         aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,40 +56,43 @@
                     <!-- Links -->
                     <ul class="navbar-nav mr-auto smooth-scroll">
                         <li class="nav-item">
-                            <a class="nav-link" href="#intro">Home</a>
+                            <a class="nav-link" href="#best-features">Promotions</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#best-features">Features</a>
+                            <a class="nav-link" href="#examples">Responsible Gambling</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#examples">Examples</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#gallery">Gallery</a>
+                            <a class="nav-link" href="#examples">Payment Methods</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#contact">Contact</a>
                         </li>
                     </ul>
                     <!-- Links -->
-                    <!-- Social Icon  -->
+                    <!-- Social buttons -->
                     <ul class="navbar-nav nav-flex-icons">
                         <li class="nav-item">
-                            <a class="nav-link"><i class="fa fa-facebook"></i></a>
+                            <a class="nav-link"><i class="fa fa-facebook white-text fa-2x"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link"><i class="fa fa-twitter"></i></a>
+                            <a class="nav-link"><i class="fa fa-twitter white-text fa-2x"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link"><i class="fa fa-instagram"></i></a>
+                            <a class="nav-link"><i class="fa fa-instagram white-text fa-2x"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"><i class="fa fa-google-plus white-text fa-2x"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"><i class="fa fa-linkedin white-text fa-2x"></i></a>
                         </li>
                     </ul>
+                    <!-- Social buttons -->
                 </div>
                 <!-- Collapsible content -->
-
             </div>
         </nav>
-        <!--/.Navbar-->
+        <!--Second Navbar-->
         <!--Mask-->
         <div id="intro" class="view">
 
@@ -115,68 +126,11 @@
         <!--/.Mask-->
     </header>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">ItsAllAboutTheGame</a>
-            </div>
-            <div>
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
-                @await Html.PartialAsync("_LoginPartial")
-            </div>
-        </div>
-    </nav>
     <div>
         @RenderBody()
         <hr />
         <!-- Footer -->
         <footer class="page-footer unique-color-dark">
-
-            <!-- Social buttons -->
-            <div class="primary-color">
-                <div class="container">
-                    <!--Grid row-->
-                    <div class="row py-4 d-flex align-items-center">
-
-                        <!--Grid column-->
-                        <div class="col-md-6 col-lg-5 text-center text-md-left mb-4 mb-md-0">
-                            <h6 class="mb-0 white-text">Get connected with us on social networks!</h6>
-                        </div>
-                        <!--Grid column-->
-                        <!--Grid column-->
-                        <div class="col-md-6 col-lg-7 text-center text-md-right">
-                            <!--Facebook-->
-                            <a class="fb-ic ml-0">
-                                <i class="fa fa-facebook white-text mr-4"> </i>
-                            </a>
-                            <!--Twitter-->
-                            <a class="tw-ic">
-                                <i class="fa fa-twitter white-text mr-4"> </i>
-                            </a>
-                            <!--Google +-->
-                            <a class="gplus-ic">
-                                <i class="fa fa-google-plus white-text mr-4"> </i>
-                            </a>
-                            <!--Linkedin-->
-                            <a class="li-ic">
-                                <i class="fa fa-linkedin white-text mr-4"> </i>
-                            </a>
-                            <!--Instagram-->
-                            <a class="ins-ic">
-                                <i class="fa fa-instagram white-text mr-lg-4"> </i>
-                            </a>
-                        </div>
-                        <!--Grid column-->
-
-                    </div>
-                    <!--Grid row-->
-                </div>
-            </div>
-            <!-- Social buttons -->
             <!--Footer Links-->
             <!--Footer Links-->
             <div class="container mt-5 mb-4 text-center text-md-left">
@@ -260,12 +214,11 @@
             <!--/.Footer Links-->
             <!-- Copyright -->
             <div class="footer-copyright text-center py-3">
-                © 2018 Copyright:
-                <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
+                © @DateTime.Now.Year Copyright:
+                <a href="#"> ItsAllAboutTheGame.AzureWebsites.net</a>
             </div>
             <!-- Copyright -->
             <!-- Footer -->
-            <p>&copy; @DateTime.Now.Year - ItsAllAboutTheGame</p>
         </footer>
     </div>
 
