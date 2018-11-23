@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data;
+using System;
 
 namespace ItsAllAboutTheGame
 {
@@ -55,12 +56,8 @@ namespace ItsAllAboutTheGame
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
 
-            services.AddResponseCaching();
-
             services.AddMvc();
-           
-
-
+          
             services.AddResponseCaching();
 
             services.AddMvc()

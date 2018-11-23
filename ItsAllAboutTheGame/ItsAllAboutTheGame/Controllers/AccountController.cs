@@ -70,7 +70,7 @@ namespace ItsAllAboutTheGame.Controllers
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
 
-                var result = await this._signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await this._signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -233,10 +233,9 @@ namespace ItsAllAboutTheGame.Controllers
             if (ModelState.IsValid)
             {
                 // call service to register and create a new user
-                var user = await this._userService.RegisterUser(model.Email, model.FirstName, model.LastName,
-                    model.Password, model.DateOfBirth, model.UserCurrency);
+                var user = await this._userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth, model.UserCurrency);
 
-                var result = await this._userManager.CreateAsync(user);
+                var result = await this._userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
@@ -330,11 +329,11 @@ namespace ItsAllAboutTheGame.Controllers
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
 
-                var user = await this._userService.RegisterUserWithLoginProvider(info, model.UserCurrency, model.DateOfBirth, model.Password);
+                var user = await this._userService.RegisterUserWithLoginProvider(info, model.UserCurrency, model.DateOfBirth);
 
 
 
-                var result = await _userManager.CreateAsync(user);
+                var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     result = await _userManager.AddLoginAsync(user, info);

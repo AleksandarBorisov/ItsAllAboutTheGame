@@ -25,7 +25,7 @@ namespace ItsAllAboutTheGame.Services.Data
         }
 
 
-        public async Task<User> RegisterUser(string email, string firstName, string lastName, string password, DateTime dateOfBirth, Currency userCurrency)
+        public async Task<User> RegisterUser(string email, string firstName, string lastName, DateTime dateOfBirth, Currency userCurrency)
         {
             if (firstName == null || lastName == null || dateOfBirth == null)
             {
@@ -45,8 +45,7 @@ namespace ItsAllAboutTheGame.Services.Data
                 CreatedOn = DateTime.Now,
                 Email = email,
                 FirstName = firstName,
-                LastName = lastName,
-                PasswordHash = password,              
+                LastName = lastName,             
                 DateOfBirth = dateOfBirth
             };
 
@@ -59,7 +58,7 @@ namespace ItsAllAboutTheGame.Services.Data
         }
 
 
-        public async Task<User> RegisterUserWithLoginProvider(ExternalLoginInfo info, Currency userCurrency, DateTime dateOfBirth, string password)
+        public async Task<User> RegisterUserWithLoginProvider(ExternalLoginInfo info, Currency userCurrency, DateTime dateOfBirth)
         {
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
             var name = info.Principal.FindFirstValue(ClaimTypes.Name).Split().ToArray();
@@ -81,7 +80,6 @@ namespace ItsAllAboutTheGame.Services.Data
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
-                PasswordHash = password,
                 DateOfBirth = dateOfBirth
             };
 
