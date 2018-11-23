@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data;
+using ItsAllAboutTheGame.Services.External.Contracts;
+using ItsAllAboutTheGame.Services.External;
 
 namespace ItsAllAboutTheGame
 {
@@ -59,10 +61,8 @@ namespace ItsAllAboutTheGame
             services.AddResponseCaching();
 
             services.AddMvc();
-           
 
-
-            services.AddResponseCaching();
+            services.AddHttpClient();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -82,8 +82,8 @@ namespace ItsAllAboutTheGame
 
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IUserService, UserService>();
-
-            //services.AddScoped<IProjectionService, ProjectionService>();
+            
+            services.AddScoped<IForeignExchangeApiCaller, ForeignExchangeApiCaller>();
 
         }
 

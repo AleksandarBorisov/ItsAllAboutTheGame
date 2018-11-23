@@ -5,24 +5,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ItsAllAboutTheGame.Models;
+using ItsAllAboutTheGame.Services.External.Contracts;
 
 namespace ItsAllAboutTheGame.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
-        {
+        private IForeignExchangeApiCaller apiCaller;
 
+        public HomeController(IForeignExchangeApiCaller apiCaller)
+        {
+            this.apiCaller = apiCaller;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            //var currencies = await apiCaller.GetRates();
 
-
-            return Ok();
-
-            //return View();
+            return View();
         }
 
         public IActionResult About()
