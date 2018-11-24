@@ -27,16 +27,13 @@ namespace ItsAllAboutTheGame.Services.Data
 
         public async Task<User> RegisterUser(string email, string firstName, string lastName, DateTime dateOfBirth, Currency userCurrency)
         {
-            if (firstName == null || lastName == null || dateOfBirth == null)
-            {
-                throw new ArgumentNullException("No parameter can be null");
-            }
 
             var currentDate = DateTime.Now;
 
+           
             if (currentDate.Subtract(dateOfBirth).TotalDays < 6575)
             {
-                throw new ArgumentException("User must be over 18 years old");
+                // proper dispaly page must be shown to user if he doesnt have 18 years old
             }
 
             User user = new User
