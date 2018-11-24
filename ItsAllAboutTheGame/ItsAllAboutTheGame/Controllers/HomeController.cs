@@ -1,26 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ItsAllAboutTheGame.Models;
+using ItsAllAboutTheGame.Services.Data.Contracts;
 
 namespace ItsAllAboutTheGame.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
-        {
+        private IForeignExchangeService foreignExchangeService;
 
+        public HomeController(IForeignExchangeService foreignExchangeService)
+        {
+            this.foreignExchangeService = foreignExchangeService;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-
-
-            //return Ok();
+            var currencies = await foreignExchangeService.GetConvertionRates();
 
             return View();
         }
