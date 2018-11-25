@@ -15,6 +15,7 @@ using ItsAllAboutTheGame.Services.External;
 using ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
 
+
 namespace ItsAllAboutTheGame
 {
     public class Startup
@@ -75,6 +76,7 @@ namespace ItsAllAboutTheGame
             services.AddScoped<IJsonDeserializer, JsonDeserializer>();
 
             services.AddScoped<IForeignExchangeApiCaller, ForeignExchangeApiCaller>();
+
 
         }
 

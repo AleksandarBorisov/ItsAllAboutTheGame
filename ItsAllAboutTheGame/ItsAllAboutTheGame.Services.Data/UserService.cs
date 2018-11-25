@@ -47,9 +47,9 @@ namespace ItsAllAboutTheGame.Services.Data
             };
 
 
-            Deposit deposit = await CreateUserDeposit(user, userCurrency);
-            user.Deposit = deposit;
-            user.DepositId = deposit.Id;
+            Wallet wallet = await CreateUserWallet(user, userCurrency);
+            user.Wallet = wallet;
+            user.WalletId = wallet.Id;
 
             return user;
         }
@@ -80,28 +80,28 @@ namespace ItsAllAboutTheGame.Services.Data
                 DateOfBirth = dateOfBirth
             };
 
-            Deposit deposit = await CreateUserDeposit(user, userCurrency);
-            user.Deposit = deposit;
-            user.DepositId = deposit.Id;
+            Wallet wallet = await CreateUserWallet(user, userCurrency);
+            user.Wallet = wallet;
+            user.WalletId = wallet.Id;
 
             return user;
         }
        
 
-        private async Task<Deposit> CreateUserDeposit(User user, Currency userCurrency)
+        private async Task<Wallet> CreateUserWallet(User user, Currency userCurrency)
         {
-            Deposit deposit = new Deposit
+            Wallet wallet = new Wallet
             {                
                 Currency = userCurrency,
                 Balance = 0
             };
 
 
-            this._context.Deposits.Add(deposit);
+            this._context.Wallets.Add(wallet);
             await this._context.SaveChangesAsync();
 
 
-            return deposit;
+            return wallet;
         }
     }
 }

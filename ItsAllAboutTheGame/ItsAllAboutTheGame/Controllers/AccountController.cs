@@ -74,6 +74,7 @@ namespace ItsAllAboutTheGame.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    TempData["Success"] = "Login Successful!";
                     return RedirectToLocal(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -246,7 +247,9 @@ namespace ItsAllAboutTheGame.Controllers
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    TempData["Success"] = "Registration Successful!";
+                    await _signInManager.SignOutAsync();
+                    return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
                 AddErrors(result);
             }
@@ -298,6 +301,7 @@ namespace ItsAllAboutTheGame.Controllers
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
+                TempData["Success"] = "Login Successful!";
                 return RedirectToLocal(returnUrl);
             }
 
@@ -341,6 +345,7 @@ namespace ItsAllAboutTheGame.Controllers
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                        TempData["Success"] = "Login Successful!";
                         return RedirectToLocal(returnUrl);
                     }
                 }

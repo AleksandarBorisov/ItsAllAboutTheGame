@@ -8,9 +8,9 @@ namespace ItsAllAboutTheGame.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasOne(user => user.Deposit)
+            builder.HasOne(user => user.Wallet)
                 .WithOne(deposit => deposit.User)
-                .HasForeignKey<Deposit>(deposit => deposit.UserId)
+                .HasForeignKey<Wallet>(wallet => wallet.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(user => user.Cards)

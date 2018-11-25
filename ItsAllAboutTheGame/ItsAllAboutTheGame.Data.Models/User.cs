@@ -38,8 +38,8 @@ namespace ItsAllAboutTheGame.Data.Models
         public DateTime DateOfBirth { get; set; }
 
         [Required]
-        public Deposit Deposit { get; set; }
+        public Wallet Wallet { get; set; }
 
-        public int DepositId { get; set; }
+        public int WalletId { get; set; }
     }
 }
