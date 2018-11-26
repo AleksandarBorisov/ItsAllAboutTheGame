@@ -2,6 +2,8 @@
 using ItsAllAboutTheGame.Models.AccountViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.ViewComponents
@@ -21,7 +23,10 @@ namespace ItsAllAboutTheGame.ViewComponents
         {
             if (singInManager.IsSignedIn(HttpContext.User))
             {
-                var user = await userManager.GetUserAsync(HttpContext.User);
+                var userId = userManager.GetUserId(HttpContext.User);
+                var user = await userManager.Users.Where(x => x.Id.Equals(userId))
+                    .Include(player => player.Wallet)
+                    .FirstOrDefaultAsync();
                 var info = new UserInfoViewModel(user);
                 return View("LoggedIn", info);
             }
