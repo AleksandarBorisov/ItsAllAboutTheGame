@@ -39,4 +39,13 @@
     <Folder Include="wwwroot\lib\jquery\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Components\LoginStatus\Default.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Components\LoginStatus\LoggedIn.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

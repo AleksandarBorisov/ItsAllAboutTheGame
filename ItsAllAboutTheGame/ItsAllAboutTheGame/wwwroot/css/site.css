@@ -19,35 +19,25 @@ header,
     height: 100px;
 }
 
-
-
-.navbar-collapse {
-    float: left;
-    width: 100%;
-    clear: both;
-}
-
-#first-nav {
-    display: flex;
-    justify-content: space-between;
-}
-
-#second-nav {
-    margin-top: 124px;
-}
-
 /*body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-image: url("https://lh4.googleusercontent.com/proxy/NFEYF7mxUBcIrx2fwpzD52XXQ6r9RxtDFAbDL8lXpLAbQcDcMR0W6N5OSgZQ7ektHchqifHPk_eF9FapJ8K8XuvZCEzh0lI4LPvAej-E0-XZ5zjemjBCpfGFjB2GHS6rOGFi7duYxvHF=s0-d");
 }*/
 
-.top-nav-collapse {
-    background-color: #24355C;
+/*Make the body element fit within the screen nicely*/
+body {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-#second-nav.top-nav-collapse {
-    margin-top: 110px;
+html {
+    height: 100%;
+}
+
+.top-nav-collapse {
+    background-color: #24355C;
 }
 
 @media (max-width: 768px) {
@@ -60,4 +50,25 @@ header,
     .navbar:not(.top-nav-collapse) {
         background-color: #24355C;
     }
+}
+
+@media (max-width: 768px) {
+    .phoneSizeMargin {
+        margin-left: auto;
+    }
+}
+
+#index-caption:hover {
+    background-color: darkorange;
+    border-radius: 5px;
+    color: royalblue;
+}
+
+#index-caption {
+    background-color: none;
+    color: deepskyblue;
+    background-color: orange;
+    font-size: 60px;
+    font-weight: bold;
+    padding: 20px;
 }

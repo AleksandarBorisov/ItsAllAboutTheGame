@@ -9,12 +9,11 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav ml-auto">
             <li>
                 <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
             </li>
             <li>
-                
                 <button type="submit" class="btn btn-white text-dark rounded">Log out<i class="fa fa-sign-out ml-2"></i></button>
             </li>
         </ul>
@@ -22,8 +21,6 @@
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" asp-action="Register" class="btn btn-white text-dark rounded">Register<i class="fa fa-id-badge ml-2"></i></a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-outline-white rounded">Log in<i class="fa fa-sign-in ml-2"></i></a></li>
-    </ul>
+    <li class="ml-auto"><a asp-area="" asp-controller="Account" asp-action="Register" class="btn btn-white text-dark rounded">Register<i class="fa fa-id-badge ml-2"></i></a></li>
+    <li class="phoneSizeMargin"><a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-outline-white rounded">Log in<i class="fa fa-sign-in ml-2"></i></a></li>
 }
