@@ -4,16 +4,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ItsAllAboutTheGame.Data.Configurations
 {
-    internal class DepositConfiguration : IEntityTypeConfiguration<Deposit>
+    internal class WalletConfiguration : IEntityTypeConfiguration<Wallet>
     {
-        public void Configure(EntityTypeBuilder<Deposit> builder)
+        public void Configure(EntityTypeBuilder<Wallet> builder)
         {
             builder.HasOne(deposit => deposit.User)
-                .WithOne(user => user.Deposit)
-                .HasForeignKey<User>(user => user.DepositId)
+                .WithOne(user => user.Wallet)
+                .HasForeignKey<User>(user => user.WalletId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(deposit => deposit.Currency)
+            builder.Property(wallet => wallet.Currency)
                 .HasConversion<string>()
                 .HasMaxLength(3);
         }

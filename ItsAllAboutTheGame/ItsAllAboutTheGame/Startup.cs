@@ -15,6 +15,7 @@ using ItsAllAboutTheGame.Services.External;
 using ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
 
+
 namespace ItsAllAboutTheGame
 {
     public class Startup
@@ -44,13 +45,8 @@ namespace ItsAllAboutTheGame
             {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
                 facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-                facebookOptions.Fields.Add("name");               
-            })
-            .AddGoogle(googleOptions =>
-            {
-                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
-                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
-            });
+            }
+            );
 
             services.AddMvc();
 
@@ -80,6 +76,7 @@ namespace ItsAllAboutTheGame
             services.AddScoped<IJsonDeserializer, JsonDeserializer>();
 
             services.AddScoped<IForeignExchangeApiCaller, ForeignExchangeApiCaller>();
+
 
         }
 

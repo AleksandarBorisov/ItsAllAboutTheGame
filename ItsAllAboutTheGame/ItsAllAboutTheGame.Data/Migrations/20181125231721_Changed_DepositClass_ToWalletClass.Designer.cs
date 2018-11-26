@@ -4,14 +4,16 @@ using ItsAllAboutTheGame.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ItsAllAboutTheGame.Data.Migrations
 {
     [DbContext(typeof(ItsAllAboutTheGameDbContext))]
-    partial class ItsAllAboutTheGameDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181125231721_Changed_DepositClass_ToWalletClass")]
+    partial class Changed_DepositClass_ToWalletClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

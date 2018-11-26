@@ -20,7 +20,7 @@ namespace ItsAllAboutTheGame.Data
 
         public DbSet<CreditCard> CreditCards { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-        public DbSet<Deposit> Deposits { get; set; }
+        public DbSet<Wallet> Wallets { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -34,7 +34,7 @@ namespace ItsAllAboutTheGame.Data
             builder.Entity<IdentityRole>()
                 .HasData(new IdentityRole { Name = "Admin" });
             builder.ApplyConfiguration(new CreditCardConfiguration());
-            builder.ApplyConfiguration(new DepositConfiguration());
+            builder.ApplyConfiguration(new WalletConfiguration());
             builder.ApplyConfiguration(new TransactionConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
 

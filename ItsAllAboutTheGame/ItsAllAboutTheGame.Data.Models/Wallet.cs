@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ItsAllAboutTheGame.Data.Models
 {
-    public class Deposit
+    public class Wallet
     {
         [Key]
         public int Id { get; set; }
@@ -15,7 +15,7 @@ namespace ItsAllAboutTheGame.Data.Models
         [Required]
         public Currency Currency { get; set; }
 
-        [RegularExpression(@"^\d{1,5}(\.\d{1,2})?$", ErrorMessage = "Balance of the deposit must be valid decimal number with 2 digits after the decimal point")]
+        [RegularExpression(@"^\d{1,5}(\.\d{1,2})?$", ErrorMessage = "Balance of the wallet must be valid decimal number with 2 digits after the decimal point")]
         public decimal Balance { get; set; }
     }
 }
