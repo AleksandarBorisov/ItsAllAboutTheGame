@@ -15,8 +15,6 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
 
         public string CurrencySymbol { get; set; }
 
-        public bool IsSignedIn { get; set; }
-
         public string Currency { get; set; }
     }
 }

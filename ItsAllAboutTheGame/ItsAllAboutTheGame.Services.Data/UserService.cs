@@ -125,7 +125,6 @@ namespace ItsAllAboutTheGame.Services.Data
                 {
                     Balance = u.Wallet.Balance * currencies.Rates[u.Wallet.Currency.ToString()],
                     Username = u.UserName,
-                    IsSignedIn = this.signInManager.IsSignedIn(userClaims),
                     Currency = u.Wallet.Currency.ToString()
                 })
                 .FirstOrDefaultAsync();
