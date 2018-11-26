@@ -72,3 +72,17 @@ html {
     font-weight: bold;
     padding: 20px;
 }
+
+.home-view-color {
+    color: aqua;
+}
+
+#user-balance {
+    margin: 10px;
+    font-size: 20px;
+    color: aqua;
+}
+
+#balance-section {
+    color: lawngreen;
+}
