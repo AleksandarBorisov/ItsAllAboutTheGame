@@ -40,9 +40,8 @@
                             </div>
                         </a>
                     </li>
-                    <vc:login-status 
-                        parameter1="parameter1 value"
-                        parameter2="parameter2 value">
+                    <vc:login-status parameter1="parameter1 value"
+                                     parameter2="parameter2 value">
                     </vc:login-status>
                     @*@await Html.PartialAsync("_LoginPartial")*@
                 </ul>
@@ -116,23 +115,7 @@
         </div>
         <!--/.Mask-->
     </header>
-    <header>
-        @if (TempData["Success"] != null)
-        {
 
-            <div id="infoValidationSummary" class="modal fade" tabindex="-1" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <div class="form-horizontal">
-                                @TempData["Success"]
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    </header>
     <div>
         @RenderBody()
         <hr />

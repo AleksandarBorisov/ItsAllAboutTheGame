@@ -15,6 +15,7 @@ using ItsAllAboutTheGame.Services.External;
 using ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.Constants;
+using ItsAllAboutTheGame.Extensions;
 
 namespace ItsAllAboutTheGame
 {
@@ -45,8 +46,7 @@ namespace ItsAllAboutTheGame
             {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
                 facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            }
-            );
+            });
 
             services.AddMvc();
 
@@ -92,8 +92,9 @@ namespace ItsAllAboutTheGame
             else
             {
                 app.UseExceptionHandler("/Error/Index");
-            }        
+            }
 
+            app.UseNotFoundExceptionHandler();
 
             app.UseStaticFiles();
 

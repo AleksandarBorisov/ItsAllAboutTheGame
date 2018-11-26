@@ -36,10 +36,18 @@ namespace ItsAllAboutTheGame.Services.Data
         {
             var currentDate = DateTime.Now;
 
-            if (currentDate.Subtract(dateOfBirth).TotalDays < 6575)
+            try
             {
-                // proper dispaly page must be shown to user if he doesnt have 18 years old
+                if (currentDate.Subtract(dateOfBirth).TotalDays < 6575)
+                {
+                    throw new UserNo18Exception("User must have 18 years to register!");
+                }
             }
+            catch (UserNo18Exception ex)
+            {
+                throw new UserNo18Exception(ex.Message);
+            }
+            
 
             User user = new User
             {
@@ -56,6 +64,7 @@ namespace ItsAllAboutTheGame.Services.Data
             user.WalletId = wallet.Id;
 
             return user;
+
         }
 
         public async Task<User> RegisterUserWithLoginProvider(ExternalLoginInfo info, Currency userCurrency, DateTime dateOfBirth)
@@ -67,9 +76,16 @@ namespace ItsAllAboutTheGame.Services.Data
 
             var currentDate = DateTime.Now;
 
-            if (currentDate.Subtract(dateOfBirth).TotalDays < 6575)
+            try
             {
-                throw new ArgumentException("User must be over 18 years old");
+                if (currentDate.Subtract(dateOfBirth).TotalDays < 6575)
+                {
+                    throw new UserNo18Exception("User must have 18 years to register!");
+                }
+            }
+            catch (UserNo18Exception ex)
+            {
+                throw new UserNo18Exception(ex.Message);
             }
 
             User user = new User

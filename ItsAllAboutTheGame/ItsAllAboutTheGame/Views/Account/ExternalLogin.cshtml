@@ -19,6 +19,10 @@
             <div>
                 <label asp-for="DateOfBirth"></label>
                 <input asp-for="DateOfBirth" type="date" />
+                @if (TempData["Failed"] != null)
+                {
+                    <p class="text-danger">@TempData["Failed"]</p>
+                }
             </div>
             <div class="form-group">
                 <label asp-for="UserCurrency"></label>
