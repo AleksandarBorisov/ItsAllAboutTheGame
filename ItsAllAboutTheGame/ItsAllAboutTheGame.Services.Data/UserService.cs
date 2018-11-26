@@ -2,6 +2,7 @@
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Data.Models.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
+using ItsAllAboutTheGame.Services.Data.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Globalization;
@@ -27,14 +28,20 @@ namespace ItsAllAboutTheGame.Services.Data
 
         public async Task<User> RegisterUser(string email, string firstName, string lastName, DateTime dateOfBirth, Currency userCurrency)
         {
-
             var currentDate = DateTime.Now;
 
-           
-            if (currentDate.Subtract(dateOfBirth).TotalDays < 6575)
+            try
             {
-                // proper dispaly page must be shown to user if he doesnt have 18 years old
+                if (currentDate.Subtract(dateOfBirth).TotalDays < 6575)
+                {
+                    throw new UserNo18Exception("User must have 18 years to register!");
+                }
             }
+            catch (UserNo18Exception ex)
+            {
+                throw new UserNo18Exception(ex.Message);
+            }
+            
 
             User user = new User
             {
@@ -42,7 +49,7 @@ namespace ItsAllAboutTheGame.Services.Data
                 CreatedOn = DateTime.Now,
                 Email = email,
                 FirstName = firstName,
-                LastName = lastName,             
+                LastName = lastName,
                 DateOfBirth = dateOfBirth
             };
 
@@ -52,6 +59,7 @@ namespace ItsAllAboutTheGame.Services.Data
             user.WalletId = wallet.Id;
 
             return user;
+
         }
 
 
@@ -65,9 +73,16 @@ namespace ItsAllAboutTheGame.Services.Data
 
             var currentDate = DateTime.Now;
 
-            if (currentDate.Subtract(dateOfBirth).TotalDays < 6575)
+            try
             {
-                throw new ArgumentException("User must be over 18 years old");
+                if (currentDate.Subtract(dateOfBirth).TotalDays < 6575)
+                {
+                    throw new UserNo18Exception("User must have 18 years to register!");
+                }
+            }
+            catch (UserNo18Exception ex)
+            {
+                throw new UserNo18Exception(ex.Message);
             }
 
             User user = new User
@@ -86,12 +101,12 @@ namespace ItsAllAboutTheGame.Services.Data
 
             return user;
         }
-       
+
 
         private async Task<Wallet> CreateUserWallet(User user, Currency userCurrency)
         {
             Wallet wallet = new Wallet
-            {                
+            {
                 Currency = userCurrency,
                 Balance = 0
             };

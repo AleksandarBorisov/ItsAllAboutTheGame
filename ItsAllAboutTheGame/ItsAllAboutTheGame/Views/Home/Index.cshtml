@@ -3,7 +3,27 @@
 }
 
 <!--Main layout-->
+
+<header>
+    @if (TempData["Success"] != null)
+    {
+
+        <div id="infoValidationSummary" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            @TempData["Success"]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</header>
 <main class="mt-5" id="item">
+
+    
 
     <div class="container">
 

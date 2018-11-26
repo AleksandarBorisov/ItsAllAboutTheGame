@@ -14,7 +14,7 @@ using ItsAllAboutTheGame.Services.External.Contracts;
 using ItsAllAboutTheGame.Services.External;
 using ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
-
+using ItsAllAboutTheGame.Extensions;
 
 namespace ItsAllAboutTheGame
 {
@@ -91,8 +91,9 @@ namespace ItsAllAboutTheGame
             else
             {
                 app.UseExceptionHandler("/Error/Index");
-            }        
+            }
 
+            app.UseNotFoundExceptionHandler();
 
             app.UseStaticFiles();
 

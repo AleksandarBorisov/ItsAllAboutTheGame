@@ -17,6 +17,7 @@ using ItsAllAboutTheGame.Data.Models;
 using Microsoft.AspNetCore.Http.Authentication;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using System.Text;
+using ItsAllAboutTheGame.Services.Data.Exceptions;
 
 namespace ItsAllAboutTheGame.Controllers
 {
@@ -234,24 +235,33 @@ namespace ItsAllAboutTheGame.Controllers
             if (ModelState.IsValid)
             {
                 // call service to register and create a new user
-                var user = await this._userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth, model.UserCurrency);
-
-                var result = await this._userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                try
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    var user = await this._userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth, model.UserCurrency);
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    var result = await this._userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User created a new account with password.");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
-                    TempData["Success"] = "Registration Successful!";
-                    await _signInManager.SignOutAsync();
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                        await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        _logger.LogInformation("User created a new account with password.");
+                        TempData["Success"] = "Registration Successful!";
+                        await _signInManager.SignOutAsync();
+                        return RedirectToAction(nameof(HomeController.Index), "Home");
+                    }
+                    AddErrors(result);
                 }
-                AddErrors(result);
+                catch (UserNo18Exception ex)
+                {
+                    TempData["Failed"] = "User must have 18 years old to register!";
+                    return RedirectToAction("Register");
+                }
+                
             }
 
             // If we got this far, something failed, redisplay form
@@ -332,24 +342,31 @@ namespace ItsAllAboutTheGame.Controllers
                 {
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
-
-                var user = await this._userService.RegisterUserWithLoginProvider(info, model.UserCurrency, model.DateOfBirth);
-
-
-
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                try
                 {
-                    result = await _userManager.AddLoginAsync(user, info);
+                    var user = await this._userService.RegisterUserWithLoginProvider(info, model.UserCurrency, model.DateOfBirth);
+
+                    var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                        TempData["Success"] = "Login Successful!";
-                        return RedirectToLocal(returnUrl);
+                        result = await _userManager.AddLoginAsync(user, info);
+                        if (result.Succeeded)
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                            TempData["Success"] = "Login Successful!";
+                            return RedirectToLocal(returnUrl);
+                        }
                     }
+                    AddErrors(result);
                 }
-                AddErrors(result);
+                catch (UserNo18Exception ex)
+                {
+                    ViewData["ReturnUrl"] = returnUrl;
+                    TempData["Failed"] = "User must have 18 years old to register!";
+                    return View(nameof(ExternalLogin));
+                }
+                
             }
 
             ViewData["ReturnUrl"] = returnUrl;
