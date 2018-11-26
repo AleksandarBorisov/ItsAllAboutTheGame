@@ -22,14 +22,18 @@ namespace ItsAllAboutTheGame.Services.Data
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IMemoryCache cache;
+        private readonly IWalletService walletService;
 
-        public UserService(ItsAllAboutTheGameDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, IForeignExchangeService foreignExchangeService, IMemoryCache cache)
+        public UserService(ItsAllAboutTheGameDbContext context, UserManager<User> userManager,
+            SignInManager<User> signInManager, IForeignExchangeService foreignExchangeService, IMemoryCache cache,
+            IWalletService walletService)
         {
             this.cache = cache;
             this.context = context;
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.foreignExchangeService = foreignExchangeService;
+            this.walletService = walletService;
         }
 
         public async Task<User> RegisterUser(string email, string firstName, string lastName, DateTime dateOfBirth, Currency userCurrency)
@@ -59,7 +63,7 @@ namespace ItsAllAboutTheGame.Services.Data
                 DateOfBirth = dateOfBirth
             };
 
-            Wallet wallet = await CreateUserWallet(user, userCurrency);
+            Wallet wallet = await walletService.CreateUserWallet(user, userCurrency);
             user.Wallet = wallet;
             user.WalletId = wallet.Id;
 
@@ -98,26 +102,11 @@ namespace ItsAllAboutTheGame.Services.Data
                 DateOfBirth = dateOfBirth
             };
 
-            Wallet wallet = await CreateUserWallet(user, userCurrency);
+            Wallet wallet = await walletService.CreateUserWallet(user, userCurrency);
             user.Wallet = wallet;
             user.WalletId = wallet.Id;
 
             return user;
-        }
-
-
-        private async Task<Wallet> CreateUserWallet(User user, Currency userCurrency)
-        {
-            Wallet wallet = new Wallet
-            {
-                Currency = userCurrency,
-                Balance = 0
-            };
-
-            this.context.Wallets.Add(wallet);
-            await this.context.SaveChangesAsync();
-
-            return wallet;
         }
 
         public async Task<UserInfoDTO> GetUserInfo(ClaimsPrincipal userClaims)
