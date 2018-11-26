@@ -14,7 +14,7 @@ using ItsAllAboutTheGame.Services.External.Contracts;
 using ItsAllAboutTheGame.Services.External;
 using ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
-
+using ItsAllAboutTheGame.Services.Data.Constants;
 
 namespace ItsAllAboutTheGame
 {
@@ -74,7 +74,7 @@ namespace ItsAllAboutTheGame
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IForeignExchangeService, ForeignExchangeService>();
             services.AddScoped<IJsonDeserializer, JsonDeserializer>();
-
+            services.AddSingleton<ServicesDataConstants>();
             services.AddScoped<IForeignExchangeApiCaller, ForeignExchangeApiCaller>();
 
 

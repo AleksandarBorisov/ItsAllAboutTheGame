@@ -8,17 +8,14 @@ namespace ItsAllAboutTheGame.Controllers
 {
     public class HomeController : Controller
     {
-        private IForeignExchangeService foreignExchangeService;
-
-        public HomeController(IForeignExchangeService foreignExchangeService)
+        public HomeController()
         {
-            this.foreignExchangeService = foreignExchangeService;
+            
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var currencies = await foreignExchangeService.GetConvertionRates();
 
             return View();
         }

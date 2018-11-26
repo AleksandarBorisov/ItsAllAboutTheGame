@@ -1,14 +1,14 @@
-﻿using ItsAllAboutTheGame.Data.Models;
+﻿using ItsAllAboutTheGame.Services.Data.DTO;
 
 namespace ItsAllAboutTheGame.Models.AccountViewModels
 {
     public class UserInfoViewModel
     {
-        public UserInfoViewModel(User user, string currencySymbol)
+        public UserInfoViewModel(UserInfoDTO userInfo)
         {
-            this.Balance = user.Wallet.Balance;
-            this.Username = user.UserName;
-            this.CurrencySymbol = currencySymbol;
+            this.Balance = userInfo.Balance;
+            this.Username = userInfo.Username;
+            this.CurrencySymbol = userInfo.CurrencySymbol;
         }
 
         public decimal Balance { get; set; }
