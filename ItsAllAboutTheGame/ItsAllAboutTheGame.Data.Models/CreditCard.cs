@@ -1,4 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data.Models.Abstract;
+using ItsAllAboutTheGame.Data.Models.Utilities.CustomAttributes;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,9 +18,20 @@ namespace ItsAllAboutTheGame.Data.Models
         public User User { get; set; }
 
         [Required]
-        public string PaymentToken { get; set; }
+        [MinLength(16),MaxLength(16)]
+        public string CardNumber { get; set; }
 
-        public string CardName { get; set; }
+        [Required]
+        [MinLength(4), MaxLength(4)]
+        public string LastDigits { get; set; }
+
+        [Required]
+        [FutureDate(ErrorMessage = "Date should be at least 1 month in the future!")]
+        public DateTime ExpiryDate { get; set; }
+     
+        [Required]
+        [MinLength(3),MaxLength(4)]
+        public string CVV { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime? DeletedOn { get; set; }

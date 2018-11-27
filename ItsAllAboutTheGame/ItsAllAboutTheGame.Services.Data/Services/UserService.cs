@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -54,13 +55,15 @@ namespace ItsAllAboutTheGame.Services.Data
             
 
             User user = new User
-            {
+            {               
+                Cards = new List<CreditCard>(),
+                Transactions = new List<Transaction>(),
                 UserName = email,
                 CreatedOn = DateTime.Now,
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
-                DateOfBirth = dateOfBirth
+                DateOfBirth = dateOfBirth              
             };
 
             Wallet wallet = await walletService.CreateUserWallet(user, userCurrency);
