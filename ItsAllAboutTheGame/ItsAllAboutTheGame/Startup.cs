@@ -16,6 +16,7 @@ using ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.Constants;
 using ItsAllAboutTheGame.Extensions;
+using ItsAllAboutTheGame.Services.Data.Services;
 
 namespace ItsAllAboutTheGame
 {
@@ -70,6 +71,9 @@ namespace ItsAllAboutTheGame
 
 
 
+            services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IWalletService, WalletService>();
+            services.AddScoped<ICardService, CardService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IForeignExchangeService, ForeignExchangeService>();

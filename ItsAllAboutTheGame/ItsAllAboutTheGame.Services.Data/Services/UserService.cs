@@ -128,7 +128,8 @@ namespace ItsAllAboutTheGame.Services.Data
                 {
                     Balance = u.Wallet.Balance * currencies.Rates[u.Wallet.Currency.ToString()],
                     Username = u.UserName,
-                    Currency = u.Wallet.Currency.ToString()
+                    Currency = u.Wallet.Currency.ToString(),
+                    UserId = userId
                 })
                 .FirstOrDefaultAsync();
 

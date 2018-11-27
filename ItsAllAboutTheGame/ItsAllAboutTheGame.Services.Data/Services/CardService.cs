@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Services.Data.Services
 {
-    public class CardService// : ICardService
+    public class CardService : ICardService
     {
         private readonly ItsAllAboutTheGameDbContext context;
         private readonly UserManager<User> userManager;
