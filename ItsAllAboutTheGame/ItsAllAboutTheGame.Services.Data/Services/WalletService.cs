@@ -14,13 +14,11 @@ namespace ItsAllAboutTheGame.Services.Data
     {
         private readonly IMemoryCache cache;
         private readonly ItsAllAboutTheGameDbContext context;
-        private readonly IUserService userService;
 
-        public WalletService(IMemoryCache cache, ItsAllAboutTheGameDbContext context, IUserService userService)
+        public WalletService(IMemoryCache cache, ItsAllAboutTheGameDbContext context)
         {
             this.cache = cache;
             this.context = context;
-            this.userService = userService;
         }
 
         public async Task<Wallet> CreateUserWallet(User user, Currency userCurrency)

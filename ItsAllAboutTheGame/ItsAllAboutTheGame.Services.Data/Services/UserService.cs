@@ -69,9 +69,8 @@ namespace ItsAllAboutTheGame.Services.Data
             Wallet wallet = await walletService.CreateUserWallet(user, userCurrency);
             user.Wallet = wallet;
             user.WalletId = wallet.Id;
-
+            
             return user;
-
         }
 
         public async Task<User> RegisterUserWithLoginProvider(ExternalLoginInfo info, Currency userCurrency, DateTime dateOfBirth)

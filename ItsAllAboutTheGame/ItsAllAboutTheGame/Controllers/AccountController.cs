@@ -256,7 +256,7 @@ namespace ItsAllAboutTheGame.Controllers
                     }
                     AddErrors(result);
                 }
-                catch (UserNo18Exception ex)
+                catch (UserNo18Exception)
                 {
                     TempData["Failed"] = "User must have 18 years old to register!";
                     return RedirectToAction("Register");

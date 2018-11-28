@@ -1,0 +1,36 @@
+﻿@model ItsAllAboutTheGame.Models.DepositViewModels.NewDepositViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Deposit Page</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <select asp-for="CardId" asp-items="Model.Cards"></select>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <select asp-for="CardCurrency">
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
+                <option value="BGN">BGN</option>
+                <option value="GBP">GBP</option>
+            </select>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

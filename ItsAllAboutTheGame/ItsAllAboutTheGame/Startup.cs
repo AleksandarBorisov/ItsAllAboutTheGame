@@ -5,17 +5,18 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ItsAllAboutTheGame.Data;
-using ItsAllAboutTheGame.Services;
+using ItsAllAboutTheGame.Services.Data;
 using ItsAllAboutTheGame.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using ItsAllAboutTheGame.Services.Data.Contracts;
-using ItsAllAboutTheGame.Services.Data;
 using ItsAllAboutTheGame.Services.External.Contracts;
 using ItsAllAboutTheGame.Services.External;
 using ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.Constants;
 using ItsAllAboutTheGame.Extensions;
+using ItsAllAboutTheGame.Services;
+using ItsAllAboutTheGame.Services.Data.Services;
 
 namespace ItsAllAboutTheGame
 {
@@ -72,6 +73,8 @@ namespace ItsAllAboutTheGame
 
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICardService, CardService>();
+            services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<IForeignExchangeService, ForeignExchangeService>();
             services.AddScoped<IJsonDeserializer, JsonDeserializer>();
             services.AddSingleton<ServicesDataConstants>();

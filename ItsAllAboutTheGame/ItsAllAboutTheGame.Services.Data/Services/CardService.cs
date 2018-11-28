@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Services.Data.Services
 {
-    public class CardService// : ICardService
+    public class CardService : ICardService
     {
         private readonly ItsAllAboutTheGameDbContext context;
         private readonly UserManager<User> userManager;
@@ -22,25 +22,28 @@ namespace ItsAllAboutTheGame.Services.Data.Services
         }
 
 
-        //public async Task<CreditCard> AddCard(string cardName, string paymentToken, ClaimsPrincipal userClaims)
-        //{
-        //    var userId = userManager.GetUserId(userClaims);
-        //    var user =  await userManager.FindByIdAsync(userId);
+        public async Task<CreditCard> AddCard(string cardNumber,
+                string lastDigits, string cvv, DateTime expiryDate, ClaimsPrincipal userClaims)
+        {
+            var userId = userManager.GetUserId(userClaims);
+            var user = await userManager.FindByIdAsync(userId);
 
-        //    var creditCard = new CreditCard
-        //    {
-        //        UserId = userId,
-        //        User = user,
-        //        PaymentToken = paymentToken,
-        //        CardName = cardName,
-        //        CreatedOn = DateTime.Now
-        //    };
+            var creditCard = new CreditCard
+            {
+                CardNumber = cardNumber,
+                LastDigits = lastDigits,
+                CVV = cvv,
+                ExpiryDate = expiryDate,
+                UserId = userId,
+                User = user,              
+                CreatedOn = DateTime.Now
+            };
 
-        //    this.context.CreditCards.Add(creditCard);
-            
-        //    await this.context.SaveChangesAsync();
-        //    //this.context.Update(user); ?! Should I or should I not?
-        //    return creditCard;
-        //}
+
+            this.context.CreditCards.Add(creditCard);
+            await this.context.SaveChangesAsync();
+
+            return creditCard;
+        }
     }
 }
