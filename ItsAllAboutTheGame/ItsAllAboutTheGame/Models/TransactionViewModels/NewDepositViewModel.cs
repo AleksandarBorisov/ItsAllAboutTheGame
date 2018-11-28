@@ -14,7 +14,7 @@ namespace ItsAllAboutTheGame.Models.TransactionViewModels
         public string CardId { get; set; }
         
         [Required]
-        public List<SelectListItem> Cards { get; set; }
+        public IEnumerable<SelectListItem> Cards { get; set; }
 
         [Required]
         public decimal Amount { get; set; }

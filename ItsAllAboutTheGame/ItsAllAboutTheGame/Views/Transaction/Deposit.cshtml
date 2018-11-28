@@ -6,13 +6,15 @@
 
 <h2>Deposit Page</h2>
 
-<hr />
+<header class="padding" style="padding:100px">
+
+</header>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Index">
             <div asp-validation-summary="All" class="text-danger"></div>
             <select asp-for="CardId" asp-items="Model.Cards" style="width:300px"></select>
-            <p>@Model.CardCurrency</p>
+            
             <li>
                 <a asp-area="" asp-controller="Transaction" asp-action="AddCard" class="btn btn-outline-danger rounded font-weight-bold home-view-color">Add Card?<i class="fa fa-money ml-2"></i><i class="fa fa-credit-card ml-2"></i></a>
             </li>
@@ -20,7 +22,9 @@
                 <label asp-for="Amount" class="control-label"></label>
                 <input asp-for="Amount" class="form-control" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
-            </div>        
+                <span style="lighting-color">@Model.CardCurrency</span>
+            </div>       
+            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
