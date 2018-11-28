@@ -10,7 +10,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
     public interface ICardService
     {
 
-        Task<CreditCard> AddCard(string cardNumber, string lastDigits, string cvv, DateTime expiryDate, ClaimsPrincipal userClaims);
+        Task<CreditCard> AddCard(string cardNumber, string cvv, DateTime expiryDate, User user);
 
     }
 }

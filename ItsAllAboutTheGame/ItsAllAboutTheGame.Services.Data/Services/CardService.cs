@@ -1,5 +1,6 @@
 ﻿using ItsAllAboutTheGame.Data;
 using ItsAllAboutTheGame.Data.Models;
+using ItsAllAboutTheGame.Data.Models.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,17 +23,15 @@ namespace ItsAllAboutTheGame.Services.Data.Services
         }
 
 
-        public async Task<CreditCard> AddCard(string cardNumber,
-                string lastDigits, string cvv, DateTime expiryDate, ClaimsPrincipal userClaims)
+        public async Task<CreditCard> AddCard(string cardNumber, string cvv, DateTime expiryDate, User user)
         {
-            var userId = userManager.GetUserId(userClaims);
-            var user = await userManager.FindByIdAsync(userId);
+            var userId = user.Id;
 
             var creditCard = new CreditCard
             {
                 CardNumber = cardNumber,
-                LastDigits = lastDigits,
-                CVV = cvv,
+                LastDigits = cardNumber.Substring(cardNumber.Length - 4),
+                CVV = cvv,                
                 ExpiryDate = expiryDate,
                 UserId = userId,
                 User = user,              

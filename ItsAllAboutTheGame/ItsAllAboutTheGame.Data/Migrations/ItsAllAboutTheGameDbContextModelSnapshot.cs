@@ -210,7 +210,7 @@ namespace ItsAllAboutTheGame.Data.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-                        new { Id = "fed285c1-b426-44c3-9528-3508e8ede166", ConcurrencyStamp = "b7b386c6-9b9b-4895-8288-1d5ba024542e", Name = "Admin" }
+                        new { Id = "25b1168a-7d4d-4420-9506-299cd815ad92", ConcurrencyStamp = "02c3341f-aced-4eee-be7e-96778dedad4f", Name = "Admin" }
                     );
                 });
 

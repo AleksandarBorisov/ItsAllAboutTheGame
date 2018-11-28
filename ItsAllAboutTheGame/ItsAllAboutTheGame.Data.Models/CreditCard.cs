@@ -27,6 +27,7 @@ namespace ItsAllAboutTheGame.Data.Models
 
         [Required]
         [FutureDate(ErrorMessage = "Date should be at least 1 month in the future!")]
+        [DataType(DataType.DateTime)]
         public DateTime ExpiryDate { get; set; }
      
         [Required]
