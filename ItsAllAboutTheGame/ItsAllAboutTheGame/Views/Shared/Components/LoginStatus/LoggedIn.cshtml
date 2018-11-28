@@ -2,8 +2,11 @@
 
 <li class="ml-auto home-view-color">
     <div id="balance-section">
-        <span id="user-balance">Current balance:</span>@Model.Balance.ToString("0.00") @Model.CurrencySymbol
+        <span id="user-balance">Balance:</span>@Model.Balance.ToString("0.00") @Model.CurrencySymbol
     </div>
+</li>
+<li>
+    <a asp-area="" asp-controller="Transaction" asp-action="Deposit" class="btn btn-outline-danger rounded font-weight-bold home-view-color">Deposit<i class="fa fa-money ml-2"></i><i class="fa fa-credit-card ml-2"></i></a>
 </li>
 <li>
     <a asp-area="" asp-controller="Manage" asp-action="Index" asp-route-userId="@Model.UserId" class="btn btn-outline-cyan rounded font-weight-bold home-view-color">@Model.Username</a>

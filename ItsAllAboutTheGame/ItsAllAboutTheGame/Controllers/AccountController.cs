@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using ItsAllAboutTheGame.Models;
 using ItsAllAboutTheGame.Models.AccountViewModels;
 using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Data.Models;
-using Microsoft.AspNetCore.Http.Authentication;
 using ItsAllAboutTheGame.Services.Data.Contracts;
-using System.Text;
 using ItsAllAboutTheGame.Services.Data.Exceptions;
 
 namespace ItsAllAboutTheGame.Controllers
