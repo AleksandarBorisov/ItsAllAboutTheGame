@@ -47,9 +47,9 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             return creditCard;
         }
 
-        public async Task<CreditCard> GetCard(User user)
+        public async Task<CreditCard> GetCard(User user, int cardId)
         {
-            var userCard = await this.context.CreditCards.Where(c => c.User == user).FirstOrDefaultAsync();
+            var userCard = await this.context.CreditCards.Where(c => c.User == user && c.Id == cardId).FirstOrDefaultAsync();
 
             return userCard;
         }

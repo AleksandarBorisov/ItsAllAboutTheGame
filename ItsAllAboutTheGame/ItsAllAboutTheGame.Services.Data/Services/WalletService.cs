@@ -2,6 +2,7 @@
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Data.Models.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace ItsAllAboutTheGame.Services.Data
 
         public async Task<Wallet> GetUserWallet(User user)
         {
-            var userWallet = this.context.Wallets.Where(u => u.UserId == user.Id).FirstOrDefault();
+            var userWallet = await this.context.Wallets.Where(u => u.UserId == user.Id).FirstOrDefaultAsync();
 
             return userWallet;
         }

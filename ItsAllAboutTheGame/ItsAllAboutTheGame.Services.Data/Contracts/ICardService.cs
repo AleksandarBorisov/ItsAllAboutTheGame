@@ -12,7 +12,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
     {
         Task<CreditCard> AddCard(string cardNumber, string cvv, DateTime expiryDate, User user);
 
-        Task<CreditCard> GetCard(User user);
+        Task<CreditCard> GetCard(User user, int cardId);
 
         Task<IEnumerable<SelectListItem>> GetSelectListCards(User user);
     }
