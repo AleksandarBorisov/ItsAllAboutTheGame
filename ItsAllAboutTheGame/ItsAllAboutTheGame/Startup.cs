@@ -37,11 +37,9 @@ namespace ItsAllAboutTheGame
 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ItsAllAboutTheGameDbContext>()
                 .AddDefaultTokenProviders();
-
 
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {
@@ -68,9 +66,6 @@ namespace ItsAllAboutTheGame
             //});
             services.AddMemoryCache();
 
-
-
-
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<ICardService, CardService>();
@@ -83,11 +78,10 @@ namespace ItsAllAboutTheGame
             services.AddSingleton<ServicesDataConstants>();
             services.AddScoped<IForeignExchangeApiCaller, ForeignExchangeApiCaller>();
 
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<User> userManager)
         {
             if (env.IsDevelopment())
             {
@@ -105,6 +99,8 @@ namespace ItsAllAboutTheGame
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            app.SeedUsers(userManager);
 
             app.UseResponseCaching();
 

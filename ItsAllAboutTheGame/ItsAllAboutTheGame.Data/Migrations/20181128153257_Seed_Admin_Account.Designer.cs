@@ -4,14 +4,16 @@ using ItsAllAboutTheGame.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ItsAllAboutTheGame.Data.Migrations
 {
     [DbContext(typeof(ItsAllAboutTheGameDbContext))]
-    partial class ItsAllAboutTheGameDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181128153257_Seed_Admin_Account")]
+    partial class Seed_Admin_Account
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -210,12 +212,8 @@ namespace ItsAllAboutTheGame.Data.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-
-                        new { Id = "25b1168a-7d4d-4420-9506-299cd815ad92", ConcurrencyStamp = "02c3341f-aced-4eee-be7e-96778dedad4f", Name = "Admin" },
-
                         new { Id = "b225df6e-f7c8-454c-b9fc-c070bda8913a", ConcurrencyStamp = "628bf654-d973-458e-adad-50975f8a117f", Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
                         new { Id = "4f171067-1442-498b-9a2e-21fb47f82851", ConcurrencyStamp = "73e17b37-e688-427a-b410-01f8e54a271b", Name = "MasterAdministrator", NormalizedName = "MASTERADMINISTRATOR" }
-
                     );
                 });
 
