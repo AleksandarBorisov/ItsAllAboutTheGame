@@ -29,7 +29,7 @@ namespace ItsAllAboutTheGame
         }
 
         public IConfiguration Configuration { get; }
-        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -50,7 +50,7 @@ namespace ItsAllAboutTheGame
             services.AddMvc();
 
             services.AddHttpClient();
-          
+
             services.AddResponseCaching();
 
             services.AddMvc()
@@ -98,7 +98,7 @@ namespace ItsAllAboutTheGame
 
             app.UseAuthentication();
 
-            app.SeedUsers(userManager);
+            app.SeedAdmins(userManager);
 
             app.UseResponseCaching();
 

@@ -208,11 +208,6 @@ namespace ItsAllAboutTheGame.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new { Id = "b225df6e-f7c8-454c-b9fc-c070bda8913a", ConcurrencyStamp = "628bf654-d973-458e-adad-50975f8a117f", Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
-                        new { Id = "4f171067-1442-498b-9a2e-21fb47f82851", ConcurrencyStamp = "73e17b37-e688-427a-b410-01f8e54a271b", Name = "MasterAdministrator", NormalizedName = "MASTERADMINISTRATOR" }
-                    );
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

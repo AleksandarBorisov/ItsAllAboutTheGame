@@ -1,5 +1,6 @@
 ﻿using ItsAllAboutTheGame.Data.Constants;
 using ItsAllAboutTheGame.Data.Models;
+using ItsAllAboutTheGame.Data.Models.Enums;
 using ItsAllAboutTheGame.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -15,12 +16,11 @@ namespace ItsAllAboutTheGame.Extensions
             builder.UseMiddleware<EntityNotFoundMiddleware>();
         }
 
-        public static void SeedUsers(this IApplicationBuilder builder, UserManager<User> userManager)
+        public static void SeedAdmins(this IApplicationBuilder builder, UserManager<User> userManager)
         {
             Task.Run(async () =>
             {
                 //Here we create the Admin account
-
                 if (await userManager.FindByEmailAsync(DataConstants.AdminEmail) == null)
                 {
                     User user = new User
@@ -28,12 +28,12 @@ namespace ItsAllAboutTheGame.Extensions
                         UserName = DataConstants.AdminEmail,
                         FirstName = "Admin",
                         LastName = "Admin",
-                        DateOfBirth = DateTime.Parse("01/01/1991"),
+                        DateOfBirth = DateTime.Parse("1/1/1991"),
                         Email = DataConstants.AdminEmail,
-                        Wallet = new Wallet()
+                        Wallet = new Wallet() { Balance = 0, Currency = Currency.BGN, }
                     };
 
-                    var result = await userManager.CreateAsync(user, "Admin123");
+                    var result = await userManager.CreateAsync(user, "Admin123_");
 
                     if (result.Succeeded)
                     {
@@ -42,20 +42,19 @@ namespace ItsAllAboutTheGame.Extensions
                 }
 
                 //Here we create the MasterAdmin account
-
                 if (await userManager.FindByEmailAsync(DataConstants.MasterAdminEmail) == null)
                 {
                     User user = new User
                     {
                         UserName = DataConstants.MasterAdminEmail,
-                        FirstName = "Admin",
-                        LastName = "Admin",
-                        DateOfBirth = DateTime.Parse("01/01/1991"),
+                        FirstName = "MasterAdmin",
+                        LastName = "MasterAdmin",
+                        DateOfBirth = DateTime.Parse("1/1/1991"),
                         Email = DataConstants.MasterAdminEmail,
-                        Wallet = new Wallet()
+                        Wallet = new Wallet() { Balance = 0, Currency = Currency.BGN, }
                     };
 
-                    var result = await userManager.CreateAsync(user, "Admin123");
+                    var result = await userManager.CreateAsync(user, "Admin123_");
 
                     if (result.Succeeded)
                     {

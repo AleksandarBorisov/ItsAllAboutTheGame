@@ -32,10 +32,10 @@ namespace ItsAllAboutTheGame.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<IdentityRole>()
-                .HasData(new IdentityRole { Name = DataConstants.AdminRole, NormalizedName = DataConstants.AdminRole.ToUpper() });
-            builder.Entity<IdentityRole>()
-                .HasData(new IdentityRole { Name = DataConstants.MasterAdminRole, NormalizedName = DataConstants.MasterAdminRole.ToUpper() });
+            //builder.Entity<IdentityRole>()
+            //    .HasData(new IdentityRole { Name = DataConstants.AdminRole, NormalizedName = DataConstants.AdminRole.ToUpper() });
+            //builder.Entity<IdentityRole>()
+            //    .HasData(new IdentityRole { Name = DataConstants.MasterAdminRole, NormalizedName = DataConstants.MasterAdminRole.ToUpper() });
             builder.ApplyConfiguration(new CreditCardConfiguration());
             builder.ApplyConfiguration(new WalletConfiguration());
             builder.ApplyConfiguration(new TransactionConfiguration());
