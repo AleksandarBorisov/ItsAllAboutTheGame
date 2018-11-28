@@ -5,6 +5,7 @@ using ItsAllAboutTheGame.Services.Data.Contracts;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +34,13 @@ namespace ItsAllAboutTheGame.Services.Data
             await context.SaveChangesAsync();
 
             return wallet;
+        }
+
+        public async Task<Wallet> GetUserWallet(User user)
+        {
+            var userWallet = this.context.Wallets.Where(u => u.UserId == user.Id).FirstOrDefault();
+
+            return userWallet;
         }
     }
 }

@@ -11,45 +11,50 @@
     You've successfully authenticated with <strong>@ViewData["LoginProvider"]</strong>.
     You have already provided us with your e-mail. Please fill in some additional info for registration!
 </p>
+<header class="padding" style="padding:20px">
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div>
-                <label asp-for="DateOfBirth"></label>
-                <input asp-for="DateOfBirth" type="date" />
-                @if (TempData["Failed"] != null)
-                {
-                    <p class="text-danger">@TempData["Failed"]</p>
-                }
-            </div>
-            <div class="form-group">
-                <label asp-for="UserCurrency"></label>
-                <select asp-for="UserCurrency">
-                    <option value="EUR">EUR</option>
-                    <option value="USD">USD</option>
-                    <option value="BGN">BGN</option>
-                    <option value="GBP">GBP</option>
-                </select>
-            </div>
-            <p class="text-info">
-                Please specify a password for your account!
-            </p>
-            <div class="form-group">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-default">Register</button>
-        </form>
+</header>
+<main class="padding">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div>
+                    <label asp-for="DateOfBirth"></label>
+                    <input asp-for="DateOfBirth" type="date" />
+                    @if (TempData["Failed"] != null)
+                    {
+                        <p class="text-danger">@TempData["Failed"]</p>
+                    }
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserCurrency"></label>
+                    <select asp-for="UserCurrency">
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                        <option value="BGN">BGN</option>
+                        <option value="GBP">GBP</option>
+                    </select>
+                </div>
+                <p class="text-info">
+                    Please specify a password for your account!
+                </p>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-default">Register</button>
+            </form>
+        </div>
     </div>
-</div>
+
+</main>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")

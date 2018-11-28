@@ -1,0 +1,40 @@
+﻿@model ItsAllAboutTheGame.Models.TransactionViewModels.AddCardViewModel
+
+@{
+    ViewData["Title"] = "AddCard";
+}
+
+<h2>Add new card</h2>
+
+<header class="padding" style="padding:20px">
+
+</header>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CardNumber" class="control-label"></label>
+                <input asp-for="CardNumber" class="form-control" />
+                <span asp-validation-for="CardNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CVV" class="control-label"></label>
+                <input asp-for="CVV" class="form-control" />
+                <span asp-validation-for="CVV" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="ExpiryDate"></label>
+                <input asp-for="ExpiryDate" type="date" />
+            </div>            
+            <div>
+                <button type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Deposit">Back to List</a>
+</div>

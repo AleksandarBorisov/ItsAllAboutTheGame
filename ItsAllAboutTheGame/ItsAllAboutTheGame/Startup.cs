@@ -5,17 +5,17 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ItsAllAboutTheGame.Data;
-using ItsAllAboutTheGame.Services;
+using ItsAllAboutTheGame.Services.Data;
 using ItsAllAboutTheGame.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using ItsAllAboutTheGame.Services.Data.Contracts;
-using ItsAllAboutTheGame.Services.Data;
 using ItsAllAboutTheGame.Services.External.Contracts;
 using ItsAllAboutTheGame.Services.External;
 using ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.Constants;
 using ItsAllAboutTheGame.Extensions;
+using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Services.Data.Services;
 
 namespace ItsAllAboutTheGame
@@ -37,17 +37,14 @@ namespace ItsAllAboutTheGame
 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<ItsAllAboutTheGameDbContext>()
-                .AddDefaultTokenProviders();
+            this.RegisterAuthentication(services);
+            this.RegisterServices(services);
+            this.RegisterMainComponents(services);
+        }
 
-            services.AddAuthentication().AddFacebook(facebookOptions =>
-            {
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            });
-
-            services.AddMvc();
+        private void RegisterMainComponents(IServiceCollection services)
+        {
+            //services.AddMvc();
 
             services.AddHttpClient();
 
@@ -65,17 +62,34 @@ namespace ItsAllAboutTheGame
             //    });
             //});
             services.AddMemoryCache();
+        }
 
+        private void RegisterServices(IServiceCollection services)
+        {
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<ICardService, CardService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICardService, CardService>();
+            services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<IForeignExchangeService, ForeignExchangeService>();
             services.AddScoped<IJsonDeserializer, JsonDeserializer>();
             services.AddSingleton<ServicesDataConstants>();
             services.AddScoped<IForeignExchangeApiCaller, ForeignExchangeApiCaller>();
+        }
 
+        private void RegisterAuthentication(IServiceCollection services)
+        {
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ItsAllAboutTheGameDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

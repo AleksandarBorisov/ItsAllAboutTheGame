@@ -26,7 +26,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
 
         //public async Task<Transaction> MakeDeposit(CreditCard creditCard, Wallet wallet, ClaimsPrincipal userClaims)
         //{
-            
+
         //}
     }
 }

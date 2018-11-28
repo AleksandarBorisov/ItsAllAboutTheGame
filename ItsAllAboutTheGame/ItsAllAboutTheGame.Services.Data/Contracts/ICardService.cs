@@ -1,4 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -9,6 +10,10 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 {
     public interface ICardService
     {
-        //Task<CreditCard> AddCard(string cardName, string paymentToken, ClaimsPrincipal userClaims);
+        Task<CreditCard> AddCard(string cardNumber, string cvv, DateTime expiryDate, User user);
+
+        Task<CreditCard> GetCard(User user);
+
+        Task<IEnumerable<SelectListItem>> GetSelectListCards(User user);
     }
 }
