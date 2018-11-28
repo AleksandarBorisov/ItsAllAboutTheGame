@@ -6,10 +6,13 @@ namespace ItsAllAboutTheGame.Models.AccountViewModels
     {
         public UserInfoViewModel(UserInfoDTO userInfo)
         {
+            this.UserId = userInfo.UserId;
             this.Balance = userInfo.Balance;
             this.Username = userInfo.Username;
             this.CurrencySymbol = userInfo.CurrencySymbol;
         }
+
+        public string UserId { get; set; }
 
         public decimal Balance { get; set; }
 

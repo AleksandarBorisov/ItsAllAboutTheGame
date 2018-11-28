@@ -28,96 +28,72 @@
     </environment>
 </head>
 <body>
-    <header>
-        @*Fixed navbars use position: fixed, meaning they’re pulled from the normal flow of the DOM and may require custom CSS (e.g., padding-top on the ) to prevent overlap with other elements.*@
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
-            <div class="flex-md-column w-100">
-                <ul class="navbar-nav navbar-navsmooth-scroll">
-                    <li>
-                        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
-                            <div class="mask waves-effect waves-light">
-                                <img id="logo" class="left img-fluid" src="~/images/CardsLogo.png" />
-                            </div>
-                        </a>
-                    </li>
-                    <vc:login-status parameter1="parameter1 value"
-                                     parameter2="parameter2 value">
-                    </vc:login-status>
-                    @*@await Html.PartialAsync("_LoginPartial")*@
-                </ul>
-                <!-- Collapse button -->
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
-                        aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <!-- Collapsible content -->
-                <div class="collapse navbar-collapse" id="navigation">
-                    <!-- Links -->
-                    <ul class="navbar-nav w-100">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#best-features">Promotions</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#examples">Responsible Gambling</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#examples">Payment Methods</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#contact">Contact</a>
-                        </li>
-                        <li class="nav-item ml-auto">
-                            <a class="nav-link"><i class="fa fa-facebook white-text fa-2x"></i></a>
-                        </li>
-                        <li class="nav-item phoneSizeMargin">
-                            <a class="nav-link"><i class="fa fa-twitter white-text fa-2x"></i></a>
-                        </li>
-                        <li class="nav-item phoneSizeMargin">
-                            <a class="nav-link"><i class="fa fa-instagram white-text fa-2x"></i></a>
-                        </li>
-                        <li class="nav-item phoneSizeMargin">
-                            <a class="nav-link"><i class="fa fa-google-plus white-text fa-2x"></i></a>
-                        </li>
-                        <li class="nav-item phoneSizeMargin">
-                            <a class="nav-link"><i class="fa fa-linkedin white-text fa-2x"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <!--Mask-->
-        <div id="intro" class="view">
-
-            <div class="mask rgba-black-strong">
-
-                <div class="container-fluid d-flex align-items-center justify-content-center h-100">
-
-                    <div class="row d-flex justify-content-center text-center">
-
-                        <div class="col-md-12">
-
-                            <!-- Heading -->
-                            <button id="index-caption" class="animated pulse infinite" href="">Play</button>
-                            <!-- Divider -->
-                            <hr class="hr-light">
-
-                            <!-- Description -->
-                            <h4 class="white-text my-4">A day without a game is a day waisted!</h4>
-
+    @*Fixed navbars use position: fixed, meaning they’re pulled from the normal flow of the DOM and may require custom CSS (e.g., padding-top on the ) to prevent overlap with other elements.*@
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
+        <div class="flex-md-column w-100">
+            <ul class="navbar-nav navbar-navsmooth-scroll">
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
+                        <div class="mask waves-effect waves-light">
+                            <img id="logo" class="left img-fluid" src="~/images/CardsLogo.png" />
                         </div>
-
-                    </div>
-
-                </div>
-
+                    </a>
+                </li>
+                <vc:login-status parameter1="parameter1 value"
+                                 parameter2="parameter2 value">
+                </vc:login-status>
+                @*@await Html.PartialAsync("_LoginPartial")*@
+            </ul>
+            <!-- Collapse button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+                    aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse navbar-navsmooth-scroll" id="navigation">
+                <!-- Links -->
+                <ul class="navbar-nav w-100">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#best-features">Promotions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#examples">Responsible Gambling</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#examples">Payment Methods</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item ml-auto">
+                        <a class="nav-link"><i class="fa fa-facebook white-text fa-2x"></i></a>
+                    </li>
+                    <li class="nav-item phoneSizeMargin">
+                        <a class="nav-link"><i class="fa fa-twitter white-text fa-2x"></i></a>
+                    </li>
+                    <li class="nav-item phoneSizeMargin">
+                        <a class="nav-link"><i class="fa fa-instagram white-text fa-2x"></i></a>
+                    </li>
+                    <li class="nav-item phoneSizeMargin">
+                        <a class="nav-link"><i class="fa fa-google-plus white-text fa-2x"></i></a>
+                    </li>
+                    <li class="nav-item phoneSizeMargin">
+                        <a class="nav-link"><i class="fa fa-linkedin white-text fa-2x"></i></a>
+                    </li>
+                </ul>
             </div>
-
         </div>
-        <!--/.Mask-->
-    </header>
+    </nav>
+    <!--Mask-->
+    <div id="intro" class="view">
+        <div class="mask rgba-black-strong">
+        </div>
+    </div>
+    <!--/.Mask-->
 
     <div>
         @RenderBody()
+
         <hr />
         <!-- Footer -->
         <footer class="page-footer unique-color-dark">

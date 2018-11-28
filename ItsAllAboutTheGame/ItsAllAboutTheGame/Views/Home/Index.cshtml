@@ -2,7 +2,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-<!--Main layout-->
 
 <header>
     @if (TempData["Success"] != null)
@@ -21,9 +20,22 @@
         </div>
     }
 </header>
-<main class="mt-5" id="item">
+<!--Main layout-->
 
-    
+<main id="index-page">
+
+    <div class="container-fluid d-flex align-items-center justify-content-center" id="play-button">
+        <div class="row d-flex justify-content-center text-center">
+            <div class="col-md-12">
+                <!-- Heading -->
+                <button id="index-caption" class="animated pulse infinite" href="#games">Play</button>
+                <!-- Divider -->
+                <hr class="hr-light">
+                <!-- Description -->
+                <h4 class="white-text my-4">A day without a game is a day waisted!</h4>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
 
@@ -98,13 +110,13 @@
         <hr class="my-5">
 
         <!--Section: Examples-->
-        <section id="examples" class="text-center">
+        <section id="games" class="text-center">
 
             <!--Grid row-->
             <div class="row">
 
                 <!--Grid column-->
-                <div class="col-lg-4 col-md-12 mb-4">
+                <div class="col-lg-4 col-md-12 mb-4 wow slideInLeft">
 
                     <div class="view overlay z-depth-1-half">
                         <img src="https://mdbootstrap.com/img/Photos/Others/images/48.jpg" class="img-fluid">
@@ -123,7 +135,7 @@
                 </div>
                 <!--Grid column-->
                 <!--Grid column-->
-                <div class="col-lg-4 col-md-6 mb-4">
+                <div class="col-lg-4 col-md-6 mb-4 wow jackInTheBox">
 
                     <div class="view overlay z-depth-1-half">
                         <img src="https://mdbootstrap.com/img/Photos/Others/images/49.jpg" class="img-fluid">
@@ -142,7 +154,7 @@
                 </div>
                 <!--Grid column-->
                 <!--Grid column-->
-                <div class="col-lg-4 col-md-6 mb-4">
+                <div class="col-lg-4 col-md-6 mb-4 wow slideInUp">
 
                     <div class="view overlay z-depth-1-half">
                         <img src="https://mdbootstrap.com/img/Photos/Others/images/50.jpg" class="img-fluid">
@@ -233,7 +245,7 @@
         <hr class="my-5">
 
         <!--Section: Gallery-->
-        <section id="gallery">
+        <section id="gallery" >
 
             <!-- Heading -->
             <h2 class="mb-5 font-weight-bold text-center">Gallery heading</h2>
@@ -440,5 +452,8 @@
     </script>
     <script>
         $('#infoValidationSummary').modal('show')
+    </script>
+    <script>
+        new WOW().init();
     </script>
 }

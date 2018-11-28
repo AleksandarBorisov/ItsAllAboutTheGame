@@ -71,6 +71,9 @@ namespace ItsAllAboutTheGame
 
 
 
+            services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IWalletService, WalletService>();
+            services.AddScoped<ICardService, CardService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICardService, CardService>();

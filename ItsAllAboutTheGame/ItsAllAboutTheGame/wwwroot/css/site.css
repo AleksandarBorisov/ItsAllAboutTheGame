@@ -12,18 +12,15 @@ header,
     2. JPEG file format
     3. The file is compressed (you can use the COMPRES JPG tool)*/
     background-size: cover;
+    position: fixed;
+    width: 100%;
+    height: 100%;
 }
 
 #logo {
     width: 100px;
     height: 100px;
 }
-
-/*body {
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-image: url("https://lh4.googleusercontent.com/proxy/NFEYF7mxUBcIrx2fwpzD52XXQ6r9RxtDFAbDL8lXpLAbQcDcMR0W6N5OSgZQ7ektHchqifHPk_eF9FapJ8K8XuvZCEzh0lI4LPvAej-E0-XZ5zjemjBCpfGFjB2GHS6rOGFi7duYxvHF=s0-d");
-}*/
 
 /*Make the body element fit within the screen nicely*/
 body {
@@ -32,9 +29,6 @@ body {
     padding: 0;
 }
 
-html {
-    height: 100%;
-}
 
 .top-nav-collapse {
     background-color: #24355C;
@@ -70,7 +64,9 @@ html {
     background-color: orange;
     font-size: 60px;
     font-weight: bold;
+    border-radius: 5px;
     padding: 20px;
+    line-height: normal;
 }
 
 .home-view-color {
@@ -86,3 +82,25 @@ html {
 #balance-section {
     color: lawngreen;
 }
+
+#index-page {
+    margin-top: 15%;
+}
+
+@media (max-width: 768px) {
+    #index-page {
+        margin-top: 120%;
+    }
+}
+
+@media (max-width: 768px) {
+    #navigation {
+        overflow-y: scroll;
+        max-height: 150px;
+    }
+}
+
+#play-button {
+    margin: 25% 0%;
+}
+
