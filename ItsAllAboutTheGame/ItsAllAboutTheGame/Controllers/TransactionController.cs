@@ -60,7 +60,8 @@ namespace ItsAllAboutTheGame.Controllers
         //    {
         //        var claims = HttpContext.User;
         //        var user = await userManager.GetUserAsync(claims);
-        //        var userCard = await this.cardService.GetCard(user);
+
+        //        var userCard = await this.cardService.GetCard(user, model.CardId);
 
 
 
@@ -68,7 +69,7 @@ namespace ItsAllAboutTheGame.Controllers
         //}
 
         [HttpGet]
-        public async Task<IActionResult> AddCard(string returnUrl = null)
+        public IActionResult AddCard(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
 
