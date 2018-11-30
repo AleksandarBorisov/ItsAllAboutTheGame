@@ -70,7 +70,9 @@ namespace ItsAllAboutTheGame.Controllers
                     TempData["Success"] = "Login Successful!";
                     return RedirectToLocal(returnUrl);
                 }
+
                 
+
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");

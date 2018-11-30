@@ -1,8 +1,12 @@
 ﻿using ItsAllAboutTheGame.Data.Models.Enums;
+using ItsAllAboutTheGame.Services.Data.Contracts;
+using ItsAllAboutTheGame.Services.Data.DTO;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Services.Data.Constants
 {
@@ -14,11 +18,17 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
 
         private static string baseCurrency;
 
-        public ServicesDataConstants()
+        private readonly IMemoryCache cache;
+
+        private readonly IForeignExchangeService foreignExchangeService;
+
+        public ServicesDataConstants(IMemoryCache cache, IForeignExchangeService foreignExchangeService)
         {
             SetCurrencySymbols();
             currencies = string.Join(",", Enum.GetNames(typeof(Currency)));
             baseCurrency = "USD";
+            this.cache = cache;
+            this.foreignExchangeService = foreignExchangeService;
         }
 
         public static Dictionary<string, string> CurrencySymbols
@@ -54,6 +64,17 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
                 .Where(ri => ri != null)
                 .GroupBy(ri => ri.ISOCurrencySymbol)
                 .ToDictionary(x => x.Key, x => x.First().CurrencySymbol);
+        }
+
+        public string DepositDescription = "Deposit with card ";
+
+        public async Task<ForeignExchangeDTO> ConvertionRates()
+        {
+            return await cache.GetOrCreateAsync("ConvertionRates", entry =>
+            {
+                entry.AbsoluteExpiration = DateTime.UtcNow.AddDays(1);
+                return this.foreignExchangeService.GetConvertionRates();
+            });
         }
     }
 }

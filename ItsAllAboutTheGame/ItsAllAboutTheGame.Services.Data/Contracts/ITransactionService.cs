@@ -9,6 +9,6 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 {
     public interface ITransactionService
     {
-        //Task<Transaction> MakeDeposit(CreditCard creditCard, Wallet wallet, ClaimsPrincipal userClaims);
+        Task<Transaction> MakeDeposit(CreditCard creditCard, ClaimsPrincipal userClaims, decimal amount);
     }
 }

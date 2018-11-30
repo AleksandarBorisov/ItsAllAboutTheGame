@@ -31,17 +31,23 @@ namespace ItsAllAboutTheGame.Services.Data
                 Balance = 0
             };
 
-            context.Wallets.Add(wallet);
+            context.Wallets.Add(wallet);         
             await context.SaveChangesAsync();
 
             return wallet;
         }
 
-        public async Task<Wallet> GetUserWallet(User user)
+        public Task<Wallet> GetUserWallet(User user)
         {
-            var userWallet = await this.context.Wallets.Where(u => u.UserId == user.Id).FirstOrDefaultAsync();
+            var userWallet = this.context.Wallets.FirstOrDefaultAsync(k => k.User == user);
 
             return userWallet;
+        }
+
+        public async void IncrementUserWallet(User user,  decimal amount)
+        {
+            var userWallet = await this.context.Wallets.Where(w => w.User == user).Include(b => b.Balance).FirstOrDefaultAsync();
+            userWallet.Balance += amount;
         }
     }
 }

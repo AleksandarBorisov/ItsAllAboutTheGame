@@ -144,6 +144,11 @@ namespace ItsAllAboutTheGame.Services.Data
             return user;
         }
 
+        public async Task<User> GetUser(string username)
+        {
+            var user = await this.context.Users.FirstOrDefaultAsync(n => n.UserName == username);
 
+            return user;
+        }       
     }
 }

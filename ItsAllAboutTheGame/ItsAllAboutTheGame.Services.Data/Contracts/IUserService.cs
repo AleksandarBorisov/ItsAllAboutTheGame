@@ -15,5 +15,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
         Task<User> RegisterUserWithLoginProvider(ExternalLoginInfo info, Currency userCurrency, DateTime dateOfBirth);
 
         Task<UserInfoDTO> GetUserInfo(ClaimsPrincipal userClaims);
+
+        Task<User> GetUser(string username);
     }
 }

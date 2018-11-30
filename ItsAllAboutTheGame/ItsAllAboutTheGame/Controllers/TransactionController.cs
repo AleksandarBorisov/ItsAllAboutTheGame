@@ -21,14 +21,16 @@ namespace ItsAllAboutTheGame.Controllers
         private readonly ItsAllAboutTheGameDbContext context;
         private readonly ICardService cardService;
         private readonly IWalletService walletService;
+        private readonly ITransactionService transactionService;
 
         public TransactionController(UserManager<User> userManager, ItsAllAboutTheGameDbContext context,
-            ICardService cardService, IWalletService walletService)
+            ICardService cardService, IWalletService walletService, ITransactionService transactionService)
         {
             this.context = context;
             this.userManager = userManager;
             this.cardService = cardService;
             this.walletService = walletService;
+            this.transactionService = transactionService;
         }
 
 
@@ -51,22 +53,23 @@ namespace ItsAllAboutTheGame.Controllers
             return View(model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Deposit(NewDepositViewModel model, string returnUrl = null)
-        //{
-        //    ViewData["ReturnUrl"] = returnUrl;
+        [HttpPost]
+        public async Task<IActionResult> Deposit(NewDepositViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var claims = HttpContext.User;
+                var user = await userManager.GetUserAsync(claims);
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        var claims = HttpContext.User;
-        //        var user = await userManager.GetUserAsync(claims);
+                var userCard = await this.cardService.GetCard(user, model.CardId);
 
-        //        var userCard = await this.cardService.GetCard(user, model.CardId);
+                var deposit = this.transactionService.MakeDeposit(userCard, claims, model.Amount);
 
+                return RedirectToAction("Index", "Home");
+            }
 
-
-        //    }
-        //}
+            return this.View(model);
+        }
 
         [HttpGet]
         public IActionResult AddCard(string returnUrl = null)
