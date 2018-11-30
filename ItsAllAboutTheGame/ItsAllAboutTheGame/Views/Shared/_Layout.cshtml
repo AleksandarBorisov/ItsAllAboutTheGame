@@ -31,19 +31,26 @@
     @*Fixed navbars use position: fixed, meaning they’re pulled from the normal flow of the DOM and may require custom CSS (e.g., padding-top on the ) to prevent overlap with other elements.*@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
         <div class="flex-md-column w-100">
-            <ul class="navbar-nav navbar-navsmooth-scroll">
-                <li>
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
-                        <div class="mask waves-effect waves-light">
-                            <img id="logo" class="left img-fluid" src="~/images/CardsLogo.png" />
-                        </div>
-                    </a>
-                </li>
-                <vc:login-status parameter1="parameter1 value"
-                                 parameter2="parameter2 value">
-                </vc:login-status>
-                @*@await Html.PartialAsync("_LoginPartial")*@
-            </ul>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#top-navigation"
+                    aria-controls="top-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse navbar-navsmooth-scroll" id="top-navigation">
+                <ul class="navbar-nav w-100">
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-light">
+                            <div class="mask waves-effect waves-light">
+                                <img id="logo" class="left img-fluid" src="~/images/CardsLogo.png" />
+                            </div>
+                        </a>
+                    </li>
+                    <vc:login-status parameter1="parameter1 value"
+                                     parameter2="parameter2 value">
+                    </vc:login-status>
+                    @*@await Html.PartialAsync("_LoginPartial")*@
+                </ul>
+            </div>
             <!-- Collapse button -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
                     aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,6 +89,18 @@
                     </li>
                 </ul>
             </div>
+            <ul class="nav navbar-nav nav-flex-icons ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-gear"></i>
+                        <span class="clearfix d-none d-sm-inline-block">Admin Panel</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a  asp-area="Administration" asp-controller="Users" asp-action="Index" class="dropdown-item"><i class="fa fa-user mr-2"></i>Manage Users</a>
+                        <a asp-area="Administration" asp-controller="Transactions" asp-action="Index" class="dropdown-item"><i class="fa fa-credit-card mr-2"></i>Manage Transactions</a>
+                    </div>
+                </li>
+            </ul>
         </div>
     </nav>
     <!--Mask-->
@@ -93,7 +112,7 @@
 
     <div>
         @RenderBody()
-
+        <button onclick="topFunction()" id="scrollToTopBtn" title="Go to top">Top</button>
         <hr />
         <!-- Footer -->
         <footer class="page-footer unique-color-dark">

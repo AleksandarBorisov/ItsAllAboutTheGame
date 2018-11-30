@@ -24,7 +24,7 @@ namespace ItsAllAboutTheGame.Extensions
                 //Here we create the Admin account
                 if (await userManager.FindByEmailAsync(DataConstants.AdminEmail) == null)
                 {
-                    var wallet = new Wallet() { Balance = 0, Currency = Currency.BGN, };
+                    var wallet = new Wallet() { Balance = 0, Currency = Currency.BGN };
                     context.Wallets.Add(wallet);
                     await context.SaveChangesAsync();
 
@@ -36,9 +36,8 @@ namespace ItsAllAboutTheGame.Extensions
                         DateOfBirth = DateTime.Parse("1/1/1991"),
                         Email = DataConstants.AdminEmail,
                         Wallet = wallet,
-                        WalletId = wallet.Id,
-                };                   
-                  
+                        WalletId = wallet.Id
+                    };
 
                     var result = await userManager.CreateAsync(user, "Admin123_");
 
@@ -51,7 +50,7 @@ namespace ItsAllAboutTheGame.Extensions
                 //Here we create the MasterAdmin account
                 if (await userManager.FindByEmailAsync(DataConstants.MasterAdminEmail) == null)
                 {
-                    var wallet = new Wallet() { Balance = 0, Currency = Currency.BGN, };
+                    var wallet = new Wallet() { Balance = 0, Currency = Currency.BGN };
                     context.Wallets.Add(wallet);
                     await context.SaveChangesAsync();
 
@@ -63,7 +62,7 @@ namespace ItsAllAboutTheGame.Extensions
                         DateOfBirth = DateTime.Parse("1/1/1991"),
                         Email = DataConstants.MasterAdminEmail,
                         Wallet = wallet,
-                        WalletId = wallet.Id
+                        WalletId = wallet.Id,
                     };
                     
 

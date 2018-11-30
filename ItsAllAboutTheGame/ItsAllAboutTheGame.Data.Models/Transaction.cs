@@ -2,6 +2,7 @@
 using ItsAllAboutTheGame.Data.Models.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ItsAllAboutTheGame.Data.Models
 {
@@ -23,6 +24,7 @@ namespace ItsAllAboutTheGame.Data.Models
         public string UserId { get; set; }
 
         [RegularExpression(@"^\d{1,5}(\.\d{1,2})?$", ErrorMessage = "The Amount of the transaction must be valid decimal number with 2 digits after the decimal point")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
 
         [DataType(DataType.DateTime)]

@@ -1,4 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data;
+using ItsAllAboutTheGame.Data.Constants;
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Data.Models.Enums;
 using ItsAllAboutTheGame.Services.Data.Constants;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace ItsAllAboutTheGame.Services.Data
 {
@@ -26,10 +28,10 @@ namespace ItsAllAboutTheGame.Services.Data
         private readonly IWalletService walletService;
 
         public UserService(ItsAllAboutTheGameDbContext context, UserManager<User> userManager,
-            SignInManager<User> signInManager, IForeignExchangeService foreignExchangeService, IMemoryCache cache,
+            SignInManager<User> signInManager, IForeignExchangeService foreignExchangeService,
             IWalletService walletService)
         {
-            this.cache = cache;
+            //this.cache = cache;
             this.context = context;
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -115,14 +117,10 @@ namespace ItsAllAboutTheGame.Services.Data
         {
             var userId = userManager.GetUserId(userClaims);
 
-            var currencies = await this.cache.GetOrCreateAsync("ConvertionRates", entry =>
-            {
-                entry.AbsoluteExpiration = DateTime.UtcNow.AddDays(1);
-                return this.foreignExchangeService.GetConvertionRates();
-            });
+            var currencies = await this.foreignExchangeService.GetConvertionRates();
 
             var user = await userManager.Users.Where(x => x.Id.Equals(userId))
-                .Include(player => player.Wallet)
+                .Include(u => u.Wallet)
                 .Select(u => new UserInfoDTO
                 {
                     Balance = u.Wallet.Balance * currencies.Rates[u.Wallet.Currency.ToString()],
@@ -149,6 +147,33 @@ namespace ItsAllAboutTheGame.Services.Data
             var user = await this.context.Users.FirstOrDefaultAsync(n => n.UserName == username);
 
             return user;
-        }       
+        }
+
+        public IPagedList<UserDTO> GetAllUsers(string searchByUsername, int page = 1, int size = 5, string sortOrder = "firstname_asc")
+        {
+            var users = this.context
+                .Users
+                .Where(u => u.Email != DataConstants.MasterAdminEmail)
+                .Select(u => new UserDTO(u));//.Contains();
+
+            switch (sortOrder)
+            {
+                case "firstname_asc": users.OrderBy(user => user.UserName); break;
+                case "firstname_desc": users.OrderBy(user => user.UserName); break;
+                case "lastname_asc": users.OrderBy(user => user.UserName); break;
+                case "lastname_desc": users.OrderBy(user => user.UserName); break;
+                case "balance_asc": users.OrderBy(user => user.UserName); break;
+                case "balance_desc": users.OrderBy(user => user.UserName); break;
+                case "birthdate_asc": users.OrderBy(user => user.UserName); break;
+                case "birthdate_desc": users.OrderBy(user => user.UserName); break;
+            }
+
+            if (string.IsNullOrEmpty(searchByUsername))
+            {
+                users = users.Where(user => user.UserName.Contains(searchByUsername));
+            }
+            
+            return users.ToPagedList(page, size);
+        }
     }
 }

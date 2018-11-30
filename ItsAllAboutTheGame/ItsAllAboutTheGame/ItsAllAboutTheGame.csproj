@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Administration\Controllers\" />
     <Folder Include="Areas\Administration\Data\" />
     <Folder Include="Areas\Administration\Views\" />
     <Folder Include="Models\GameViewModels\" />

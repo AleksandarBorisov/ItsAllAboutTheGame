@@ -1,5 +1,6 @@
 ﻿using ItsAllAboutTheGame.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ItsAllAboutTheGame.Data.Models
 {
@@ -16,6 +17,7 @@ namespace ItsAllAboutTheGame.Data.Models
         public Currency Currency { get; set; }
 
         [RegularExpression(@"^\d{1,5}(\.\d{1,2})?$", ErrorMessage = "Balance of the wallet must be valid decimal number with 2 digits after the decimal point")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Balance { get; set; }
     }
 }

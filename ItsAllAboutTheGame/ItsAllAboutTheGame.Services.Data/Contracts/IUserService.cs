@@ -3,6 +3,7 @@ using ItsAllAboutTheGame.Data.Models.Enums;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -17,5 +18,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
         Task<UserInfoDTO> GetUserInfo(ClaimsPrincipal userClaims);
 
         Task<User> GetUser(string username);
+
+        //List<UserDTO> GetAllUsers();
     }
 }

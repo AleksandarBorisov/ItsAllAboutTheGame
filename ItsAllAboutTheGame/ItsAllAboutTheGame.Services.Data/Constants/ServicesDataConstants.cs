@@ -16,6 +16,8 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
 
         private static Dictionary<string, string> currencySymbols;
 
+        private static Action[] Sorting;
+
         private static string baseCurrency;
 
         private readonly IMemoryCache cache;
@@ -25,11 +27,27 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
         public ServicesDataConstants(IMemoryCache cache)
         {
             SetCurrencySymbols();
+            //SetUserSortingTypes();
             currencies = string.Join(",", Enum.GetNames(typeof(Currency)));
             baseCurrency = "USD";
             this.cache = cache;
             //this.foreignExchangeService = foreignExchangeService;
         }
+
+        //private void SetUserSortingTypes()
+        //{
+        //    var actions = new Action[]
+        //    {
+        //        () =>
+        //        {
+        //        sequence.Enqueue(current + 2);
+        //        current = sequence.Dequeue();
+        //        Console.Write(current + ", ");
+        //        },
+        //        () => sequence.Enqueue(current + 1),
+        //        () => sequence.Enqueue(2 * current + 1)
+        //    };
+        //}
 
         public static Dictionary<string, string> CurrencySymbols
         {

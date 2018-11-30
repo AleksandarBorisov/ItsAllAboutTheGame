@@ -2,6 +2,8 @@
 {
     public class DataConstants
     {
+        public const string AdminArea = "Administration";
+
         public const string AdminRole = "Administrator";
 
         public const string AdminEmail = "administrator@adminsite.com";

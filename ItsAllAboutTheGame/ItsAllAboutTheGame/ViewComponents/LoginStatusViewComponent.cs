@@ -23,8 +23,6 @@ namespace ItsAllAboutTheGame.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var user = HttpContext.User;
-
             if (signInManager.IsSignedIn(HttpContext.User))
             {
                 var userInfo = await this.userService.GetUserInfo(HttpContext.User);

@@ -1,16 +1,16 @@
 ﻿@model UserInfoViewModel
 
-<li class="ml-auto home-view-color">
+<li class="ml-auto home-view-color nav-item">
     <div id="balance-section">
         <span id="user-balance">Balance:</span>@Model.Balance.ToString("0.00") @Model.CurrencySymbol
     </div>
 </li>
-<li>
-    <a asp-area="" asp-controller="Transaction" asp-action="Deposit" class="btn btn-outline-danger rounded font-weight-bold home-view-color">Deposit<i class="fa fa-money ml-2"></i><i class="fa fa-credit-card ml-2"></i></a>
+<li class=" nav-item">
+    <a asp-area="" asp-controller="Transaction" asp-action="Deposit" class="btn btn-outline-danger rounded font-weight-bold home-view-color">Deposit<i class="fa fa-credit-card ml-2"></i></a>@*<i class="fa fa-money ml-2"></i>*@
 </li>
-<li>
+<li class=" nav-item">
     <a asp-area="" asp-controller="Manage" asp-action="Index" asp-route-userId="@Model.UserId" class="btn btn-outline-cyan rounded font-weight-bold home-view-color">@Model.Username</a>
 </li>
-<li>
+<li class=" nav-item">
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm"><button type="submit" class="btn btn-white text-dark rounded">Log out<i class="fa fa-sign-out ml-2"></i></button></form>
 </li>
