@@ -85,6 +85,9 @@ namespace ItsAllAboutTheGame
                 .AddEntityFrameworkStores<ItsAllAboutTheGameDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddAuthentication();
+            services.AddAuthorization();
+
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {
                 facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];

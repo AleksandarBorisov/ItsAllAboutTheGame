@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace ItsAllAboutTheGame.Services.Data.Contracts
 {
@@ -19,6 +20,6 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 
         Task<User> GetUser(string username);
 
-        //List<UserDTO> GetAllUsers();
+        IPagedList<UserDTO> GetAllUsers(string searchByUsername, int page = 1, int size = 5, string sortOrder = "firstname_asc");
     }
 }
