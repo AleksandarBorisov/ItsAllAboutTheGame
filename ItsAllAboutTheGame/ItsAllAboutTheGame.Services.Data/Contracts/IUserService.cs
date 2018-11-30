@@ -19,6 +19,8 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 
         Task<User> GetUser(string username);
 
+        Task<IEnumerable<CreditCard>> UserCards(User user);
+
         //List<UserDTO> GetAllUsers();
     }
 }

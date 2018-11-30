@@ -44,10 +44,11 @@ namespace ItsAllAboutTheGame.Services.Data
             return userWallet;
         }
 
-        public async void IncrementUserWallet(User user,  decimal amount)
+        public void IncrementUserWallet(User user,  decimal amount)
         {
-            var userWallet = await this.context.Wallets.Where(w => w.User == user).Include(b => b.Balance).FirstOrDefaultAsync();
-            userWallet.Balance += amount;
+            user.Wallet.Balance += amount;
+
+            //this.context.SaveChanges();
         }
     }
 }

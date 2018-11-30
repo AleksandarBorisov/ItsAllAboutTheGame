@@ -11,13 +11,13 @@
 </header>
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Index">
+        <form asp-route-data="@ViewData["ReturnUrl"]">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <select asp-for="CardId" asp-items="Model.Cards" style="width:300px"></select>
+            <select asp-for="CreditCardId" name="CardId" asp-items="@Model.Cards" style="width:300px"></select>
 
-            <li>
+            <p>
                 <a asp-area="" asp-controller="Transaction" asp-action="AddCard" class="btn btn-outline-danger rounded font-weight-bold home-view-color">Add Card?<i class="fa fa-money ml-2"></i><i class="fa fa-credit-card ml-2"></i></a>
-            </li>
+            </p>
             <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
                 <input asp-for="Amount" class="form-control" />

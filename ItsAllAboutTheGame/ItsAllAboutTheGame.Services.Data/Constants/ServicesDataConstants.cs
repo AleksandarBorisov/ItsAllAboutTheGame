@@ -22,32 +22,16 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
 
         private readonly IMemoryCache cache;
 
-        //private readonly IForeignExchangeService foreignExchangeService;
 
         public ServicesDataConstants(IMemoryCache cache)
         {
             SetCurrencySymbols();
-            //SetUserSortingTypes();
             currencies = string.Join(",", Enum.GetNames(typeof(Currency)));
             baseCurrency = "USD";
             this.cache = cache;
-            //this.foreignExchangeService = foreignExchangeService;
         }
 
-        //private void SetUserSortingTypes()
-        //{
-        //    var actions = new Action[]
-        //    {
-        //        () =>
-        //        {
-        //        sequence.Enqueue(current + 2);
-        //        current = sequence.Dequeue();
-        //        Console.Write(current + ", ");
-        //        },
-        //        () => sequence.Enqueue(current + 1),
-        //        () => sequence.Enqueue(2 * current + 1)
-        //    };
-        //}
+        
 
         public static Dictionary<string, string> CurrencySymbols
         {
@@ -85,14 +69,5 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
         }
 
         public string DepositDescription = "Deposit with card ";
-
-        //public async Task<ForeignExchangeDTO> ConvertionRates()
-        //{
-        //    return await cache.GetOrCreateAsync("ConvertionRates", entry =>
-        //    {
-        //        entry.AbsoluteExpiration = DateTime.UtcNow.AddDays(1);
-        //        return this.foreignExchangeService.GetConvertionRates();
-        //    });
-        //}
     }
 }

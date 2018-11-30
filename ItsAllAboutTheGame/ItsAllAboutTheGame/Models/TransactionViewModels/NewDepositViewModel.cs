@@ -13,11 +13,11 @@ namespace ItsAllAboutTheGame.Models.TransactionViewModels
     {
         [Required]
         public Currency CardCurrency { get; set; }
-
-        public int CardId { get; set; }       
+      
+        public int CreditCardId { get; set; }       
 
         [Required]
-        public IEnumerable<SelectListItem> Cards { get; set; }
+        public List<SelectListItem> Cards { get; set; }
 
         [Required]
         public decimal Amount { get; set; }

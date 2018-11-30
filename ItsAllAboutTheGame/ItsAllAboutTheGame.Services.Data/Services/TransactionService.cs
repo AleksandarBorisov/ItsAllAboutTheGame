@@ -18,43 +18,54 @@ namespace ItsAllAboutTheGame.Services.Data.Services
         private readonly UserManager<User> userManager;
         private readonly IWalletService walletService;
         private readonly IUserService userService;
+        private readonly IForeignExchangeService foreignExchangeService;
         private readonly ServicesDataConstants constants;
 
         public TransactionService(ItsAllAboutTheGameDbContext context, IWalletService walletService,
-            UserManager<User> userManager, IUserService userService, ServicesDataConstants constants)
+            UserManager<User> userManager, IUserService userService, IForeignExchangeService foreignExchangeService,
+            ServicesDataConstants constants)
         {
             this.context = context;
             this.walletService = walletService;
             this.userManager = userManager;
             this.userService = userService;
+            this.foreignExchangeService = foreignExchangeService;
             this.constants = constants;
         }
 
-        //public async Task<Transaction> MakeDeposit(CreditCard creditCard, ClaimsPrincipal userClaims, decimal amount)
-        //{
-        //    var userName = userClaims.Identity.Name;
-        //    var user = await this.userService.GetUser(userName);
+        public async Task<Transaction> MakeDeposit(CreditCard creditcard, ClaimsPrincipal userclaims, decimal amount)
+        {
+            var username = userclaims.Identity.Name;
+            var user = await this.userService.GetUser(username);
 
-        //    var userCard = await this.context.CreditCards.Where(k => k.User == user && k.LastDigits == creditCard.LastDigits)
-        //        .Select(n => n.CardNumber).FirstOrDefaultAsync();
+    
+            var usercard =  user.Cards
+                .Where(k => k.LastDigits == creditcard.LastDigits)
+                .Select(n => n.CardNumber).FirstOrDefault();
 
-        //    this.walletService.IncrementUserWallet(user, amount);
+           
 
-        //    var rates = this.constants.ConvertionRates();
-        //    var convertedAmount = amount / rates.Result.Rates[user.Wallet.Currency.ToString()];
+            var rates = await this.foreignExchangeService.GetConvertionRates();
+            var convertedamount = amount / rates.Rates[user.Wallet.Currency.ToString()];
 
+             //this.walletService.IncrementUserWallet(user, convertedamount);
+             user.Wallet.Balance += convertedamount;
 
-        //    var transaction = new Transaction()
-        //    {
-        //        Type = TransactionType.Deposit,
-        //        Description = constants.DepositDescription + userCard,
-        //        User = user,
-        //        UserId = user.Id,
-        //        Amount =  convertedAmount,
-        //        CreatedOn = DateTime.Now
-        //    };
+            var transaction =  new Transaction()
+            {
+                Type = TransactionType.Deposit,
+                Description = constants.DepositDescription + usercard,
+                User = user,
+                UserId = user.Id,
+                Amount = convertedamount,
+                CreatedOn = DateTime.Now
+            };
 
-        //    return transaction;
-        //}
+            this.context.Transactions.Add(transaction);
+            await this.context.SaveChangesAsync();
+            
+
+            return transaction;
+        }
     }
 }

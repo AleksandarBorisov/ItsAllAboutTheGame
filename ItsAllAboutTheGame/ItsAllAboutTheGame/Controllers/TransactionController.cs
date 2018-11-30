@@ -47,29 +47,41 @@ namespace ItsAllAboutTheGame.Controllers
 
             var cardCurrency = userWallet.Currency;
             model.CardCurrency = cardCurrency;
-            model.Cards = userCards;
-
+            model.Cards = userCards.ToList();
+          
 
             return View(model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Deposit(NewDepositViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var claims = HttpContext.User;
-        //        var user = await userManager.GetUserAsync(claims);
+        [HttpPost]
+        public async Task<IActionResult> Deposit(NewDepositViewModel model)
+        {
+            
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            
+                var claims = HttpContext.User;
+                var user = await userManager.GetUserAsync(claims);
+                var userCards = await this.cardService.GetSelectListCards(user);
+                var userWallet = await this.walletService.GetUserWallet(user);
 
-        //        var userCard = await this.cardService.GetCard(user, model.CardId);
 
-        //        var deposit = this.transactionService.MakeDeposit(userCard, claims, model.Amount);
+                var userCard = await this.cardService.GetCard(user, model.CreditCardId);
 
-        //        return RedirectToAction("Index", "Home");
-        //    }
+                //model.Cards = userCards;
+                var cardCurrency = userWallet.Currency;
+                model.CardCurrency = cardCurrency;
 
-        //    return this.View(model);
-        //}
+                model.Cards = userCards.ToList();
+
+                var deposit = await this.transactionService.MakeDeposit(userCard, claims, model.Amount);
+
+                return RedirectToAction("Index", "Home");
+                                                               
+            
+        }
 
         [HttpGet]
         public IActionResult AddCard(string returnUrl = null)
