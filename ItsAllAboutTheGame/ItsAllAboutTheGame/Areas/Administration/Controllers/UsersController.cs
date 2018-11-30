@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 {
-    //[Area(DataConstants.AdminArea)]
-    [Authorize(Roles = DataConstants.MasterAdminRole)]
+    [Area(DataConstants.AdminArea)]
+    [Authorize(Roles = "MasterAdministrator")]
     public class UsersController : Controller
     {
         private IUserService userService;
@@ -19,7 +19,7 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 
         public IActionResult Index()
         {
-            //var users = this.userService.GetAllUsers();
+            var users = this.userService.GetAllUsers("Ivan");
 
             return View();
         }

@@ -1,12 +1,9 @@
 ﻿using ItsAllAboutTheGame.Data.Models.Enums;
-using ItsAllAboutTheGame.Services.Data.Contracts;
-using ItsAllAboutTheGame.Services.Data.DTO;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Services.Data.Constants
 {
@@ -15,8 +12,6 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
         private static string currencies;
 
         private static Dictionary<string, string> currencySymbols;
-
-        private static Action[] Sorting;
 
         private static string baseCurrency;
 
@@ -32,6 +27,14 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
         }
 
         
+
+
+        public ServicesDataConstants()
+        {
+            SetCurrencySymbols();
+            currencies = string.Join(",", Enum.GetNames(typeof(Currency)));
+        }
+
 
         public static Dictionary<string, string> CurrencySymbols
         {

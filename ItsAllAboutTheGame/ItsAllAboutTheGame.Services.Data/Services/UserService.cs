@@ -12,6 +12,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using X.PagedList;
@@ -149,6 +150,7 @@ namespace ItsAllAboutTheGame.Services.Data
             return user;
         }
 
+
         public async Task<IEnumerable<CreditCard>> UserCards(User user)
         {
             var userCards = await this.context.CreditCards.Where(k => k.User == user).ToListAsync();
@@ -156,30 +158,33 @@ namespace ItsAllAboutTheGame.Services.Data
             return userCards;
         }
 
-        public IPagedList<UserDTO> GetAllUsers(string searchByUsername, int page = 1, int size = 5, string sortOrder = "firstname_asc")
+        //public IPagedList<UserDTO> GetAllUsers(string searchByUsername, int page = 1, int size = 5, string sortOrder = "firstname_asc");
+
+        public IPagedList<UserDTO> GetAllUsers(string searchByUsername, int page = 1, int size = DataConstants.DefultPageSize, string sortOrder = DataConstants.DefultSorting)
+
         {
             var users = this.context
                 .Users
+                .Include(user => user.Wallet)
                 .Where(u => u.Email != DataConstants.MasterAdminEmail)
-                .Select(u => new UserDTO(u));//.Contains();
+                .Select(u => new UserDTO(u));
 
-            switch (sortOrder)
+            var property = sortOrder.Remove(sortOrder.IndexOf("_"));
+            PropertyInfo prop = typeof(UserDTO).GetProperty(property,BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
+            if (!sortOrder.Contains("_desc"))
             {
-                case "firstname_asc": users.OrderBy(user => user.UserName); break;
-                case "firstname_desc": users.OrderBy(user => user.UserName); break;
-                case "lastname_asc": users.OrderBy(user => user.UserName); break;
-                case "lastname_desc": users.OrderBy(user => user.UserName); break;
-                case "balance_asc": users.OrderBy(user => user.UserName); break;
-                case "balance_desc": users.OrderBy(user => user.UserName); break;
-                case "birthdate_asc": users.OrderBy(user => user.UserName); break;
-                case "birthdate_desc": users.OrderBy(user => user.UserName); break;
+                users = users.OrderBy(user => prop.GetValue(user));
+            }
+            else
+            {
+                users.OrderByDescending(user => prop.GetValue(user));
             }
 
             if (string.IsNullOrEmpty(searchByUsername))
             {
                 users = users.Where(user => user.UserName.Contains(searchByUsername));
             }
-            
+
             return users.ToPagedList(page, size);
         }
     }

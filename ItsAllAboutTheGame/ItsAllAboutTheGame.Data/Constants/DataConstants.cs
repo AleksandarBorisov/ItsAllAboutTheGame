@@ -11,5 +11,9 @@
         public const string MasterAdminRole = "MasterAdministrator";
 
         public const string MasterAdminEmail = "masteradministrator@adminsite.com";
+
+        public const int DefultPageSize = 5;
+
+        public const string DefultSorting = "firstname_asc";
     }
 }

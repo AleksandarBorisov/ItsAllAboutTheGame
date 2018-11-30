@@ -86,10 +86,6 @@ body {
     color: lawngreen;
 }
 
-.index-page, .login-form {
-    margin-top: 15%;
-}
-
 .login-form {
     width: 30%;
 }
@@ -108,7 +104,7 @@ body {
 }
 
 #play-button {
-    margin: 25% 0%;
+    padding: 25%;
 }
 
 #scrollToTopBtn {

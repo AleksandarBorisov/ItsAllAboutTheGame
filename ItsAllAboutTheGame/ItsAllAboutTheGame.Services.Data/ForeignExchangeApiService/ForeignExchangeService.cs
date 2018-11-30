@@ -37,7 +37,6 @@ namespace ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService
             });
 
             return currencies;
-
         }
     }
 }
