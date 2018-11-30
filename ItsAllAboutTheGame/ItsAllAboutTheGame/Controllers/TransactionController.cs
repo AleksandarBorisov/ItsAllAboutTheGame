@@ -53,23 +53,23 @@ namespace ItsAllAboutTheGame.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Deposit(NewDepositViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var claims = HttpContext.User;
-                var user = await userManager.GetUserAsync(claims);
+        //[HttpPost]
+        //public async Task<IActionResult> Deposit(NewDepositViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var claims = HttpContext.User;
+        //        var user = await userManager.GetUserAsync(claims);
 
-                var userCard = await this.cardService.GetCard(user, model.CardId);
+        //        var userCard = await this.cardService.GetCard(user, model.CardId);
 
-                var deposit = this.transactionService.MakeDeposit(userCard, claims, model.Amount);
+        //        var deposit = this.transactionService.MakeDeposit(userCard, claims, model.Amount);
 
-                return RedirectToAction("Index", "Home");
-            }
+        //        return RedirectToAction("Index", "Home");
+        //    }
 
-            return this.View(model);
-        }
+        //    return this.View(model);
+        //}
 
         [HttpGet]
         public IActionResult AddCard(string returnUrl = null)

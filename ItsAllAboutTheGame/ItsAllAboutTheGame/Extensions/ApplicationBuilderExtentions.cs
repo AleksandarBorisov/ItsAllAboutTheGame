@@ -1,4 +1,5 @@
-﻿using ItsAllAboutTheGame.Data.Constants;
+﻿using ItsAllAboutTheGame.Data;
+using ItsAllAboutTheGame.Data.Constants;
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Data.Models.Enums;
 using ItsAllAboutTheGame.Middleware;
@@ -16,13 +17,17 @@ namespace ItsAllAboutTheGame.Extensions
             builder.UseMiddleware<EntityNotFoundMiddleware>();
         }
 
-        public static void SeedAdmins(this IApplicationBuilder builder, UserManager<User> userManager)
+        public static void SeedAdmins(this IApplicationBuilder builder, UserManager<User> userManager, ItsAllAboutTheGameDbContext context)
         {
             Task.Run(async () =>
             {
                 //Here we create the Admin account
                 if (await userManager.FindByEmailAsync(DataConstants.AdminEmail) == null)
                 {
+                    var wallet = new Wallet() { Balance = 0, Currency = Currency.BGN, };
+                    context.Wallets.Add(wallet);
+                    await context.SaveChangesAsync();
+
                     User user = new User
                     {
                         UserName = DataConstants.AdminEmail,
@@ -30,8 +35,10 @@ namespace ItsAllAboutTheGame.Extensions
                         LastName = "Admin",
                         DateOfBirth = DateTime.Parse("1/1/1991"),
                         Email = DataConstants.AdminEmail,
-                        Wallet = new Wallet() { Balance = 0, Currency = Currency.BGN, }
-                    };
+                        Wallet = wallet,
+                        WalletId = wallet.Id,
+                };                   
+                  
 
                     var result = await userManager.CreateAsync(user, "Admin123_");
 
@@ -44,6 +51,10 @@ namespace ItsAllAboutTheGame.Extensions
                 //Here we create the MasterAdmin account
                 if (await userManager.FindByEmailAsync(DataConstants.MasterAdminEmail) == null)
                 {
+                    var wallet = new Wallet() { Balance = 0, Currency = Currency.BGN, };
+                    context.Wallets.Add(wallet);
+                    await context.SaveChangesAsync();
+
                     User user = new User
                     {
                         UserName = DataConstants.MasterAdminEmail,
@@ -51,8 +62,10 @@ namespace ItsAllAboutTheGame.Extensions
                         LastName = "MasterAdmin",
                         DateOfBirth = DateTime.Parse("1/1/1991"),
                         Email = DataConstants.MasterAdminEmail,
-                        Wallet = new Wallet() { Balance = 0, Currency = Currency.BGN, }
+                        Wallet = wallet,
+                        WalletId = wallet.Id
                     };
+                    
 
                     var result = await userManager.CreateAsync(user, "Admin123_");
 

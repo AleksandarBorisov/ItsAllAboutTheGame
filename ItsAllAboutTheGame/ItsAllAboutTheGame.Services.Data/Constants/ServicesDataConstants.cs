@@ -20,15 +20,15 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
 
         private readonly IMemoryCache cache;
 
-        private readonly IForeignExchangeService foreignExchangeService;
+        //private readonly IForeignExchangeService foreignExchangeService;
 
-        public ServicesDataConstants(IMemoryCache cache, IForeignExchangeService foreignExchangeService)
+        public ServicesDataConstants(IMemoryCache cache)
         {
             SetCurrencySymbols();
             currencies = string.Join(",", Enum.GetNames(typeof(Currency)));
             baseCurrency = "USD";
             this.cache = cache;
-            this.foreignExchangeService = foreignExchangeService;
+            //this.foreignExchangeService = foreignExchangeService;
         }
 
         public static Dictionary<string, string> CurrencySymbols
@@ -68,13 +68,13 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
 
         public string DepositDescription = "Deposit with card ";
 
-        public async Task<ForeignExchangeDTO> ConvertionRates()
-        {
-            return await cache.GetOrCreateAsync("ConvertionRates", entry =>
-            {
-                entry.AbsoluteExpiration = DateTime.UtcNow.AddDays(1);
-                return this.foreignExchangeService.GetConvertionRates();
-            });
-        }
+        //public async Task<ForeignExchangeDTO> ConvertionRates()
+        //{
+        //    return await cache.GetOrCreateAsync("ConvertionRates", entry =>
+        //    {
+        //        entry.AbsoluteExpiration = DateTime.UtcNow.AddDays(1);
+        //        return this.foreignExchangeService.GetConvertionRates();
+        //    });
+        //}
     }
 }

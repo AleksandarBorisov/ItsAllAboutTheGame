@@ -93,7 +93,8 @@ namespace ItsAllAboutTheGame
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<User> userManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<User> userManager,
+            ItsAllAboutTheGameDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -112,7 +113,7 @@ namespace ItsAllAboutTheGame
 
             app.UseAuthentication();
 
-            app.SeedAdmins(userManager);
+            app.SeedAdmins(userManager, context);
 
             app.UseResponseCaching();
 

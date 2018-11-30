@@ -30,31 +30,31 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             this.constants = constants;
         }
 
-        public async Task<Transaction> MakeDeposit(CreditCard creditCard, ClaimsPrincipal userClaims, decimal amount)
-        {
-            var userName = userClaims.Identity.Name;
-            var user = await this.userService.GetUser(userName);
+        //public async Task<Transaction> MakeDeposit(CreditCard creditCard, ClaimsPrincipal userClaims, decimal amount)
+        //{
+        //    var userName = userClaims.Identity.Name;
+        //    var user = await this.userService.GetUser(userName);
 
-            var userCard = await this.context.CreditCards.Where(k => k.User == user && k.LastDigits == creditCard.LastDigits)
-                .Select(n => n.CardNumber).FirstOrDefaultAsync();
+        //    var userCard = await this.context.CreditCards.Where(k => k.User == user && k.LastDigits == creditCard.LastDigits)
+        //        .Select(n => n.CardNumber).FirstOrDefaultAsync();
 
-            this.walletService.IncrementUserWallet(user, amount);
+        //    this.walletService.IncrementUserWallet(user, amount);
 
-            var rates = this.constants.ConvertionRates();
-            var convertedAmount = amount / rates.Result.Rates[user.Wallet.Currency.ToString()];
+        //    var rates = this.constants.ConvertionRates();
+        //    var convertedAmount = amount / rates.Result.Rates[user.Wallet.Currency.ToString()];
 
 
-            var transaction = new Transaction()
-            {
-                Type = TransactionType.Deposit,
-                Description = constants.DepositDescription + userCard,
-                User = user,
-                UserId = user.Id,
-                Amount =  convertedAmount,
-                CreatedOn = DateTime.Now
-            };
+        //    var transaction = new Transaction()
+        //    {
+        //        Type = TransactionType.Deposit,
+        //        Description = constants.DepositDescription + userCard,
+        //        User = user,
+        //        UserId = user.Id,
+        //        Amount =  convertedAmount,
+        //        CreatedOn = DateTime.Now
+        //    };
 
-            return transaction;
-        }
+        //    return transaction;
+        //}
     }
 }
