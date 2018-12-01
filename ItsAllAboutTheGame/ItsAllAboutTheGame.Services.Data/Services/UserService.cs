@@ -8,7 +8,6 @@ using ItsAllAboutTheGame.Services.Data.DTO;
 using ItsAllAboutTheGame.Services.Data.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,14 +24,12 @@ namespace ItsAllAboutTheGame.Services.Data
         private readonly ItsAllAboutTheGameDbContext context;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
-        private readonly IMemoryCache cache;
         private readonly IWalletService walletService;
 
         public UserService(ItsAllAboutTheGameDbContext context, UserManager<User> userManager,
             SignInManager<User> signInManager, IForeignExchangeService foreignExchangeService,
             IWalletService walletService)
         {
-            //this.cache = cache;
             this.context = context;
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -120,7 +117,9 @@ namespace ItsAllAboutTheGame.Services.Data
 
             var currencies = await this.foreignExchangeService.GetConvertionRates();
 
-            var user = await userManager.Users.Where(x => x.Id.Equals(userId))
+            var user = await userManager
+                .Users
+                .Where(x => x.Id.Equals(userId))
                 .Include(u => u.Wallet)
                 .Select(u => new UserInfoDTO
                 {
@@ -150,7 +149,6 @@ namespace ItsAllAboutTheGame.Services.Data
             return user;
         }
 
-
         public async Task<IEnumerable<CreditCard>> UserCards(User user)
         {
             var userCards = await this.context.CreditCards.Where(k => k.User == user).ToListAsync();
@@ -158,34 +156,36 @@ namespace ItsAllAboutTheGame.Services.Data
             return userCards;
         }
 
-        //public IPagedList<UserDTO> GetAllUsers(string searchByUsername, int page = 1, int size = 5, string sortOrder = "firstname_asc");
-
-        public IPagedList<UserDTO> GetAllUsers(string searchByUsername, int page = 1, int size = DataConstants.DefultPageSize, string sortOrder = DataConstants.DefultSorting)
+        public IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = DataConstants.DefultPageSize, string sortOrder = DataConstants.DefultSorting)
 
         {
             var users = this.context
                 .Users
-                .Include(user => user.Wallet)
                 .Where(u => u.Email != DataConstants.MasterAdminEmail)
+                .Include(user => user.Wallet)
+                .Include(user => user.Cards)
+                .ToList();
+
+            var map = users
                 .Select(u => new UserDTO(u));
 
             var property = sortOrder.Remove(sortOrder.IndexOf("_"));
             PropertyInfo prop = typeof(UserDTO).GetProperty(property,BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
             if (!sortOrder.Contains("_desc"))
             {
-                users = users.OrderBy(user => prop.GetValue(user));
+                map = map.OrderBy(user => prop.GetValue(user));
             }
             else
             {
                 users.OrderByDescending(user => prop.GetValue(user));
             }
 
-            if (string.IsNullOrEmpty(searchByUsername))
+            if (!string.IsNullOrEmpty(searchByUsername))
             {
-                users = users.Where(user => user.UserName.Contains(searchByUsername));
+                map = map.Where(user => user.UserName.Contains(searchByUsername));
             }
 
-            return users.ToPagedList(page, size);
+            return map.ToPagedList(page, size);
         }
     }
 }

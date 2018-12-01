@@ -1,0 +1,82 @@
+﻿@model IPagedList<UserDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<main class="text-dark" id="users-management">
+    <div class="container d-flex justify-content-center text-center" id="users-container">
+            <table class="table text-nowrap m-0" id="users-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>First</th>
+                        <th>Last</th>
+                        <th>Handle</th>
+                        <th>Handle</th>
+                        <th>Handle</th>
+                        <th>Handle</th>
+                        <th>Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class=" font-weight-bold" scope="row">1</th>
+                        <td class=" font-weight-bold">Mark</td>
+                        <td class=" font-weight-bold">Otto</td>
+                        <td>@Model.PageCount</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td >Jacob</td>
+                        <td>Thornton</td>
+                        <td>@Model.TotalItemCount</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@Model.PageCount</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@Model.PageCount</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@Model.PageCount</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@Model.PageCount</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@Model.PageCount</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@Model.PageCount</td>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@Model.PageCount</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+</main>
+
+
