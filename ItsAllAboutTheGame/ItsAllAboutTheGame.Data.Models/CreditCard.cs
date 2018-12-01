@@ -18,8 +18,7 @@ namespace ItsAllAboutTheGame.Data.Models
         public User User { get; set; }
 
         [Required]
-        [MinLength(16),MaxLength(16)]
-        [Remote()]
+        [MinLength(16),MaxLength(16)]        
         public string CardNumber { get; set; }
 
         [Required]

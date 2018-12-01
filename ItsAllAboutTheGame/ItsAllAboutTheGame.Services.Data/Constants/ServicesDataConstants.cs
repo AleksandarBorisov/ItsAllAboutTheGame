@@ -26,9 +26,6 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
             this.cache = cache;
         }
 
-        
-
-
         public ServicesDataConstants()
         {
             SetCurrencySymbols();

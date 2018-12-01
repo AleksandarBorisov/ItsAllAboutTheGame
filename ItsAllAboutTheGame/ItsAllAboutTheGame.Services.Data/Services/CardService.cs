@@ -63,11 +63,16 @@ namespace ItsAllAboutTheGame.Services.Data.Services
 
         public async Task<IEnumerable<SelectListItem>> GetSelectListCards(User user)
         {
+            var currentDate = DateTime.Now;
+
             var userCards = await this.context.CreditCards.Where(c => c.User == user)
                .Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = new string('*', c.CardNumber.Length - 4) + c.CardNumber.Substring(c.CardNumber.Length - 4)
+               {
+                   Value = c.Id.ToString(),
+                   Text = new string('*', c.CardNumber.Length - 4) + c.CardNumber.Substring(c.CardNumber.Length - 4)
+                   + " " +(c.ExpiryDate < currentDate 
+                   ? "expired" : ""),
+                   Disabled = c.ExpiryDate < currentDate
                 }).ToListAsync();
 
             return userCards.ToList();

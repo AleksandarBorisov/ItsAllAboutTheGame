@@ -6,12 +6,15 @@
 
 <h2>Add new card</h2>
 
-<header class="padding" style="padding:20px"></header>
+
+
+<header class="padding" style="padding:100px">
+
+</header>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CardNumber" class="control-label"></label>
                 <input asp-for="CardNumber" class="form-control" />
@@ -25,6 +28,7 @@
             <div>
                 <label asp-for="ExpiryDate"></label>
                 <input asp-for="ExpiryDate" type="date" />
+                <span asp-validation-for="ExpiryDate" class="text-danger"></span>
             </div>
             <div>
                 <button type="submit">Save</button>
@@ -36,4 +40,3 @@
 <div>
     <a asp-action="Deposit">Back to List</a>
 </div>
-

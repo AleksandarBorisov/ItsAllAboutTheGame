@@ -14,6 +14,7 @@ namespace ItsAllAboutTheGame.Models.TransactionViewModels
         public Currency CardCurrency { get; set; }
       
         [Required]
+        
         public int CreditCardId { get; set; }       
                 
         public List<SelectListItem> Cards { get; set; }
