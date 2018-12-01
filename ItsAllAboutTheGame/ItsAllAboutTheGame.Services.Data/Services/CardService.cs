@@ -54,6 +54,13 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             return userCard;
         }
 
+        public async Task<IEnumerable<CreditCard>> GetCards(User user)
+        {
+            var userCards = await this.context.CreditCards.Where(c => c.User == user).ToListAsync();
+
+            return userCards;
+        }
+
         public async Task<IEnumerable<SelectListItem>> GetSelectListCards(User user)
         {
             var userCards = await this.context.CreditCards.Where(c => c.User == user)

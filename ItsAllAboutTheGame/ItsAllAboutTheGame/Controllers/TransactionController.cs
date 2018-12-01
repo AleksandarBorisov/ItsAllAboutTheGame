@@ -55,11 +55,10 @@ namespace ItsAllAboutTheGame.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Deposit(NewDepositViewModel model)
-        {
-            
+        {           
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return RedirectToAction("Deposit", "Transaction");
             }
             
                 var claims = HttpContext.User;
@@ -70,7 +69,7 @@ namespace ItsAllAboutTheGame.Controllers
 
                 var userCard = await this.cardService.GetCard(user, model.CreditCardId);
 
-                //model.Cards = userCards;
+                model.Cards = userCards.ToList();
                 var cardCurrency = userWallet.Currency;
                 model.CardCurrency = cardCurrency;
 
@@ -79,8 +78,7 @@ namespace ItsAllAboutTheGame.Controllers
                 var deposit = await this.transactionService.MakeDeposit(userCard, claims, model.Amount);
 
                 return RedirectToAction("Index", "Home");
-                                                               
-            
+                                                                         
         }
 
         [HttpGet]
@@ -112,6 +110,37 @@ namespace ItsAllAboutTheGame.Controllers
             
 
             return this.View(model);
+        }
+
+
+        [HttpPost]
+        public JsonResult DoesExist(string CardNumber)
+        {
+            return Json(DoesCardExist(CardNumber));
+        }
+
+        public async Task<bool> DoesCardExist(string CardNumber)
+        {
+            var claims = HttpContext.User;
+            var user =  await userManager.GetUserAsync(claims);
+            var userCards = await this.cardService.GetCards(user);
+
+            var chosenCard =  (from cn in userCards
+                              where cn.CardNumber.ToUpper() == CardNumber.ToUpper()
+                              select new { CardNumber }).FirstOrDefault();
+
+            bool status;
+
+            if (chosenCard != null)
+            {
+                status = false;
+            }
+            else
+            {
+                status = true;
+            }
+
+            return status;
         }
     }
 }

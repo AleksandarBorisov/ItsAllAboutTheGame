@@ -19,6 +19,7 @@ namespace ItsAllAboutTheGame.Data.Models
 
         [Required]
         [MinLength(16),MaxLength(16)]
+        [Remote()]
         public string CardNumber { get; set; }
 
         [Required]
