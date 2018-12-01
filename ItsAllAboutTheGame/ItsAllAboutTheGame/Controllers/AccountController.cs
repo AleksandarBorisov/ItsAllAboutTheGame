@@ -71,7 +71,7 @@ namespace ItsAllAboutTheGame.Controllers
                     return RedirectToLocal(returnUrl);
                 }
 
-                
+
 
                 if (result.IsLockedOut)
                 {
@@ -89,7 +89,7 @@ namespace ItsAllAboutTheGame.Controllers
             return View(model);
         }
 
-        
+
 
         [HttpGet]
         [AllowAnonymous]
@@ -113,42 +113,36 @@ namespace ItsAllAboutTheGame.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid || DateTime.Now.Year - model.DateOfBirth.Year < 18)
             {
-                // call service to register and create a new user
-                try
-                {
-                    var user = await this._userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth, model.UserCurrency);
-
-                    var result = await this._userManager.CreateAsync(user, model.Password);
-                    if (result.Succeeded)
-                    {
-                        _logger.LogInformation("User created a new account with password.");
-
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                        await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
-
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        _logger.LogInformation("User created a new account with password.");
-                        TempData["Success"] = "Registration Successful!";
-                        await _signInManager.SignOutAsync();
-                        return RedirectToAction(nameof(HomeController.Index), "Home");
-                    }
-                    AddErrors(result);
-                }
-                catch (UserNo18Exception)
-                {
-                    TempData["Failed"] = "User must have 18 years old to register!";
-                    return RedirectToAction("Register");
-                }
-                
+                TempData["Failed"] = "User must have 18 years old to register!";
+                return View(model);
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            // call service to register and create a new user
+            var user = await this._userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth, model.UserCurrency);
+
+            var result = await this._userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("User created a new account with password.");
+
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                _logger.LogInformation("User created a new account with password.");
+                TempData["Success"] = "Registration Successful!";
+                await _signInManager.SignOutAsync();
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+            else
+            {
+                AddErrors(result);
+                return View(model);
+                //throw new InvalidOperationException("Could not register user!");
+            }
         }
 
         [HttpPost]
@@ -174,7 +168,7 @@ namespace ItsAllAboutTheGame.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ExternalLoginCallback( string returnUrl = null, string remoteError = null)
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
         {
             if (remoteError != null)
             {
@@ -206,7 +200,7 @@ namespace ItsAllAboutTheGame.Controllers
             {
                 // If the user does not have an account, then ask the user to create an account.
                 ViewData["ReturnUrl"] = returnUrl;
-                ViewData["LoginProvider"] = info.LoginProvider;                
+                ViewData["LoginProvider"] = info.LoginProvider;
 
                 return View("ExternalLogin");
             }
@@ -249,7 +243,7 @@ namespace ItsAllAboutTheGame.Controllers
                     TempData["Failed"] = "User must have 18 years old to register!";
                     return View(nameof(ExternalLogin));
                 }
-                
+
             }
 
             ViewData["ReturnUrl"] = returnUrl;

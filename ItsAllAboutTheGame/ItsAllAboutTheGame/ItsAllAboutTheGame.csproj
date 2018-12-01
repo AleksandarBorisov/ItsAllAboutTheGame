@@ -34,12 +34,17 @@
 
   <ItemGroup>
     <Folder Include="Areas\Administration\Data\" />
-    <Folder Include="Areas\Administration\Views\" />
     <Folder Include="Models\GameViewModels\" />
     <Folder Include="wwwroot\lib\jquery\" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Areas\Administration\Views\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Administration\Views\_ViewStart.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Components\LoginStatus\Default.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

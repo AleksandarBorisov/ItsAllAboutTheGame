@@ -16,12 +16,11 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
             this.userService = userService;
         }
 
-
         public IActionResult Index()
         {
-            var users = this.userService.GetAllUsers("Ivan");
+            var users = this.userService.GetAllUsers();
 
-            return View();
+            return View(users);
         }
     }
 }

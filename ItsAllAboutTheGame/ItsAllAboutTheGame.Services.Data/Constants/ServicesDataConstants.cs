@@ -10,11 +10,13 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
     {
         private static string currencies;
 
+        public string DepositDescription = "Deposit with card ";
+
         private static Dictionary<string, string> currencySymbols;
 
         private const string baseCurrency = "USD";
 
-        public ServicesDataConstants()
+        static ServicesDataConstants()
         {
             SetCurrencySymbols();
             currencies = string.Join(",", Enum.GetNames(typeof(Currency)));
@@ -54,7 +56,5 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
                 .GroupBy(ri => ri.ISOCurrencySymbol)
                 .ToDictionary(x => x.Key, x => x.First().CurrencySymbol);
         }
-
-        public string DepositDescription = "Deposit with card ";
     }
 }
