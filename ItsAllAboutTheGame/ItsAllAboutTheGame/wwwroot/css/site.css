@@ -108,7 +108,7 @@ body {
 }
 
 #scrollToTopBtn {
-    display: none; /* Hidden by default */
+    display: inline-block; /* Hidden by default(none) */
     position: fixed; /* Fixed/sticky position */
     bottom: 20px; /* Place the button at the bottom of the page */
     right: 30px; /* Place the button 30px from the right */
@@ -121,8 +121,21 @@ body {
     padding: 15px; /* Some padding */
     border-radius: 10px; /* Rounded corners */
     font-size: 18px; /* Increase font size */
+    transition: background-color .3s, opacity .5s, visibility .5s;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
 }
 
+    #scrollToTopBtn.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
     #scrollToTopBtn:hover {
-        background-color: #555; /* Add a dark-grey background on hover */
+        background-color: #24355C;
+    }
+
+    #access-denied {
+        padding: 12%;
     }
