@@ -29,7 +29,7 @@
 </head>
 <body>
     @*Fixed navbars use position: fixed, meaning they’re pulled from the normal flow of the DOM and may require custom CSS (e.g., padding-top on the ) to prevent overlap with other elements.*@
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar" id="main-navbar">
         <div class="flex-md-column w-100">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#top-navigation"
                     aria-controls="top-navigation" aria-expanded="false" aria-label="Toggle navigation">
@@ -112,7 +112,7 @@
 
     <div>
         @RenderBody()
-        <button onclick="topFunction()" id="scrollToTopBtn" title="Go to top">Top</button>
+        <button id="scrollToTopBtn" title="Go to top">Top</button>@*onclick="topFunction()"*@
         <hr />
         <!-- Footer -->
         <footer class="page-footer unique-color-dark">
@@ -239,7 +239,7 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
     </environment>
-
+    <script src="~/js/scrolltotop.js"></script>
     @RenderSection("Scripts", required: false)
 
 </body>
