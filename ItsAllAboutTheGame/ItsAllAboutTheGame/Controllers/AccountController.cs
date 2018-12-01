@@ -115,11 +115,10 @@ namespace ItsAllAboutTheGame.Controllers
             ViewData["ReturnUrl"] = returnUrl;
 
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && DateTime.Now.Year - model.DateOfBirth.Year >= 18)
             {
                 // call service to register and create a new user
-                try
-                {
+                
                     var user = await this._userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth, model.UserCurrency);
 
                     var result = await this._userManager.CreateAsync(user, model.Password);
@@ -137,17 +136,11 @@ namespace ItsAllAboutTheGame.Controllers
                         await _signInManager.SignOutAsync();
                         return RedirectToAction(nameof(HomeController.Index), "Home");
                     }
-                    AddErrors(result);
-                }
-                catch (UserNo18Exception)
-                {
-                    TempData["Failed"] = "User must have 18 years old to register!";
-                    return RedirectToAction("Register");
-                }
-                
+                    AddErrors(result);                                               
             }
 
             // If we got this far, something failed, redisplay form
+            TempData["Failed"] = "User must have 18 years old to register!";
             return View(model);
         }
 
