@@ -17,11 +17,11 @@ namespace ItsAllAboutTheGame.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        private readonly IEmailSender _emailSender;
-        private readonly ILogger _logger;
-        private readonly IUserService _userService;
+        private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
+        private readonly IEmailSender emailSender;
+        private readonly ILogger logger;
+        private readonly IUserService userService;
 
         public AccountController(
             UserManager<User> userManager,
@@ -30,11 +30,11 @@ namespace ItsAllAboutTheGame.Controllers
             ILogger<AccountController> logger,
             IUserService userService)
         {
-            this._userManager = userManager;
-            this._signInManager = signInManager;
-            this._emailSender = emailSender;
-            this._logger = logger;
-            this._userService = userService;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.emailSender = emailSender;
+            this.logger = logger;
+            this.userService = userService;
         }
 
         [TempData]
@@ -63,10 +63,10 @@ namespace ItsAllAboutTheGame.Controllers
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
 
-                var result = await this._signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
+                var result = await this.signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    logger.LogInformation("User logged in.");
                     TempData["Success"] = "Login Successful!";
                     return RedirectToLocal(returnUrl);
                 }
@@ -75,7 +75,7 @@ namespace ItsAllAboutTheGame.Controllers
 
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    logger.LogWarning("User account locked out.");
                     return RedirectToAction(nameof(Lockout));
                 }
                 else
@@ -120,21 +120,21 @@ namespace ItsAllAboutTheGame.Controllers
             }
 
             // call service to register and create a new user
-            var user = await this._userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth, model.UserCurrency);
+            var user = await this.userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth, model.UserCurrency);
 
-            var result = await this._userManager.CreateAsync(user, model.Password);
+            var result = await this.userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                _logger.LogInformation("User created a new account with password.");
+                logger.LogInformation("User created a new account with password.");
 
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
                 var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                await emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                _logger.LogInformation("User created a new account with password.");
+                await signInManager.SignInAsync(user, isPersistent: false);
+                logger.LogInformation("User created a new account with password.");
                 TempData["Success"] = "Registration Successful!";
-                await _signInManager.SignOutAsync();
+                await signInManager.SignOutAsync();
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             else
@@ -149,8 +149,8 @@ namespace ItsAllAboutTheGame.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
+            await signInManager.SignOutAsync();
+            logger.LogInformation("User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
@@ -162,7 +162,7 @@ namespace ItsAllAboutTheGame.Controllers
             // Request a redirect to the external login provider.
 
             var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return Challenge(properties, provider);
         }
 
@@ -175,7 +175,7 @@ namespace ItsAllAboutTheGame.Controllers
                 ErrorMessage = $"Error from external provider: {remoteError}";
                 return RedirectToAction(nameof(Login));
             }
-            var info = await _signInManager.GetExternalLoginInfoAsync();
+            var info = await signInManager.GetExternalLoginInfoAsync();
 
 
             if (info == null)
@@ -184,10 +184,10 @@ namespace ItsAllAboutTheGame.Controllers
             }
 
             // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
-                _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
+                logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
                 TempData["Success"] = "Login Successful!";
                 return RedirectToLocal(returnUrl);
             }
@@ -214,23 +214,23 @@ namespace ItsAllAboutTheGame.Controllers
             if (ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
-                var info = await _signInManager.GetExternalLoginInfoAsync();
+                var info = await signInManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
                 try
                 {
-                    var user = await this._userService.RegisterUserWithLoginProvider(info, model.UserCurrency, model.DateOfBirth);
+                    var user = await this.userService.RegisterUserWithLoginProvider(info, model.UserCurrency, model.DateOfBirth);
 
-                    var result = await _userManager.CreateAsync(user, model.Password);
+                    var result = await userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
-                        result = await _userManager.AddLoginAsync(user, info);
+                        result = await userManager.AddLoginAsync(user, info);
                         if (result.Succeeded)
                         {
-                            await _signInManager.SignInAsync(user, isPersistent: false);
-                            _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                            await signInManager.SignInAsync(user, isPersistent: false);
+                            logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
                             TempData["Success"] = "Login Successful!";
                             return RedirectToLocal(returnUrl);
                         }
@@ -258,12 +258,12 @@ namespace ItsAllAboutTheGame.Controllers
             {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 throw new ApplicationException($"Unable to load user with ID '{userId}'.");
             }
-            var result = await _userManager.ConfirmEmailAsync(user, code);
+            var result = await userManager.ConfirmEmailAsync(user, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
@@ -281,8 +281,8 @@ namespace ItsAllAboutTheGame.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if (user == null || !(await userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return RedirectToAction(nameof(ForgotPasswordConfirmation));
@@ -290,9 +290,9 @@ namespace ItsAllAboutTheGame.Controllers
 
                 // For more information on how to enable account confirmation and password reset please
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var code = await userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
-                await _emailSender.SendEmailAsync(model.Email, "Reset Password",
+                await emailSender.SendEmailAsync(model.Email, "Reset Password",
                    $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }
@@ -329,13 +329,13 @@ namespace ItsAllAboutTheGame.Controllers
             {
                 return View(model);
             }
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction(nameof(ResetPasswordConfirmation));
             }
-            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            var result = await userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction(nameof(ResetPasswordConfirmation));

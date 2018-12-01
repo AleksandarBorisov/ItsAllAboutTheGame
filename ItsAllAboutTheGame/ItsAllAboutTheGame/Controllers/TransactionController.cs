@@ -35,7 +35,7 @@ namespace ItsAllAboutTheGame.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Deposit(NewDepositViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Deposit(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
 
@@ -46,30 +46,43 @@ namespace ItsAllAboutTheGame.Controllers
             var userWallet = await this.walletService.GetUserWallet(user);
 
             var cardCurrency = userWallet.Currency;
+
+            var model = new NewDepositViewModel();
             model.CardCurrency = cardCurrency;
-            model.Cards = userCards;
+            model.Cards = userCards.ToList();
 
 
             return View(model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Deposit(NewDepositViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var claims = HttpContext.User;
-        //        var user = await userManager.GetUserAsync(claims);
+        [HttpPost]
+        public async Task<IActionResult> Deposit(NewDepositViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Deposit", "Transaction");
+            }
 
-        //        var userCard = await this.cardService.GetCard(user, model.CardId);
+            var claims = HttpContext.User;
+            var user = await userManager.GetUserAsync(claims);
+            var userCards = await this.cardService.GetSelectListCards(user);
+            var userWallet = await this.walletService.GetUserWallet(user);
 
-        //        var deposit = this.transactionService.MakeDeposit(userCard, claims, model.Amount);
 
-        //        return RedirectToAction("Index", "Home");
-        //    }
+            var userCard = await this.cardService.GetCard(user, model.CreditCardId);
 
-        //    return this.View(model);
-        //}
+            model.Cards = userCards.ToList();
+            var cardCurrency = userWallet.Currency;
+            model.CardCurrency = cardCurrency;
+
+            model.Cards = userCards.ToList();
+
+            var deposit = await this.transactionService.MakeDeposit(userCard, claims, model.Amount);
+
+            TempData["Success"] = $"Deposit of {model.Amount} made successfully!";
+            return RedirectToAction("Index", "Home");
+
+        }
 
         [HttpGet]
         public IActionResult AddCard(string returnUrl = null)
@@ -88,18 +101,77 @@ namespace ItsAllAboutTheGame.Controllers
             {
                 var userName = HttpContext.User.Identity.Name;
                 var user = await this.userManager.FindByNameAsync(userName);
-                var cardToAdd = await this.cardService.AddCard(model.CardNumber, model.CVV, model.ExpiryDate,  user);
+                var cardToAdd = await this.cardService.AddCard(model.CardNumber, model.CVV, model.ExpiryDate, user);
                 var userWallet = await this.walletService.GetUserWallet(user);
                 var userCurrency = userWallet.Currency;
 
                 model.CardNumber = new string('X', cardToAdd.CardNumber.Length - 4) + cardToAdd.CardNumber.Substring(cardToAdd.CardNumber.Length - 4);
                 model.CVV = cardToAdd.CVV;
                 model.ExpiryDate = cardToAdd.ExpiryDate;
-                return this.RedirectToAction("Deposit", "Transaction");
+                return RedirectToAction("AddCard","Transaction");
             }
-            
+
 
             return this.View(model);
+        }
+
+
+
+
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult DoesExist(string CardNumber)
+        {
+            try
+            {
+                return Json(DoesCardExist(CardNumber));
+            }
+            catch (Exception ex)
+            {
+                return Json(false);
+            }
+        }
+
+        private bool DoesCardExist(string cardNumber)
+        {
+            var cards = this.context.CreditCards.ToList();
+
+            if (cards.Any(k => k.CardNumber == cardNumber))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult AreDigits(string CVV)
+        {
+            try
+            {
+                return Json(AreOnlyDigits(CVV));
+            }
+            catch (Exception ex)
+            {
+                return Json(false);
+            }
+        }
+
+        private bool AreOnlyDigits(string cvv)
+        {
+            int number;
+
+            bool result = int.TryParse(cvv, out number);
+
+            if (result)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

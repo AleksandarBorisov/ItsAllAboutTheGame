@@ -11,15 +11,16 @@ namespace ItsAllAboutTheGame.Models.TransactionViewModels
 {
     public class NewDepositViewModel
     {
-        [Required]
         public Currency CardCurrency { get; set; }
-
-        public int CardId { get; set; }       
+      
+        [Required]
+        
+        public int CreditCardId { get; set; }       
+                
+        public List<SelectListItem> Cards { get; set; }
 
         [Required]
-        public IEnumerable<SelectListItem> Cards { get; set; }
-
-        [Required]
+        [Range(10, 10000)]
         public decimal Amount { get; set; }
     }
 }

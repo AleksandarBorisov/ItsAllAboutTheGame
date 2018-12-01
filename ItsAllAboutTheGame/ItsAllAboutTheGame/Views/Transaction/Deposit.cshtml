@@ -5,19 +5,34 @@
 }
 
 <h2>Deposit Page</h2>
+<header>
+    @if (TempData["Success"] != null)
+    {
 
-<header class="padding" style="padding:100px">
-
+        <div id="infoValidationSummary" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            @TempData["Success"]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </header>
+
+
+<header class="padding" style="padding:100px"></header>
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Index">
+        <form asp-route-data="@ViewData["ReturnUrl"]">
             <div asp-validation-summary="All" class="text-danger"></div>
-            <select asp-for="CardId" asp-items="Model.Cards" style="width:300px"></select>
-
-            <li>
+            <select asp-for="CreditCardId" asp-items="@Model.Cards"  style="width:300px"></select>
+            <p>
                 <a asp-area="" asp-controller="Transaction" asp-action="AddCard" class="btn btn-outline-danger rounded font-weight-bold home-view-color">Add Card?<i class="fa fa-money ml-2"></i><i class="fa fa-credit-card ml-2"></i></a>
-            </li>
+            </p>
             <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
                 <input asp-for="Amount" class="form-control" />
@@ -35,4 +50,9 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+@section Scripts{
+    <script>
+        $('#infoValidationSummary').modal('show')
+    </script>
+}
 

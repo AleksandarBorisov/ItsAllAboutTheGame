@@ -1,4 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data.Models.Enums;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,13 +15,25 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
 
         private static Dictionary<string, string> currencySymbols;
 
-        private const string baseCurrency = "USD";
+        private static string baseCurrency;
+
+        private readonly IMemoryCache cache;
+
+
+        public ServicesDataConstants(IMemoryCache cache)
+        {
+            SetCurrencySymbols();
+            currencies = string.Join(",", Enum.GetNames(typeof(Currency)));
+            baseCurrency = "USD";
+            this.cache = cache;
+        }
 
         static ServicesDataConstants()
         {
             SetCurrencySymbols();
             currencies = string.Join(",", Enum.GetNames(typeof(Currency)));
         }
+
 
         public static Dictionary<string, string> CurrencySymbols
         {

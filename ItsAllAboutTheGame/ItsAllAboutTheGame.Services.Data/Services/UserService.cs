@@ -149,7 +149,15 @@ namespace ItsAllAboutTheGame.Services.Data
             return user;
         }
 
+        public async Task<IEnumerable<CreditCard>> UserCards(User user)
+        {
+            var userCards = await this.context.CreditCards.Where(k => k.User == user).ToListAsync();
+
+            return userCards;
+        }
+
         public IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = DataConstants.DefultPageSize, string sortOrder = DataConstants.DefultSorting)
+
         {
             var users = this.context
                 .Users

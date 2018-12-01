@@ -9,7 +9,9 @@ namespace ItsAllAboutTheGame.Data.Models.Utilities.CustomAttributes
     {
         public override bool IsValid(object value)
         {
-            return value != null && (DateTime)value > DateTime.Now.AddMonths(1);
+            bool result = value != null && (DateTime)value > DateTime.Now.AddMonths(1);
+
+            return result;
         }
     }
 }

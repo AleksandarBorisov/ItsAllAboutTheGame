@@ -1,4 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data.Models.Enums;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

@@ -15,5 +15,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
         Task<CreditCard> GetCard(User user, int cardId);
 
         Task<IEnumerable<SelectListItem>> GetSelectListCards(User user);
+
+        Task<IEnumerable<CreditCard>> GetCards(User user);
     }
 }

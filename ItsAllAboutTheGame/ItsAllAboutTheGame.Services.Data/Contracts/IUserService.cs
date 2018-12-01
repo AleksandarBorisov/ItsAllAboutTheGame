@@ -21,5 +21,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
         Task<User> GetUser(string username);
 
         IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = 5, string sortOrder = "firstname_asc");
+
+        Task<IEnumerable<CreditCard>> UserCards(User user);
     }
 }
