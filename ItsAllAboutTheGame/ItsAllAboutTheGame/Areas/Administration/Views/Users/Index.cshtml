@@ -1,82 +1,51 @@
-﻿@model IPagedList<UserDTO>
+﻿@model UsersViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<main class="text-dark" id="users-management">
-    <div class="container d-flex justify-content-center text-center" id="users-container">
-            <table class="table text-nowrap m-0" id="users-table">
-                <thead>
+<main class="text-dark d-flex justify-content-center text-center" id="users-management">
+    <div class="container " id="users-container">
+        <table class="table text-nowrap m-0" id="users-table">
+            <thead>
+                <tr>
+                    @foreach (var property in Model.Properties)
+                    {
+                        <th>@property</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
                     <tr>
-                        <th>#</th>
-                        <th>First</th>
-                        <th>Last</th>
-                        <th>Handle</th>
-                        <th>Handle</th>
-                        <th>Handle</th>
-                        <th>Handle</th>
-                        <th>Handle</th>
+                        @foreach (var property in user.GetType().GetProperties())
+                        {
+                            if (property.Name == "Deleted")
+                            {
+                                <td>
+                                    <form id="comment-form" asp-action="Delete" asp-controller="Users" asp-route-username="@user.UserName" method="post">
+                                        @if (property.GetValue(user).ToString() == "true")
+                                        {
+                                            <input type="checkbox" checked>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox">
+                                        }
+                                    </form>
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="font-weight-bold">@property.GetValue(user)</td>
+                            }
+                        }
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th class=" font-weight-bold" scope="row">1</th>
-                        <td class=" font-weight-bold">Mark</td>
-                        <td class=" font-weight-bold">Otto</td>
-                        <td>@Model.PageCount</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td >Jacob</td>
-                        <td>Thornton</td>
-                        <td>@Model.TotalItemCount</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@Model.PageCount</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@Model.PageCount</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@Model.PageCount</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@Model.PageCount</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@Model.PageCount</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@Model.PageCount</td>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@Model.PageCount</td>
-                    </tr>
-
-                </tbody>
-            </table>
-        </div>
+                }
+            </tbody>
+        </table>
+    </div>
 </main>
 
 

@@ -157,7 +157,6 @@ namespace ItsAllAboutTheGame.Services.Data
         }
 
         public IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = DataConstants.DefultPageSize, string sortOrder = DataConstants.DefultSorting)
-
         {
             var users = this.context
                 .Users

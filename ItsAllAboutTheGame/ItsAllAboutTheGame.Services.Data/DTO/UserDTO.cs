@@ -1,6 +1,6 @@
 ﻿using ItsAllAboutTheGame.Data.Models;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace ItsAllAboutTheGame.Services.Data.DTO
 {
@@ -12,13 +12,13 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
             this.UserName = user.UserName;
             this.Email = user.Email;
             this.PhoneNumber = user.PhoneNumber;
-            this.IsDeleted = user.IsDeleted;
+            this.Deleted = user.IsDeleted;
             this.FirstName = user.FirstName;
             this.LastName = user.LastName;
-            this.DateOfBirth = user.DateOfBirth;
+            this.DateOfBirth = user.DateOfBirth.ToString("MM.dd.yyyy");
             this.Currency = user.Wallet.Currency.ToString();
-            this.Balance = user.Wallet.Balance;
-            this.Cards = user.Cards;
+            this.Balance = Math.Round(user.Wallet.Balance, 2);
+            this.RegisteredCards = user.Cards.Count();
         }
 
         public DateTimeOffset? LockoutFor { get; set; }
@@ -29,18 +29,18 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
 
         public string PhoneNumber { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public bool Deleted { get; set; }
 
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
 
         public string Currency { get; set; }
 
         public decimal Balance { get; set; }
 
-        public IEnumerable<CreditCard> Cards { get; set; }
+        public int RegisteredCards { get; set; }
     }
 }

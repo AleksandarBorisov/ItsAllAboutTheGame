@@ -146,13 +146,16 @@ body {
 
 .container {
     position: relative;
+    max-width: 90%;
 }
 
 #users-container {
     border-radius: 5px;
     background-color: gray;
-    display: table;
     padding: 20px;
+    display: block;
+    /*max-height: 200px;*/
+    overflow-y: auto;
 }
 
 #users-table th, #users-table td {
@@ -173,14 +176,13 @@ body {
     border-top-right-radius: 5px;
 }
 
-#users-table thead {
-    background-color: #24355C;
+    #users-table thead {
+        background-color: #24355C;
+    }
 
-}
-
-#users-table thead tr {
-    color: aqua;
-}
+        #users-table thead tr {
+            color: aqua;
+        }
 
     #users-table th, #users-table td {
         font-weight: bold;

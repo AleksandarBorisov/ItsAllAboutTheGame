@@ -1,4 +1,5 @@
-﻿using ItsAllAboutTheGame.Data.Constants;
+﻿using ItsAllAboutTheGame.Areas.Administration.Models;
+using ItsAllAboutTheGame.Data.Constants;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,9 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
         {
             var users = this.userService.GetAllUsers();
 
-            return View(users);
+            var model = new UsersViewModel(users);
+
+            return View(model);
         }
     }
 }
