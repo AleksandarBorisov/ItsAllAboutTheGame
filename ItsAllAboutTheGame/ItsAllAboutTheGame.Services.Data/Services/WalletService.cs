@@ -43,12 +43,5 @@ namespace ItsAllAboutTheGame.Services.Data
 
             return userWallet;
         }
-
-        public void IncrementUserWallet(User user,  decimal amount)
-        {
-            user.Wallet.Balance += amount;
-
-            //this.context.SaveChanges();
-        }
     }
 }

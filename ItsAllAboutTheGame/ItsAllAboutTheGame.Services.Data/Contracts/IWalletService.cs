@@ -12,7 +12,5 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
         Task<Wallet> CreateUserWallet(User user, Currency userCurrency);
 
         Task<Wallet> GetUserWallet(User user);
-
-        void IncrementUserWallet(User user, decimal amount);
     }
 }

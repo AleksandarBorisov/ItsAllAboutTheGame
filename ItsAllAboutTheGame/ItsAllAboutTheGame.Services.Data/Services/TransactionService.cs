@@ -18,12 +18,13 @@ namespace ItsAllAboutTheGame.Services.Data.Services
         private readonly UserManager<User> userManager;
         private readonly IWalletService walletService;
         private readonly IUserService userService;
+        private readonly ICardService cardService;
         private readonly IForeignExchangeService foreignExchangeService;
         private readonly ServicesDataConstants constants;
 
         public TransactionService(ItsAllAboutTheGameDbContext context, IWalletService walletService,
             UserManager<User> userManager, IUserService userService, IForeignExchangeService foreignExchangeService,
-            ServicesDataConstants constants)
+            ServicesDataConstants constants, ICardService cardService)
         {
             this.context = context;
             this.walletService = walletService;
@@ -31,24 +32,17 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             this.userService = userService;
             this.foreignExchangeService = foreignExchangeService;
             this.constants = constants;
+            this.cardService = cardService;
         }
 
-        public async Task<Transaction> MakeDeposit(CreditCard creditcard, ClaimsPrincipal userclaims, decimal amount)
+        public async Task<Transaction> MakeDeposit(User user, int cardId, decimal amount)
         {
-            var username = userclaims.Identity.Name;
-            var user = await this.userService.GetUser(username);
-
-    
-            var usercard =  user.Cards
-                .Where(k => k.LastDigits == creditcard.LastDigits)
-                .Select(n => n.CardNumber).FirstOrDefault();
-
+            var usercard = await this.cardService.GetCardNumber(user, cardId);
+            var userWallet =  await this.context.Wallets.FirstOrDefaultAsync(w => w.User == user);
            
-
             var rates = await this.foreignExchangeService.GetConvertionRates();
-            var convertedamount = amount / rates.Rates[user.Wallet.Currency.ToString()];
+            var convertedamount = amount / rates.Rates[userWallet.Currency.ToString()];
 
-             //this.walletService.IncrementUserWallet(user, convertedamount);
              user.Wallet.Balance += convertedamount;
 
             var transaction =  new Transaction()
