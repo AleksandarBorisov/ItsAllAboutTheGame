@@ -9,7 +9,7 @@ namespace ItsAllAboutTheGame.Data.Models.Utilities.CustomAttributes
     {
         public override bool IsValid(object value)
         {
-            bool result = value != null && (DateTime)value > DateTime.Now.AddMonths(1);
+            bool result = value != null && ((DateTime)value as DateTime?) > DateTime.Now.AddMonths(1);
 
             return result;
         }

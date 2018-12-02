@@ -97,6 +97,8 @@ namespace ItsAllAboutTheGame.Controllers
         }
 
 
+        // Methods for remote attributes!
+        // LOOK DOWN
 
 
         [AcceptVerbs("Get", "Post")]
@@ -119,27 +121,11 @@ namespace ItsAllAboutTheGame.Controllers
         {
             try
             {
-                return Json(AreOnlyDigits(CVV));
+                return Json(this.cardService.AreOnlyDigits(CVV));
             }
             catch (Exception ex)
             {
                 return Json(false);
-            }
-        }
-
-        private bool AreOnlyDigits(string cvv)
-        {
-            int number;
-
-            bool result = int.TryParse(cvv, out number);
-
-            if (result)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
 
@@ -148,25 +134,11 @@ namespace ItsAllAboutTheGame.Controllers
         {
             try
             {
-                return Json(IsExpired(ExpiryDate));
+                return Json(this.cardService.IsExpired(ExpiryDate));
             }
             catch (Exception ex)
             {
                 return Json(false);
-            }
-        }
-
-        private bool IsExpired(DateTime expiryDate)
-        {
-            bool result = expiryDate != null && (expiryDate as DateTime?) > DateTime.Now.AddMonths(1);
-
-            if (result == true)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
     }

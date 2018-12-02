@@ -14,6 +14,10 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 
         bool DoesCardExist(string cardNumber);
 
+        bool AreOnlyDigits(string cvv);
+
+        bool IsExpired(DateTime expiryDate);
+
         Task<CreditCard> GetCard(User user, int cardId);
 
         Task<string> GetCardNumber(string cardNumber);
