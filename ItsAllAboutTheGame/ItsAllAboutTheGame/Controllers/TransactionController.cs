@@ -45,10 +45,8 @@ namespace ItsAllAboutTheGame.Controllers
 
             var userWallet = await this.walletService.GetUserWallet(user);
 
-            var cardCurrency = userWallet.Currency;
-
             var model = new NewDepositViewModel();
-            model.CardCurrency = cardCurrency;
+            model.CardCurrency = user.Wallet.Currency;
             model.Cards = userCards.ToList();
 
 
@@ -64,24 +62,12 @@ namespace ItsAllAboutTheGame.Controllers
             }
 
             var claims = HttpContext.User;
-            var user = await userManager.GetUserAsync(claims);
-            var userCards = await this.cardService.GetSelectListCards(user);
-            var userWallet = await this.walletService.GetUserWallet(user);
+            var user = await userManager.GetUserAsync(claims);                              
 
-
-            var userCard = await this.cardService.GetCard(user, model.CreditCardId);
-
-            model.Cards = userCards.ToList();
-            var cardCurrency = userWallet.Currency;
-            model.CardCurrency = cardCurrency;
-
-            model.Cards = userCards.ToList();
-
-            var deposit = await this.transactionService.MakeDeposit(userCard, claims, model.Amount);
+            var deposit = await this.transactionService.MakeDeposit(user, model.CreditCardId, model.Amount);
 
             TempData["Success"] = $"Deposit of {model.Amount} made successfully!";
             return RedirectToAction("Index", "Home");
-
         }
 
         [HttpGet]
@@ -102,12 +88,7 @@ namespace ItsAllAboutTheGame.Controllers
                 var userName = HttpContext.User.Identity.Name;
                 var user = await this.userManager.FindByNameAsync(userName);
                 var cardToAdd = await this.cardService.AddCard(model.CardNumber, model.CVV, model.ExpiryDate, user);
-                var userWallet = await this.walletService.GetUserWallet(user);
-                var userCurrency = userWallet.Currency;
-
-                model.CardNumber = new string('X', cardToAdd.CardNumber.Length - 4) + cardToAdd.CardNumber.Substring(cardToAdd.CardNumber.Length - 4);
-                model.CVV = cardToAdd.CVV;
-                model.ExpiryDate = cardToAdd.ExpiryDate;
+                
                 return RedirectToAction("AddCard","Transaction");
             }
 
@@ -116,6 +97,8 @@ namespace ItsAllAboutTheGame.Controllers
         }
 
 
+        // Methods for remote attributes!
+        // LOOK DOWN
 
 
         [AcceptVerbs("Get", "Post")]
@@ -123,25 +106,13 @@ namespace ItsAllAboutTheGame.Controllers
         {
             try
             {
-                return Json(DoesCardExist(CardNumber));
+                return Json(this.cardService.DoesCardExist(CardNumber));
+                 // if returned boolean is false the card exists
+                 // if returned boolean is true the card does NOT exist so the card number is valid
             }
             catch (Exception ex)
             {
                 return Json(false);
-            }
-        }
-
-        private bool DoesCardExist(string cardNumber)
-        {
-            var cards = this.context.CreditCards.ToList();
-
-            if (cards.Any(k => k.CardNumber == cardNumber))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
             }
         }
 
@@ -150,7 +121,7 @@ namespace ItsAllAboutTheGame.Controllers
         {
             try
             {
-                return Json(AreOnlyDigits(CVV));
+                return Json(this.cardService.AreOnlyDigits(CVV));
             }
             catch (Exception ex)
             {
@@ -158,19 +129,16 @@ namespace ItsAllAboutTheGame.Controllers
             }
         }
 
-        private bool AreOnlyDigits(string cvv)
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult IsDateValid(DateTime ExpiryDate)
         {
-            int number;
-
-            bool result = int.TryParse(cvv, out number);
-
-            if (result)
+            try
             {
-                return true;
+                return Json(this.cardService.IsExpired(ExpiryDate));
             }
-            else
+            catch (Exception ex)
             {
-                return false;
+                return Json(false);
             }
         }
     }

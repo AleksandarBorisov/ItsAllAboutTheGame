@@ -12,7 +12,17 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
     {
         Task<CreditCard> AddCard(string cardNumber, string cvv, DateTime expiryDate, User user);
 
+        bool DoesCardExist(string cardNumber);
+
+        bool AreOnlyDigits(string cvv);
+
+        bool IsExpired(DateTime expiryDate);
+
         Task<CreditCard> GetCard(User user, int cardId);
+
+        Task<string> GetCardNumber(string cardNumber);
+
+        Task<string> GetCardNumber(User user, int cardId);
 
         Task<IEnumerable<SelectListItem>> GetSelectListCards(User user);
 

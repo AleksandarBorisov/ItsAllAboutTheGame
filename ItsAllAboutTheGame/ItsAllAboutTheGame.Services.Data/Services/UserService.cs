@@ -181,7 +181,7 @@ namespace ItsAllAboutTheGame.Services.Data
 
             if (!string.IsNullOrEmpty(searchByUsername))
             {
-                map = map.Where(user => user.UserName.Contains(searchByUsername));
+                map = map.Where(user => user.Username.Contains(searchByUsername));
             }
 
             return map.ToPagedList(page, size);

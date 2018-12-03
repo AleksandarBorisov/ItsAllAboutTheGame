@@ -18,6 +18,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
         private readonly UserManager<User> userManager;
         private readonly IWalletService walletService;
         private readonly IUserService userService;
+        private readonly ICardService cardService;
         private readonly IForeignExchangeService foreignExchangeService;
 
         public TransactionService(ItsAllAboutTheGameDbContext context, IWalletService walletService,
@@ -30,22 +31,14 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             this.foreignExchangeService = foreignExchangeService;
         }
 
-        public async Task<Transaction> MakeDeposit(CreditCard creditcard, ClaimsPrincipal userclaims, decimal amount)
+        public async Task<Transaction> MakeDeposit(User user, int cardId, decimal amount)
         {
-            var username = userclaims.Identity.Name;
-            var user = await this.userService.GetUser(username);
-
-    
-            var usercard =  user.Cards
-                .Where(k => k.LastDigits == creditcard.LastDigits)
-                .Select(n => n.CardNumber).FirstOrDefault();
-
+            var usercard = await this.cardService.GetCardNumber(user, cardId);
+            var userWallet =  await this.context.Wallets.FirstOrDefaultAsync(w => w.User == user);
            
-
             var rates = await this.foreignExchangeService.GetConvertionRates();
-            var convertedamount = amount / rates.Rates[user.Wallet.Currency.ToString()];
+            var convertedamount = amount / rates.Rates[userWallet.Currency.ToString()];
 
-             //this.walletService.IncrementUserWallet(user, convertedamount);
              user.Wallet.Balance += convertedamount;
 
             var transaction =  new Transaction()

@@ -45,13 +45,30 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             await this.context.SaveChangesAsync();
 
             return creditCard;
-        }
+        }     
 
         public async Task<CreditCard> GetCard(User user, int cardId)
         {
             var userCard = await this.context.CreditCards.Where(c => c.User == user && c.Id == cardId).FirstOrDefaultAsync();
 
             return userCard;
+        }
+
+        public async Task<string> GetCardNumber(User user, int cardId)
+        {
+            var userCardNumber = await this.context.CreditCards.Where(c => c.User == user && c.Id == cardId)
+                .Select(n => n.CardNumber)
+                .FirstOrDefaultAsync();
+
+            return userCardNumber;
+        }
+
+        public async Task<string> GetCardNumber(string cardNumber)
+        {
+            var userCardNumber = await this.context.CreditCards.Where(c => c.CardNumber == cardNumber)
+                .Select(cn => cn.CardNumber).FirstOrDefaultAsync();
+
+            return userCardNumber;
         }
 
         public async Task<IEnumerable<CreditCard>> GetCards(User user)
@@ -76,6 +93,52 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                 }).ToListAsync();
 
             return userCards.ToList();
+        }
+
+        public bool DoesCardExist(string cardNumber)
+        {
+            // if card is found we return false to display that it exists!
+            // if card is NOT found with the current card number, we return true so that the method passes
+            bool result = this.context.CreditCards.Any(c => c.CardNumber == cardNumber);
+
+            if (result == true)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public bool AreOnlyDigits(string cvv)
+        {
+            int number;
+
+            bool result = int.TryParse(cvv, out number);
+
+            if (result)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool IsExpired(DateTime expiryDate)
+        {
+            bool result = expiryDate != null && (expiryDate as DateTime?) > DateTime.Now.AddMonths(1);
+
+            if (result == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

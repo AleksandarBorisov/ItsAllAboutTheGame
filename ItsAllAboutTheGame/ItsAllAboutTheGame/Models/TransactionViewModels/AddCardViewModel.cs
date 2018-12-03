@@ -23,7 +23,7 @@ namespace ItsAllAboutTheGame.Models.TransactionViewModels
         public string CVV { get; set; }
         
         [Required]
-        [FutureDate(ErrorMessage = "Date should be at least 1 month in the future!")]
+        [Remote(action: "IsDateValid", controller: "Transaction", ErrorMessage = "Card expiry date must be at least 1 month in the future!")]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
         public DateTime ExpiryDate { get; set; }
