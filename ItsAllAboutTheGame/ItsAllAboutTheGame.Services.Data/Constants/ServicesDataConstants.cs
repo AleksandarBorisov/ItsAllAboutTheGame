@@ -11,22 +11,11 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
     {
         private static string currencies;
 
-        public string DepositDescription = "Deposit with card ";
+        public static string DepositDescription = "Deposit with card ";
 
         private static Dictionary<string, string> currencySymbols;
 
-        private static string baseCurrency;
-
-        private readonly IMemoryCache cache;
-
-
-        public ServicesDataConstants(IMemoryCache cache)
-        {
-            SetCurrencySymbols();
-            currencies = string.Join(",", Enum.GetNames(typeof(Currency)));
-            baseCurrency = "USD";
-            this.cache = cache;
-        }
+        private static string baseCurrency = "USD";
 
         static ServicesDataConstants()
         {
@@ -34,17 +23,16 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
             currencies = string.Join(",", Enum.GetNames(typeof(Currency)));
         }
 
-
         public static Dictionary<string, string> CurrencySymbols
         {
             get => currencySymbols;
         }
 
-        public string Currencies {
+        public static string Currencies {
             get => currencies;
         }
 
-        public string BaseCurrency
+        public static string BaseCurrency
         {
             get => baseCurrency;
         }

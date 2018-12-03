@@ -19,18 +19,15 @@ namespace ItsAllAboutTheGame.Services.Data.Services
         private readonly IWalletService walletService;
         private readonly IUserService userService;
         private readonly IForeignExchangeService foreignExchangeService;
-        private readonly ServicesDataConstants constants;
 
         public TransactionService(ItsAllAboutTheGameDbContext context, IWalletService walletService,
-            UserManager<User> userManager, IUserService userService, IForeignExchangeService foreignExchangeService,
-            ServicesDataConstants constants)
+            UserManager<User> userManager, IUserService userService, IForeignExchangeService foreignExchangeService)
         {
             this.context = context;
             this.walletService = walletService;
             this.userManager = userManager;
             this.userService = userService;
             this.foreignExchangeService = foreignExchangeService;
-            this.constants = constants;
         }
 
         public async Task<Transaction> MakeDeposit(CreditCard creditcard, ClaimsPrincipal userclaims, decimal amount)
@@ -54,11 +51,12 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             var transaction =  new Transaction()
             {
                 Type = TransactionType.Deposit,
-                Description = constants.DepositDescription + usercard,
+                Description = ServicesDataConstants.DepositDescription + usercard,
                 User = user,
                 UserId = user.Id,
                 Amount = convertedamount,
                 CreatedOn = DateTime.Now
+                //TODO: Mock DateTime
             };
 
             this.context.Transactions.Add(transaction);

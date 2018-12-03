@@ -119,7 +119,7 @@ namespace ItsAllAboutTheGame.Services.Data
 
             var user = await userManager
                 .Users
-                .Where(x => x.Id.Equals(userId))
+                .Where(x => x.Id == userId)
                 .Include(u => u.Wallet)
                 .Select(u => new UserInfoDTO
                 {

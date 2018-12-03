@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ItsAllAboutTheGame</title>
-
+    <link runat="server" rel="shortcut icon" href="~/images/CardsLogoFavicon.png" type="image/x-icon" style="background-color: black"/>
+    <link runat="server" rel="icon"href="~/images/CardsLogoFavicon.png" type="image/ico" style="background-color: black"/>
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/mdb/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -45,8 +46,8 @@
                             </div>
                         </a>
                     </li>
-                    <vc:login-status parameter1="parameter1 value"
-                                     parameter2="parameter2 value">
+                    <vc:login-status> @*parameter1="parameter1 value"
+                                     parameter2="parameter2 value">*@
                     </vc:login-status>
                     @*@await Html.PartialAsync("_LoginPartial")*@
                 </ul>
@@ -72,35 +73,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#contact">Contact</a>
                     </li>
-                    <li class="nav-item ml-auto">
-                        <a class="nav-link"><i class="fa fa-facebook white-text fa-2x"></i></a>
-                    </li>
-                    <li class="nav-item phoneSizeMargin">
-                        <a class="nav-link"><i class="fa fa-twitter white-text fa-2x"></i></a>
-                    </li>
-                    <li class="nav-item phoneSizeMargin">
-                        <a class="nav-link"><i class="fa fa-instagram white-text fa-2x"></i></a>
-                    </li>
-                    <li class="nav-item phoneSizeMargin">
-                        <a class="nav-link"><i class="fa fa-google-plus white-text fa-2x"></i></a>
-                    </li>
-                    <li class="nav-item phoneSizeMargin">
-                        <a class="nav-link"><i class="fa fa-linkedin white-text fa-2x"></i></a>
+                    <li class="ml-auto nav-item dropleft">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-gear"></i>
+                            <span class="clearfix d-none d-sm-inline-block">Admin Panel</span>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a asp-area="Administration" asp-controller="Users" asp-action="Index" class="dropdown-item"><i class="fa fa-user mr-2"></i>Manage Users</a>
+                            <a asp-area="Administration" asp-controller="Transactions" asp-action="Index" class="dropdown-item"><i class="fa fa-credit-card mr-2"></i>Manage Transactions</a>
+                        </div>
                     </li>
                 </ul>
             </div>
-            <ul class="nav navbar-nav nav-flex-icons ml-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-gear"></i>
-                        <span class="clearfix d-none d-sm-inline-block">Admin Panel</span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a asp-area="Administration" asp-controller="Users" asp-action="Index" class="dropdown-item"><i class="fa fa-user mr-2"></i>Manage Users</a>
-                        <a asp-area="Administration" asp-controller="Transactions" asp-action="Index" class="dropdown-item"><i class="fa fa-credit-card mr-2"></i>Manage Transactions</a>
-                    </div>
-                </li>
-            </ul>
         </div>
     </nav>
     <!--Mask-->

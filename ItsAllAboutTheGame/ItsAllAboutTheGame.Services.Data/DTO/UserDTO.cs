@@ -9,12 +9,12 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
         public UserDTO(User user)
         {
             this.LockoutFor = user.LockoutEnd;
-            this.UserName = user.UserName;
+            this.Username = user.UserName;
             this.Email = user.Email;
             this.PhoneNumber = user.PhoneNumber;
             this.Deleted = user.IsDeleted;
-            this.FirstName = user.FirstName;
-            this.LastName = user.LastName;
+            this.Firstname = user.FirstName;
+            this.Lastname = user.LastName;
             this.DateOfBirth = user.DateOfBirth.ToString("MM.dd.yyyy");
             this.Currency = user.Wallet.Currency.ToString();
             this.Balance = Math.Round(user.Wallet.Balance, 2);
@@ -23,7 +23,7 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
 
         public DateTimeOffset? LockoutFor { get; set; }
 
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         public string Email { get; set; }
 
@@ -31,9 +31,9 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
 
         public bool Deleted { get; set; }
 
-        public string FirstName { get; set; }
+        public string Firstname { get; set; }
 
-        public string LastName { get; set; }
+        public string Lastname { get; set; }
 
         public string DateOfBirth { get; set; }
 
@@ -42,5 +42,7 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
         public decimal Balance { get; set; }
 
         public int RegisteredCards { get; set; }
+
+        public bool Admin { get; set; }
     }
 }

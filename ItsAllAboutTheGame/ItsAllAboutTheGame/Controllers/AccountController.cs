@@ -113,9 +113,13 @@ namespace ItsAllAboutTheGame.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            if (!ModelState.IsValid || DateTime.Now.Year - model.DateOfBirth.Year < 18)
+            bool isAdult = DateTime.Now.Year - model.DateOfBirth.Year > 18;
+            if (!ModelState.IsValid || !isAdult)
             {
-                TempData["Failed"] = "User must have 18 years old to register!";
+                if (!isAdult)
+                {
+                    TempData["Failed"] = "User must have 18 years old to register!";
+                }
                 return View(model);
             }
 

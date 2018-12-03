@@ -1,8 +1,10 @@
 ﻿using ItsAllAboutTheGame.Services.Data.Exceptions;
+using ItsAllAboutTheGame.Services.External.Exceptions;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Middleware
@@ -32,6 +34,15 @@ namespace ItsAllAboutTheGame.Middleware
             {
                 context.Response.Redirect("/404");
             }
+            catch (HttpRequestException)
+            {
+                context.Response.Redirect("/ForeignApiError");
+            }
+            catch (HttpStatusCodeException)
+            {
+                context.Response.Redirect("/ForeignApiError");
+            }
+            //Our Site is Currently not available sorry
         }
     }
 }

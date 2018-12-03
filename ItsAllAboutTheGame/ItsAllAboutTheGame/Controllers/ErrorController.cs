@@ -25,5 +25,10 @@ namespace ItsAllAboutTheGame.Controllers
             return this.View();
         }
 
+        public IActionResult ForeignApiError()
+        {
+            return this.View();
+        }
+
     }
 }

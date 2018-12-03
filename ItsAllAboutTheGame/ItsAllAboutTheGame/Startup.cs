@@ -75,7 +75,6 @@ namespace ItsAllAboutTheGame
             services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<IForeignExchangeService, ForeignExchangeService>();
             services.AddScoped<IJsonDeserializer, JsonDeserializer>();
-            services.AddSingleton<ServicesDataConstants>();
             services.AddScoped<IForeignExchangeApiCaller, ForeignExchangeApiCaller>();
         }
 
@@ -112,13 +111,13 @@ namespace ItsAllAboutTheGame
                 app.UseExceptionHandler("/Error/Index");
             }
 
+            app.SeedAdmins(userManager, context);
+
             app.UseNotFoundExceptionHandler();
 
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
-            app.SeedAdmins(userManager, context);
 
             app.UseResponseCaching();
 
@@ -128,6 +127,11 @@ namespace ItsAllAboutTheGame
                     name: "notfound",
                     template: "404",
                     defaults: new { controller = "Error", action = "PageNotFound" });
+
+                routes.MapRoute(
+                    name: "ForeignApiError",
+                    template: "ForeignApiError",
+                    defaults: new { controller = "Error", action = "ForeignApiError" });
 
                 routes.MapRoute(
                     name: "Administration",
