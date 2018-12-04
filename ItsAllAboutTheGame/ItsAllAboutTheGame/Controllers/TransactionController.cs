@@ -41,12 +41,13 @@ namespace ItsAllAboutTheGame.Controllers
 
             var claims = HttpContext.User;
             var user = await userManager.GetUserAsync(claims);
+            var userId = await userManager.GetUserIdAsync(user);
             var userCards = await this.cardService.GetSelectListCards(user);
 
             var userWallet = await this.walletService.GetUserWallet(user);
 
             var model = new NewDepositViewModel();
-            model.CardCurrency = user.Wallet.Currency;
+            model.CardCurrency = userWallet.Currency;
             model.Cards = userCards.ToList();
 
 
@@ -62,7 +63,7 @@ namespace ItsAllAboutTheGame.Controllers
             }
 
             var claims = HttpContext.User;
-            var user = await userManager.GetUserAsync(claims);                              
+            var user = await userManager.GetUserAsync(claims);
 
             var deposit = await this.transactionService.MakeDeposit(user, model.CreditCardId, model.Amount);
 

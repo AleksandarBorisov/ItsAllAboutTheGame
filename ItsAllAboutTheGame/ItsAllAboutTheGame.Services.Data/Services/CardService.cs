@@ -47,26 +47,29 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             return creditCard;
         }     
 
-        public async Task<CreditCard> GetCard(User user, int cardId)
+        public async Task<CreditCard> GetCard(string userId, int cardId)
         {
-            var userCard = await this.context.CreditCards.Where(c => c.User == user && c.Id == cardId).FirstOrDefaultAsync();
+            var userCards = await this.context.CreditCards.ToListAsync();
+
+            var userCard = userCards.Where(ci => ci.Id == cardId && ci.UserId == userId).FirstOrDefault();
 
             return userCard;
         }
 
-        public async Task<string> GetCardNumber(User user, int cardId)
-        {
-            var userCardNumber = await this.context.CreditCards.Where(c => c.User == user && c.Id == cardId)
-                .Select(n => n.CardNumber)
-                .FirstOrDefaultAsync();
-
-            return userCardNumber;
-        }
 
         public async Task<string> GetCardNumber(string cardNumber)
         {
             var userCardNumber = await this.context.CreditCards.Where(c => c.CardNumber == cardNumber)
                 .Select(cn => cn.CardNumber).FirstOrDefaultAsync();
+
+            return userCardNumber;
+        }
+
+        public async Task<string> GetCardNumber(User user, int cardId)
+        {
+            var userCardNumber = await this.context.CreditCards.Where(c => c.User == user && c.Id == cardId)
+              .Select(n => n.CardNumber)
+              .FirstOrDefaultAsync();
 
             return userCardNumber;
         }

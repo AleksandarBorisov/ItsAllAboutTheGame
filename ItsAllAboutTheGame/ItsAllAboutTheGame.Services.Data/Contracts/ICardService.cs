@@ -18,7 +18,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 
         bool IsExpired(DateTime expiryDate);
 
-        Task<CreditCard> GetCard(User user, int cardId);
+        Task<CreditCard> GetCard(string userId, int cardId);
 
         Task<string> GetCardNumber(string cardNumber);
 
