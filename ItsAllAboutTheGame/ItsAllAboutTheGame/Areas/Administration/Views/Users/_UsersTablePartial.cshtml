@@ -1,0 +1,29 @@
+﻿@model UsersViewModel
+@{
+    ViewData["Title"] = "UsersTablePartial";
+}
+
+<table class="table text-nowrap m-0 " id="users-table">
+    <thead>
+        <tr>
+            <th>@(nameof(Model.Firstname))</th>
+            <th>@(nameof(Model.Lastname))</th>
+            <th>@(nameof(Model.Username))</th>
+            <th>@(nameof(Model.Email))</th>
+            <th>@(nameof(Model.DateOfBirth))</th>
+            <th>@(nameof(Model.PhoneNumber))</th>
+            <th>@(nameof(Model.Currency))</th>
+            <th>@(nameof(Model.Balance))</th>
+            <th>@(nameof(Model.RegisteredCards))</th>
+            <th>@(nameof(Model.Deleted))</th>
+            <th>@(nameof(Model.Admin))</th>
+            <th>@(nameof(Model.LockoutFor))</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <partial name="_UserRowPartial" model="user" />
+        }
+    </tbody>
+</table>

@@ -1,0 +1,49 @@
+﻿@model UserDTO
+@{
+    ViewData["Title"] = "_UserRowPartial";
+}
+
+<tr>
+    <td class="align-middle">@Model.Firstname</td>
+    <td class="align-middle">@Model.Lastname</td>
+    <td class="align-middle username">@Model.Username</td>
+    <td class="align-middle">@Model.Email</td>
+    <td class="align-middle">@Model.DateOfBirth</td>
+    <td class="align-middle">@Model.PhoneNumber</td>
+    <td class="align-middle">@Model.Currency</td>
+    <td class="align-middle">@Model.Balance</td>
+    <td class="align-middle">@Model.RegisteredCards</td>
+    <td class="align-middle">
+        <form class="delete-form" asp-action="Delete" asp-controller="Users" asp-route-username="@Model.Username" method="post">
+            <input class="delete-button" type="checkbox" @(Model.Deleted ? "checked" : "")>
+            <input class="user-id" type="hidden" asp-for="@Model.UserId" value="@Model.UserId" />
+        </form>
+    </td>
+    <td class="align-middle">
+        <form class="toggleadmin-form" asp-action="ToggleAdmin" asp-controller="Users" asp-route-username="@Model.Username" method="post">
+            <input class="toggle-button" type="checkbox" @(Model.Admin ? "checked" : "")>
+            <input class="user-id" type="hidden" asp-for="@Model.UserId" value="@Model.UserId" />
+        </form>
+    </td>
+    <td class="align-middle">
+        <form class="lockout-form" asp-action="Lockout" asp-controller="Users" method="post">
+            <div class="input-group flex-nowrap">
+                <div class="input-group-prepend">
+                    <span class="input-group-text form-control">days:</span>
+                </div>
+                <div class="input-group-append">
+                    <input class="user-id" type="hidden" asp-for="@Model.UserId" value="@Model.UserId" />
+                    <input asp-for="@Model.LockoutFor" type="text" class="lockout-for form-control" onkeypress="return isNumberKey(event)" maxlength="3" style="width: 55px;" value="@Model.LockoutFor">
+                </div>
+                <div class="input-group">
+                    <button type="submit" style="background:none;border:none; padding:0;" >
+                        <span class="input-group-text" id="basic-addon1">
+                            <i class="fa fa-unlock-alt"></i>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </td>
+</tr>
+

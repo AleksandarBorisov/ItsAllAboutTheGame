@@ -23,5 +23,11 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
         IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = 5, string sortOrder = "firstname_asc");
 
         Task<IEnumerable<CreditCard>> UserCards(User user);
+
+        Task<UserDTO> LockoutUser(string userId, int days);
+
+        Task<UserDTO> DeleteUser(string userId);
+
+        Task<UserDTO> ToggleAdmin(string userId);
     }
 }
