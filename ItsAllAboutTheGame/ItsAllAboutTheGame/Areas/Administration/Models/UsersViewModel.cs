@@ -1,8 +1,6 @@
 ﻿using ItsAllAboutTheGame.Services.Data.DTO;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using X.PagedList;
 
 namespace ItsAllAboutTheGame.Areas.Administration.Models
@@ -16,9 +14,10 @@ namespace ItsAllAboutTheGame.Areas.Administration.Models
 
         public UsersViewModel(IPagedList<UserDTO> users)
         {
-            this.Users = users.ToList();
+            this.Users = users;
             this.UsersCount = users.Count;
             this.HasNextPage = users.HasNextPage;
+            this.HasPreviousPage = users.HasPreviousPage;
             this.IsFirstPage = users.IsFirstPage;
             this.IsLastPage = users.IsLastPage;
             this.PageCount = users.PageCount;
@@ -27,49 +26,40 @@ namespace ItsAllAboutTheGame.Areas.Administration.Models
             this.TotalItemCount = users.TotalItemCount;
         }
 
-        public int UsersCount { get; private set; }
+        public int UsersCount { get; set; }
 
-        public bool HasNextPage { get; private set; }
+        public bool HasNextPage { get; set; }
 
-        public bool IsFirstPage { get; private set; }
+        public bool HasPreviousPage { get; set; }
 
-        public bool IsLastPage { get; private set; }
+        public bool IsFirstPage { get; set; }
 
-        public int PageCount { get; private set; }
+        public bool IsLastPage { get; set; }
 
-        public int PageNumber { get; }
+        public int PageCount { get; set; }
 
-        public int PageSize { get; private set; }
+        public int PageNumber { get; set; }
 
-        public int TotalItemCount { get; private set; }
+        [RegularExpression(@"^[0-9]{2}$", ErrorMessage = "Please enter valid Page Size up to 99.")]
+        public int PageSize { get;  set; }
 
-        public IEnumerable<UserDTO> Users { get; private set; }
+        public int TotalItemCount { get; set; }
+
+        public IEnumerable<UserDTO> Users { get; set; }
 
         [RegularExpression(@"^[0-9]{3}$", ErrorMessage = "Please enter valid days up to 999.")]
         public int LockoutFor { get; set; }
 
         public string Username { get; set; }
 
-        public string Email { get; set; }
-
-        public string PhoneNumber { get; set; }
-
         public bool Deleted { get; set; }
-
-        public string Firstname { get; set; }
-
-        public string Lastname { get; set; }
-
-        public string DateOfBirth { get; set; }
-
-        public string Currency { get; set; }
-
-        public decimal Balance { get; set; }
-
-        public int RegisteredCards { get; set; }
 
         public bool Admin { get; set; }
 
         public string UserId { get; set; }
+
+        public string  SearchString { get; set; }
+
+        public string SortOrder { get; set; }
     }
 }

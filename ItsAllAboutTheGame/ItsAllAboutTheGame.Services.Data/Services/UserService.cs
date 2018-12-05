@@ -163,16 +163,13 @@ namespace ItsAllAboutTheGame.Services.Data
                 .Where(u => u.Email != DataConstants.MasterAdminEmail)
                 .Include(user => user.Wallet)
                 .Include(user => user.Cards)
-                .ToList();
-
-            var map = users
-                .Select(u => new UserDTO(u));
+                .ToPagedList(page, size);
 
             var property = sortOrder.Remove(sortOrder.IndexOf("_"));
             PropertyInfo prop = typeof(UserDTO).GetProperty(property, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
             if (!sortOrder.Contains("_desc"))
             {
-                map = map.OrderBy(user => prop.GetValue(user));
+                users.OrderBy(user => prop.GetValue(user));
             }
             else
             {
@@ -181,10 +178,13 @@ namespace ItsAllAboutTheGame.Services.Data
 
             if (!string.IsNullOrEmpty(searchByUsername))
             {
-                map = map.Where(user => user.Username.Contains(searchByUsername));
+                users.Where(user => user.UserName.Contains(searchByUsername));
             }
 
-            return map.ToPagedList(page, size);
+            var map = users
+                .Select(u => new UserDTO(u));
+
+            return map;
         }
 
         public async Task<UserDTO> LockoutUser(string userId, int days)

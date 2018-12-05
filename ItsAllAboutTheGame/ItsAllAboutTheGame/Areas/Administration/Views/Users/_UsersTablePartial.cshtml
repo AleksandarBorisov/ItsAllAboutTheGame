@@ -3,27 +3,51 @@
     ViewData["Title"] = "UsersTablePartial";
 }
 
-<table class="table text-nowrap m-0 " id="users-table">
-    <thead>
-        <tr>
-            <th>@(nameof(Model.Firstname))</th>
-            <th>@(nameof(Model.Lastname))</th>
-            <th>@(nameof(Model.Username))</th>
-            <th>@(nameof(Model.Email))</th>
-            <th>@(nameof(Model.DateOfBirth))</th>
-            <th>@(nameof(Model.PhoneNumber))</th>
-            <th>@(nameof(Model.Currency))</th>
-            <th>@(nameof(Model.Balance))</th>
-            <th>@(nameof(Model.RegisteredCards))</th>
-            <th>@(nameof(Model.Deleted))</th>
-            <th>@(nameof(Model.Admin))</th>
-            <th>@(nameof(Model.LockoutFor))</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model.Users)
-        {
-            <partial name="_UserRowPartial" model="user" />
-        }
-    </tbody>
-</table>
+<div id="users-table-pagination">
+    <table class="table text-nowrap m-0 " id="users-table">
+        <thead>
+            <tr>
+                <th class="col-lg-3">@(nameof(Model.Username))</th>
+                <th class="col-lg-3">@(nameof(Model.Deleted))</th>
+                <th class="col-lg-3">@(nameof(Model.Admin))</th>
+                <th class="col-lg-3">@(nameof(Model.LockoutFor))</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <partial name="_UserRowPartial" model="user" />
+            }
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination pg-teal">
+            <li class="page-item">
+                @if (Model.HasPreviousPage)
+                {
+                    <a class="page-link">Previous</a>
+                }
+                else
+                {
+                    <a class="page-link navigational-disabled">Previous</a>
+                }
+
+            </li>
+            @for (int i = 1; i <= Model.PageCount; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "") "><a class="page-link">@i</a></li>
+            }
+            <li class="page-item">
+                @if (Model.HasNextPage)
+                {
+                    <a class="page-link">Next</a>
+                }
+                else
+                {
+                    <a class="page-link navigational-disabled">Next</a>
+                }
+            </li>
+        </ul>
+    </nav>
+</div>
+

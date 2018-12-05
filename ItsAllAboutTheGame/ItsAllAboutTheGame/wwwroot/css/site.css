@@ -164,7 +164,7 @@ body {
 }
 
 #users-table tbody tr:hover {
-    background-color: darkorange;
+    background-color: #eee;
 }
 
 #users-table {
@@ -176,7 +176,7 @@ body {
     border-top-right-radius: 5px;
 }
 
-    #users-table thead {
+    #users-table thead tr:first-child{
         background-color: #24355C;
     }
 
@@ -187,5 +187,35 @@ body {
     #users-table th, #users-table td {
         font-weight: bold;
     }
+
+.page-item.active{
+    color: teal;
+}
+
+.pagination {
+    color: black;
+    font-weight: bold;
+}
+
+.navigational-disabled {
+    color: black;
+    font-weight: normal;
+    pointer-events: none;
+    cursor: default;
+}
+
+#user-lockout-button {
+    background:none;
+    border:none;
+    padding:0;
+}
+
+.lockout-for {
+    width: 55px;
+}
+
+.users-count {
+    width: 20%;
+}
 
 

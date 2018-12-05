@@ -17,6 +17,7 @@ using ItsAllAboutTheGame.Services.Data.Constants;
 using ItsAllAboutTheGame.Extensions;
 using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Services.Data.Services;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ItsAllAboutTheGame
 {
@@ -83,6 +84,10 @@ namespace ItsAllAboutTheGame
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ItsAllAboutTheGameDbContext>()
                 .AddDefaultTokenProviders();
+            //services.AddIdentity<User, IdentityRole<string>>()
+            //        .AddUserStore<UserStore<User, IdentityRole<string>, ItsAllAboutTheGameDbContext, int, IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>, IdentityUserToken<int>, IdentityRoleClaim<int>>>()
+            //        .AddRoleStore<RoleStore<IdentityRole<string>, ItsAllAboutTheGameDbContext, int, UserRole, IdentityRoleClaim<int>>>()
+            //        .AddDefaultTokenProviders();
 
             services.AddAuthentication();
             services.AddAuthorization();
@@ -95,9 +100,9 @@ namespace ItsAllAboutTheGame
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
+        public void Configure(IApplicationBuilder app,
             IHostingEnvironment env,
-            UserManager<User> userManager, 
+            UserManager<User> userManager,
             ItsAllAboutTheGameDbContext context)
         {
             if (env.IsDevelopment())

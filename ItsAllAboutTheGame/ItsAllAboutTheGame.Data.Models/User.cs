@@ -31,6 +31,8 @@ namespace ItsAllAboutTheGame.Data.Models
 
         public IEnumerable<Transaction> Transactions { get; set; }
 
+        //public ICollection<UserRole> Roles { get; set; }/* = new List<UserRole>();*/
+
         public string Image { get; set; }
 
         [Required]

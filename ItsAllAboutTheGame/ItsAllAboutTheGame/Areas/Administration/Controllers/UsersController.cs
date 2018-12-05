@@ -35,6 +35,17 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public IActionResult UpdateTable(UsersViewModel model)
+        {
+            var users = this.userService.GetAllUsers(model.SearchString, model.PageNumber,model.PageSize);
+
+            var newModel = new UsersViewModel(users);
+
+            return PartialView("_UsersTablePartial", newModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Lockout(string userId, int lockoutFor)
         {
             if (!ModelState.IsValid)

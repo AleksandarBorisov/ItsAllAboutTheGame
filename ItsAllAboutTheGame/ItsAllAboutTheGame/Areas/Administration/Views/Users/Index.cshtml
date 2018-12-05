@@ -6,6 +6,24 @@
 
 <main class="text-dark d-flex justify-content-center text-center" id="users-management">
     <div class="container " id="users-container">
+        <div>
+            <form class="float-left page-count-form" asp-action="UpdateTable" asp-controller="Users" method="post">
+                <div class="input-group mb-3 flex-nowrap">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Count:</span>
+                    </div>
+                    <div class="input-group-append">
+                        <input type="text" class="form-control users-count" onkeypress="return isNumberKey(event)" maxlength="2" asp-for="@Model.PageSize" value="@Model.PageSize">
+                        <input type="hidden" asp-for="@Model.SearchString" value="@Model.SearchString" />
+                        <input type="hidden" asp-for="@Model.SortOrder" value="@Model.SortOrder" />
+                        <input type="hidden" asp-for="@Model.PageNumber" value="1" />
+                    </div>
+                </div>
+            </form>
+            <div class="active-cyan-3">
+                <input class="form-control float-right" type="text" placeholder="Search" aria-label="Search" style="width: 20%;">
+            </div>
+        </div>
         <partial name="_UsersTablePartial" model="Model" />
     </div>
 </main>

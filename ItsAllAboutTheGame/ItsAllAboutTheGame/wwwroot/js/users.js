@@ -9,9 +9,11 @@
 
 $(function () {
     //We set an event on all forms
-    const $lockoutForms = $('.lockout-form');
+    const $container = $('#users-container');
+    //const $lockoutForms = $('.lockout-form');
 
-    $lockoutForms.on('submit', function (event) {
+    //$lockoutForms.on('submit', function (event) {
+    $container.on('submit', '.lockout-form', function (event) {
 
         $currentForm = $(this);
 
@@ -36,7 +38,7 @@ $(function () {
                         lockoutFor: lockoutFor,
                         '__RequestVerificationToken': token
                     }
-                    debugger;
+
                     $.post($currentForm.attr('action'), dataToSend, function (serverData) {
                         $($currentForm.parent('tr')).html(serverData);
                     });
@@ -46,16 +48,16 @@ $(function () {
                     });
                 },
                 cancel: function () {
-                    
+
                 },
             }
         });
     });
 
     //Delete Form
-    const $deleteForms = $('.delete-form');
+    //const $deleteForms = $('.delete-form');
 
-    $deleteForms.on('click', '.delete-button', function (event) {
+    $container.on('click', '.delete-button', function (event) {
 
         $checkbox = $(this);
 
@@ -63,7 +65,7 @@ $(function () {
 
         $message = $checkbox.prop('checked') ? 'Delete' : 'Restore';
 
-        const dataToSend = $('delete-form').serialize();
+        //const dataToSend = $('delete-form').serialize();
 
         $.confirm({
             title: 'Confirm!',
@@ -80,15 +82,15 @@ $(function () {
                             '__RequestVerificationToken': token
                         }
                         , function (serverData) {
-                        $($currentForm.parent('tr')).html(serverData);
-                    });
+                            $($currentForm.parent('tr')).html(serverData);
+                        });
                 },
                 cancel: function () {
                     if ($checkbox.prop('checked')) {
-                        $checkbox.prop('checked', 'false');
+                        $checkbox.prop('checked', false);
                     }
                     else {
-                        $checkbox.prop('checked', 'true');
+                        $checkbox.prop('checked', true);
                     }
                 },
                 //somethingElse: {
@@ -104,9 +106,9 @@ $(function () {
     });
 
     //Toggle Admin Form
-    const $toggleAdmin = $('.toggleadmin-form');
+    //const $toggleAdmin = $('.toggleadmin-form');
 
-    $toggleAdmin.on('click', '.toggle-button', function (event) {
+    $container.on('click', '.toggle-button', function (event) {
 
         $checkbox = $(this);
 
@@ -114,7 +116,7 @@ $(function () {
 
         $message = $checkbox.prop('checked') ? 'Assign' : 'Remove';
 
-        const dataToSend = $('toggleadmin-form').serialize();
+        //const dataToSend = $('toggleadmin-form').serialize();
 
         $.confirm({
             title: 'Confirm!',
@@ -136,13 +138,29 @@ $(function () {
                 },
                 cancel: function () {
                     if ($checkbox.prop('checked')) {
-                        $checkbox.prop('checked', 'false');
+                        $checkbox.prop('checked', false);
                     }
                     else {
-                        $checkbox.prop('checked', 'true');
+                        $checkbox.prop('checked', true);
                     }
                 },
             }
+        });
+    });
+
+    //Page Count Form
+    const $pageCountForm = $container.find('.page-count-form');
+
+    $pageCountForm.on('submit', function (event) {
+        $currentForm = $(this);
+
+        event.preventDefault();
+
+        const dataToSend = $currentForm.serialize();
+
+        $.post($currentForm.attr('action'), dataToSend, function (serverData) {
+            debugger;
+            $('#users-table-pagination').html(serverData);
         });
     });
 });
