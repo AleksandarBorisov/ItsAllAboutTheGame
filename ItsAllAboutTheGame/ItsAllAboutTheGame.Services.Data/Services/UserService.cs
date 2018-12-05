@@ -52,10 +52,10 @@ namespace ItsAllAboutTheGame.Services.Data
             {
                 throw new UserNo18Exception(ex.Message);
             }
-            
+
 
             User user = new User
-            {               
+            {
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
                 UserName = email,
@@ -63,13 +63,13 @@ namespace ItsAllAboutTheGame.Services.Data
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
-                DateOfBirth = dateOfBirth              
+                DateOfBirth = dateOfBirth
             };
 
             Wallet wallet = await walletService.CreateUserWallet(user, userCurrency);
             user.Wallet = wallet;
             user.WalletId = wallet.Id;
-            
+
             return user;
         }
 
@@ -169,7 +169,7 @@ namespace ItsAllAboutTheGame.Services.Data
                 .Select(u => new UserDTO(u));
 
             var property = sortOrder.Remove(sortOrder.IndexOf("_"));
-            PropertyInfo prop = typeof(UserDTO).GetProperty(property,BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
+            PropertyInfo prop = typeof(UserDTO).GetProperty(property, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
             if (!sortOrder.Contains("_desc"))
             {
                 map = map.OrderBy(user => prop.GetValue(user));
@@ -185,6 +185,73 @@ namespace ItsAllAboutTheGame.Services.Data
             }
 
             return map.ToPagedList(page, size);
+        }
+
+        public async Task<UserDTO> LockoutUser(string userId, int days)
+        {
+            try
+            {
+                var user = await this.context.Users.FindAsync(userId);
+
+                var date = DateTime.UtcNow.AddDays(days);
+
+                user.LockoutEnd = new DateTimeOffset(date, TimeSpan.Zero);
+
+                await this.userManager.UpdateAsync(user);
+
+                return new UserDTO(user);
+
+            }
+            catch (Exception ex)
+            {
+                throw new LockoutUserException("Unable to Lockout the selected user", ex);
+            }
+        }
+
+        public async Task<UserDTO> DeleteUser(string userId)
+        {
+            try
+            {
+                var user = await this.context.Users.FindAsync(userId);
+
+                user.IsDeleted = !user.IsDeleted;
+
+                await this.userManager.UpdateAsync(user);
+
+                return new UserDTO(user);
+
+            }
+            catch (Exception ex)
+            {
+                throw new DeleteUserException("Unable to Delete the selected user", ex);
+            }
+        }
+
+        public async Task<UserDTO> ToggleAdmin(string userId)
+        {
+            try
+            {
+                var user = await this.context.Users.FindAsync(userId);
+
+                var result = await this.userManager
+                .IsInRoleAsync(user, DataConstants.AdminRole);
+
+                if (result)
+                {
+                    await this.userManager.RemoveFromRoleAsync(user, DataConstants.AdminRole);
+                }
+                else
+                {
+                    await this.userManager.AddToRoleAsync(user, DataConstants.AdminRole);
+                }
+
+                return new UserDTO(user);
+
+            }
+            catch (Exception ex)
+            {
+                throw new ToggleAdminException("Unable to toggle Admin Role  the selected user", ex);
+            }
         }
     }
 }

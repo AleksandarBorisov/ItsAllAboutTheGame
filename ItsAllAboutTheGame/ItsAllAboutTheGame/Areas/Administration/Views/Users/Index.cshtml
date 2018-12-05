@@ -6,90 +6,42 @@
 
 <main class="text-dark d-flex justify-content-center text-center" id="users-management">
     <div class="container " id="users-container">
-        <table class="table text-nowrap m-0" id="users-table">
-            <thead>
-                <tr>
-                    @foreach (var property in Model.Properties)
-                    {
-                        <th>@property</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model.Users)
-                {
-                <tr>
-                    @foreach (var property in user.GetType().GetProperties())
-                    {
-                        if (property.Name == "Deleted")
-                        {
-                            <td>
-                                <form id="delete-form" asp-action="Delete" asp-controller="Users" asp-route-username="@user.Username" method="post">
-                                    @if (property.GetValue(user).ToString() == "true")
-                                    {
-                                        <input type="checkbox" checked>
-                                    }
-                                    else
-                                    {
-                                        <input type="checkbox">
-                                    }
-                                </form>
-                            </td>
-                        }
-                        else if (property.Name == "Admin")
-                        {
-                            <td>
-                                <form id="delete-form" asp-action="ToggleAdmin" asp-controller="Users" asp-route-username="@user.Username" method="post">
-                                    @if (property.GetValue(user).ToString() == "true")
-                                    {
-                                        <input type="checkbox" checked>
-                                    }
-                                    else
-                                    {
-                                        <input type="checkbox">
-                                    }
-                                </form>
-                            </td>
-                        }
-                        else if (property.Name == "LockoutFor")
-                        {
-                            <td>
-                                <form id="lockout-form" asp-action="Lockout" asp-controller="Users" method="post">
-                                    <div class="input-group flex-nowrap">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">days:</span>
-                                        </div>
-                                        <input type="text" class="form-control no-spinners" onkeypress="return isNumberKey(event)" maxlength="3" style="width: 55px;">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text" id="basic-addon1"><a type="submit" class="wow" href="#"><i class="fa fa-unlock-alt"></i></a></span>
-                                        </div>
-                                    </div>
-                                </form>
-                            </td>
-                        }
-                        else
-                        {
-                            <td class="font-weight-bold">@property.GetValue(user)</td>
-                        }
-                    }
-                </tr>
-                }
-            </tbody>
-        </table>
+        <partial name="_UsersTablePartial" model="Model" />
     </div>
 </main>
+
+<div>   <button id="test-button">Test button</button></div>
 @section Scripts{
     <script src="~/js/users.js"></script>
     <script>
-        function isNumberKey(evt) {
-            var charCode = (evt.which) ? evt.which : evt.keyCode;
-            if (charCode != 46 && charCode > 31
-                && (charCode < 48 || charCode > 57))
-                return false;
-            return true;
-        }
+        //function isNumberKey(evt) {
+        //    var charCode = (evt.which) ? evt.which : evt.keyCode;
+        //    if (charCode != 46 && charCode > 31
+        //        && (charCode < 48 || charCode > 57))
+        //        return false;
+        //    return true;
+        //}
+    </script>
+    @*<script>
+        $(function () {
+            const $lockoutForm = $('#lockout-form');
 
-</script>
+            $lockoutForm.on('submit', function (event) {
+
+                event.preventDefault();
+
+                const $userIdVal = $lockoutForm.find('.user-id').val();
+                const $lockoutForVal = $lockoutForm.find('.lockout-for').val();
+                const $antiForgeryTokenVal = $("input[name=__RequestVerificationToken]").val();
+
+                const dataToSend = 'UserId=' + $userIdVal + '&LockoutFor=' + $lockoutForVal + "&__RequestVerificationToken=" + $antiForgeryTokenVal;
+                debugger;
+                $.post($lockoutForm.attr('action'), dataToSend, function (serverData) {
+
+                });
+            });
+        });
+    </script>*@
 }
 
 

@@ -11,18 +11,18 @@ namespace ItsAllAboutTheGame.Middleware
 {
     public class EntityNotFoundMiddleware
     {
-        private readonly RequestDelegate _next;
+        private readonly RequestDelegate next;
 
         public EntityNotFoundMiddleware(RequestDelegate next)
         {
-            _next = next;
+            this.next = next;
         }
 
         public async Task Invoke(HttpContext context)
         {
             try
             {
-                await this._next.Invoke(context);
+                await this.next.Invoke(context);
 
                 if (context.Response.StatusCode == 404)
                 {
@@ -34,15 +34,18 @@ namespace ItsAllAboutTheGame.Middleware
             {
                 context.Response.Redirect("/404");
             }
-            catch (HttpRequestException)
+            catch (LockoutUserException ex)
+            {
+                context.Response.Redirect("/404");
+            }
+            catch (HttpRequestException ex)
             {
                 context.Response.Redirect("/ForeignApiError");
             }
-            catch (HttpStatusCodeException)
+            catch (HttpStatusCodeException ex)
             {
                 context.Response.Redirect("/ForeignApiError");
             }
-            //Our Site is Currently not available sorry
         }
     }
 }
