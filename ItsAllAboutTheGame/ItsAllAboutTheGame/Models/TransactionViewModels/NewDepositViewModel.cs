@@ -11,6 +11,13 @@ namespace ItsAllAboutTheGame.Models.TransactionViewModels
 {
     public class NewDepositViewModel
     {
+
+        public NewDepositViewModel()
+        {
+
+        }
+
+
         public Currency CardCurrency { get; set; }
       
         [Required]        

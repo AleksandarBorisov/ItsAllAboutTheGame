@@ -22,15 +22,18 @@ namespace ItsAllAboutTheGame.Controllers
         private readonly ICardService cardService;
         private readonly IWalletService walletService;
         private readonly ITransactionService transactionService;
+        private readonly IForeignExchangeService foreignExchangeService;
 
         public TransactionController(UserManager<User> userManager, ItsAllAboutTheGameDbContext context,
-            ICardService cardService, IWalletService walletService, ITransactionService transactionService)
+            ICardService cardService, IWalletService walletService, ITransactionService transactionService,
+            IForeignExchangeService foreignExchangeService)
         {
             this.context = context;
             this.userManager = userManager;
             this.cardService = cardService;
             this.walletService = walletService;
             this.transactionService = transactionService;
+            this.foreignExchangeService = foreignExchangeService;
         }
 
 
@@ -64,11 +67,14 @@ namespace ItsAllAboutTheGame.Controllers
 
             var claims = HttpContext.User;
             var user = await userManager.GetUserAsync(claims);
+            var userCards = await this.cardService.GetSelectListCards(user);
 
             var deposit = await this.transactionService.MakeDeposit(user, model.CreditCardId, model.Amount);
 
-            TempData["Success"] = $"Deposit of {model.Amount} made successfully!";
-            return RedirectToAction("Index", "Home");
+            var resultAmount = await this.foreignExchangeService.AJAXBalance(user);
+           
+
+            return Json(new { Balance = resultAmount });
         }
 
         [HttpGet]
@@ -89,12 +95,12 @@ namespace ItsAllAboutTheGame.Controllers
                 var userName = HttpContext.User.Identity.Name;
                 var user = await this.userManager.FindByNameAsync(userName);
                 var cardToAdd = await this.cardService.AddCard(model.CardNumber, model.CVV, model.ExpiryDate, user);
-                
-                return RedirectToAction("AddCard","Transaction");
+
+                return RedirectToAction("Deposit", "Transaction");
             }
 
 
-            return this.View(model);
+            return this.View();
         }
 
 
@@ -124,7 +130,7 @@ namespace ItsAllAboutTheGame.Controllers
             {
                 return Json(this.cardService.AreOnlyDigits(CVV));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(false);
             }
@@ -137,7 +143,7 @@ namespace ItsAllAboutTheGame.Controllers
             {
                 return Json(this.cardService.IsExpired(ExpiryDate));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(false);
             }

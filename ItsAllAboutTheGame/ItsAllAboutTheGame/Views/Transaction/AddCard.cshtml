@@ -8,13 +8,13 @@
 
 
 
-<header class="padding" style="padding:100px">
-
-</header>
+<header class="padding" style="padding:100px"></header>
 <hr />
+
+
 <div class="row">
     <div class="col-md-4">
-        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+        <form  asp-controller="Transaction" asp-action="AddCard" method="post">
             <div class="form-group">
                 <label asp-for="CardNumber" class="control-label"></label>
                 <input asp-for="CardNumber" class="form-control" />
@@ -31,12 +31,18 @@
                 <span asp-validation-for="ExpiryDate" class="text-danger"></span>
             </div>
             <div>
-                <button type="submit">Save</button>
+                <button type="submit" class="btn btn-success">Save</button>
             </div>
         </form>
     </div>
 </div>
 
+
+
 <div>
     <a asp-action="Deposit">Back to List</a>
 </div>
+
+@section Scripts{
+    <script src="~/js/addcard.js"></script>
+}
