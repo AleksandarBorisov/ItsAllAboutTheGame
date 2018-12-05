@@ -1,0 +1,27 @@
+﻿@model ItsAllAboutTheGame.Models.TransactionViewModels.NewDepositViewModel
+
+
+<div  class="padding">
+    <div class="row">
+        <div id="" class="col-md-4">
+            <form id="deposit-form" asp-controller="Transaction" asp-action="Deposit">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <select asp-for="CreditCardId" asp-items="@Model.Cards" style="width:300px"></select>
+                <p>
+                    <a asp-area="" asp-controller="Transaction" asp-action="AddCard" class="btn btn-outline-danger rounded font-weight-bold home-view-color">Add Card?<i class="fa fa-money ml-2"></i><i class="fa fa-credit-card ml-2"></i></a>
+                </p>
+                <div class="form-group">
+                    <label asp-for="Amount" class="control-label"></label>
+                    <input asp-for="Amount" class="form-control" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+                <p style="border-color:red">@Model.CardCurrency</p>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-success"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
