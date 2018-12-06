@@ -1,7 +1,7 @@
 ﻿using ItsAllAboutTheGame.Data.Configurations;
-using ItsAllAboutTheGame.Data.Constants;
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Data.Models.Abstract;
+using ItsAllAboutTheGame.GlobalUtilities.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -34,9 +34,9 @@ namespace ItsAllAboutTheGame.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<IdentityRole>()
-                .HasData(new IdentityRole { Name = DataConstants.AdminRole, NormalizedName = DataConstants.AdminRole.ToUpper() });
+                .HasData(new IdentityRole { Name = GlobalConstants.AdminRole, NormalizedName = GlobalConstants.AdminRole.ToUpper() });
             builder.Entity<IdentityRole>()
-                .HasData(new IdentityRole { Name = DataConstants.MasterAdminRole, NormalizedName = DataConstants.MasterAdminRole.ToUpper() });
+                .HasData(new IdentityRole { Name = GlobalConstants.MasterAdminRole, NormalizedName = GlobalConstants.MasterAdminRole.ToUpper() });
             builder.ApplyConfiguration(new CreditCardConfiguration());
             builder.ApplyConfiguration(new WalletConfiguration());
             builder.ApplyConfiguration(new TransactionConfiguration());

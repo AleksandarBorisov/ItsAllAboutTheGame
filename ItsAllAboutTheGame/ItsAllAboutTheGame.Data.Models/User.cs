@@ -1,4 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data.Models.Abstract;
+using ItsAllAboutTheGame.Data.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,9 @@ namespace ItsAllAboutTheGame.Data.Models
 
         //public ICollection<UserRole> UserRoles { get; set; }/* = new List<UserRole>();*/
 
-        public string Image { get; set; }
+        public UserRole Role { get; set; }
+
+        //public string Image { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]

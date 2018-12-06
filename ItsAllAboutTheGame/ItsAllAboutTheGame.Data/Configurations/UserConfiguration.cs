@@ -23,6 +23,10 @@ namespace ItsAllAboutTheGame.Data.Configurations
                 .HasForeignKey(user => user.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Property(user => user.Role)
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
             //builder.HasMany(user => user.UserRoles)
             //    .WithOne(userRole => userRole.User)
             //    .HasForeignKey(userRole => userRole.UserId)

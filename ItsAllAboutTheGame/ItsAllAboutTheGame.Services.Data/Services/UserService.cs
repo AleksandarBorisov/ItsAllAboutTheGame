@@ -1,7 +1,7 @@
 ﻿using ItsAllAboutTheGame.Data;
-using ItsAllAboutTheGame.Data.Constants;
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Data.Models.Enums;
+using ItsAllAboutTheGame.GlobalUtilities.Constants;
 using ItsAllAboutTheGame.Services.Data.Constants;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
@@ -113,33 +113,35 @@ namespace ItsAllAboutTheGame.Services.Data
 
         public async Task<UserInfoDTO> GetUserInfo(ClaimsPrincipal userClaims)
         {
-            var userId = userManager.GetUserId(userClaims);
-
-            var currencies = await this.foreignExchangeService.GetConvertionRates();
-
-            var user = await userManager
-                .Users
-                .Where(x => x.Id == userId)
-                .Include(u => u.Wallet)
-                .Select(u => new UserInfoDTO
-                {
-                    Balance = u.Wallet.Balance * currencies.Rates[u.Wallet.Currency.ToString()],
-                    Username = u.UserName,
-                    Currency = u.Wallet.Currency.ToString(),
-                    UserId = userId
-                })
-                .FirstOrDefaultAsync();
-
-            Math.Round(user.Balance, 2);
-
-            var getCurrencySymbol = ServicesDataConstants.CurrencySymbols.TryGetValue(user.Currency, out string currencySymbol);
-            if (!getCurrencySymbol)
+            try
             {
-                throw new EntityNotFoundException("Currency with such ISOCurrencySymbol cannot be found");
-            }
-            user.CurrencySymbol = currencySymbol;
+                var userId = userManager.GetUserId(userClaims);
 
-            return user;
+                var currencies = await this.foreignExchangeService.GetConvertionRates();
+
+                var user = await userManager
+                    .Users
+                    .Where(x => x.Id == userId)
+                    .Include(u => u.Wallet)
+                    .FirstOrDefaultAsync();
+
+                var userInfo = new UserInfoDTO(user, currencies);
+
+                Math.Round(userInfo.Balance, 2);
+
+                var getCurrencySymbol = ServicesDataConstants.CurrencySymbols.TryGetValue(userInfo.Currency, out string currencySymbol);
+                if (!getCurrencySymbol)
+                {
+                    throw new EntityNotFoundException("Currency with such ISOCurrencySymbol cannot be found");
+                }
+                userInfo.CurrencySymbol = currencySymbol;
+
+                return userInfo;
+            }
+            catch (Exception ex)
+            {
+                throw new EntityNotFoundException("We cannot find your remembered user. Please manually delete your cookies and Login again.", ex);
+            }
         }
 
         public async Task<User> GetUser(string username)
@@ -156,11 +158,11 @@ namespace ItsAllAboutTheGame.Services.Data
             return userCards;
         }
 
-        public IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = DataConstants.DefultPageSize, string sortOrder = DataConstants.DefultSorting)
+        public IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefultSorting)
         {
             var users = this.context
                 .Users
-                .Where(u => u.Email != DataConstants.MasterAdminEmail)
+                .Where(u => u.Email != GlobalConstants.MasterAdminEmail)
                 .Include(user => user.Wallet)
                 .Include(user => user.Cards)
                 .Select(u => new UserDTO(u));
@@ -231,15 +233,17 @@ namespace ItsAllAboutTheGame.Services.Data
                 var user = await this.context.Users.FindAsync(userId);
 
                 var result = await this.userManager
-                .IsInRoleAsync(user, DataConstants.AdminRole);
+                .IsInRoleAsync(user, GlobalConstants.AdminRole);
 
                 if (result)
                 {
-                    await this.userManager.RemoveFromRoleAsync(user, DataConstants.AdminRole);
+                    user.Role = UserRole.None;
+                    await this.userManager.RemoveFromRoleAsync(user, GlobalConstants.AdminRole);
                 }
                 else
                 {
-                    await this.userManager.AddToRoleAsync(user, DataConstants.AdminRole);
+                    user.Role = UserRole.Administrator;
+                    await this.userManager.AddToRoleAsync(user, GlobalConstants.AdminRole);
                 }
 
                 return new UserDTO(user);

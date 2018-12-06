@@ -1,6 +1,6 @@
-﻿namespace ItsAllAboutTheGame.Data.Constants
+﻿namespace ItsAllAboutTheGame.GlobalUtilities.Constants
 {
-    public class DataConstants
+    public class GlobalConstants
     {
         public const string AdminArea = "Administration";
 
@@ -16,7 +16,7 @@
 
         public const string DefultSorting = "Username_asc";
 
-        //TODO: Create Global Utilities Assembly with this class With Services constants class and 
-        //TODO: Account Controller Fix Name
+        public const string UsersRolesCache = "UsersRoles";
+
     }
 }

@@ -1,11 +1,11 @@
-﻿using ItsAllAboutTheGame.Data.Constants;
+﻿using ItsAllAboutTheGame.GlobalUtilities.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 {
     //[Area(DataConstants.AdminArea)]
-    [Authorize(Roles = DataConstants.AdminRole + "," + DataConstants.MasterAdminRole)]
+    [Authorize(Roles = GlobalConstants.AdminRole + "," + GlobalConstants.MasterAdminRole)]
     public class TransactionsController : Controller
     {
 

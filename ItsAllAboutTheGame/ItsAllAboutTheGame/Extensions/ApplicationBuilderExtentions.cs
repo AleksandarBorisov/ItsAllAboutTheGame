@@ -1,7 +1,7 @@
 ﻿using ItsAllAboutTheGame.Data;
-using ItsAllAboutTheGame.Data.Constants;
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Data.Models.Enums;
+using ItsAllAboutTheGame.GlobalUtilities.Constants;
 using ItsAllAboutTheGame.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +22,7 @@ namespace ItsAllAboutTheGame.Extensions
             Task.Run(async () =>
             {
                 //Here we create the Admin account
-                if (await userManager.FindByEmailAsync(DataConstants.AdminEmail) == null)
+                if (await userManager.FindByEmailAsync(GlobalConstants.AdminEmail) == null)
                 {
                     var wallet = new Wallet() { Balance = 0, Currency = Currency.BGN };
                     context.Wallets.Add(wallet);
@@ -30,25 +30,26 @@ namespace ItsAllAboutTheGame.Extensions
 
                     User user = new User
                     {
-                        UserName = DataConstants.AdminEmail,
+                        UserName = GlobalConstants.AdminEmail,
                         FirstName = "Admin",
                         LastName = "Admin",
                         DateOfBirth = DateTime.Parse("1/1/1991"),
-                        Email = DataConstants.AdminEmail,
+                        Email = GlobalConstants.AdminEmail,
                         Wallet = wallet,
-                        WalletId = wallet.Id
+                        WalletId = wallet.Id,
+                        Role = UserRole.Administrator
                     };
 
                     var result = await userManager.CreateAsync(user, "Admin123_");
 
                     if (result.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(user, DataConstants.AdminRole);
+                        await userManager.AddToRoleAsync(user, GlobalConstants.AdminRole);
                     }
                 }
 
                 //Here we create the MasterAdmin account
-                if (await userManager.FindByEmailAsync(DataConstants.MasterAdminEmail) == null)
+                if (await userManager.FindByEmailAsync(GlobalConstants.MasterAdminEmail) == null)
                 {
                     var wallet = new Wallet() { Balance = 0, Currency = Currency.BGN };
                     context.Wallets.Add(wallet);
@@ -56,13 +57,14 @@ namespace ItsAllAboutTheGame.Extensions
 
                     User user = new User
                     {
-                        UserName = DataConstants.MasterAdminEmail,
+                        UserName = GlobalConstants.MasterAdminEmail,
                         FirstName = "MasterAdmin",
                         LastName = "MasterAdmin",
                         DateOfBirth = DateTime.Parse("1/1/1991"),
-                        Email = DataConstants.MasterAdminEmail,
+                        Email = GlobalConstants.MasterAdminEmail,
                         Wallet = wallet,
                         WalletId = wallet.Id,
+                        Role = UserRole.MasterAdministrator
                     };
                     
 
@@ -70,7 +72,7 @@ namespace ItsAllAboutTheGame.Extensions
 
                     if (result.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(user, DataConstants.MasterAdminRole);
+                        await userManager.AddToRoleAsync(user, GlobalConstants.MasterAdminRole);
                     }
                 }
             }).Wait();

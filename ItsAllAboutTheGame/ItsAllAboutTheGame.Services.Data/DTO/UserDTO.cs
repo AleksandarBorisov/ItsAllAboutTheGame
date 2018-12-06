@@ -1,4 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data.Models;
+using ItsAllAboutTheGame.Data.Models.Enums;
 using System;
 using System.Linq;
 
@@ -17,6 +18,7 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
             this.LockoutFor = GetLockoutDays(user);
             this.Username = user.UserName;
             this.Deleted = user.IsDeleted;
+            this.Admin = user.Role.Equals(UserRole.Administrator);
         }
 
         public string UserId { get; set; }

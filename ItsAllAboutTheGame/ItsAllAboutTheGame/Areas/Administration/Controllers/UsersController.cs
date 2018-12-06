@@ -1,8 +1,7 @@
 ﻿using ItsAllAboutTheGame.Areas.Administration.Models;
-using ItsAllAboutTheGame.Data.Constants;
 using ItsAllAboutTheGame.Data.Models;
+using ItsAllAboutTheGame.GlobalUtilities.Constants;
 using ItsAllAboutTheGame.Services.Data.Contracts;
-using ItsAllAboutTheGame.Services.Data.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 {
-    [Area(DataConstants.AdminArea)]
+    [Area(GlobalConstants.AdminArea)]
     [Authorize(Roles = "MasterAdministrator")]
     public class UsersController : Controller
     {
@@ -30,7 +29,7 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 
             var model = new UsersViewModel(users);
 
-            model.SortOrder = model.SortOrder ?? DataConstants.DefultSorting;
+            model.SortOrder = model.SortOrder ?? GlobalConstants.DefultSorting;
 
             return View(model);
         }
