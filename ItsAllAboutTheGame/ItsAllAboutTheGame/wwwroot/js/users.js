@@ -213,4 +213,20 @@ $(function () {
             $('#users-table-pagination').html(serverData);
         });
     });
+
+    //Sorting Form
+    $container.on('click', '.sorting-form-button', function (event) {
+
+        event.preventDefault();
+
+        $button = $(this);
+
+        $form = $button.parents('form:first');
+
+        dataToSend = $form.serialize();
+
+        $.post($form.attr('action'), dataToSend, function (serverData) {
+            $('#users-table-pagination').html(serverData);
+        });
+    });
 });

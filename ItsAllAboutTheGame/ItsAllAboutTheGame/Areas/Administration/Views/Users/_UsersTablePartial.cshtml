@@ -3,7 +3,6 @@
     ViewData["Title"] = "UsersTablePartial";
 }
 
-
 <div id="users-table-pagination">
     <div>
         <form class="float-left page-count-form" asp-action="UpdateTable" asp-controller="Users" method="post">
@@ -27,23 +26,48 @@
                     <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
                     <input type="hidden" asp-for="@Model.SortOrder" value="@Model.SortOrder" />
                     <input type="hidden" asp-for="@Model.PageNumber" value="1" />
-                    <input type="hidden" asp-for="@Model.SearchString" value="@Model.SearchString" />
                 </div>
                 <div class="input-group-append">
                     <button type="submit" class="search-form-button btn btn-teal btn-md m-0">Search</button>
                 </div>
             </div>
         </form>
-        @*<div class="active-cyan-3">
-            </div>*@
     </div>
     <table class="table text-nowrap m-0 " id="users-table">
         <thead>
             <tr>
-                <th class="col-lg-3">@(nameof(Model.Username))</th>
+                <th class="col-lg-3">
+                    <form class="sorting-form" asp-action="UpdateTable" asp-controller="Users" method="post">
+                        <div class="input-group flex-nowrap flex-center">
+                            <div class="input-group-prepend">
+                                <input type="hidden" asp-for="@Model.SortOrder" value="@(Model.SortOrder == nameof(Model.Username) + "_asc" ? nameof(Model.Username) + "_desc" : nameof(Model.Username) + "_asc")">
+                                <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
+                                <input type="hidden" asp-for="@Model.PageNumber" value="1" />
+                                <input type="hidden" asp-for="@Model.SearchString" value="@Model.SearchString" />
+                            </div>
+                            <div class="input-group-append">
+                                <button type="submit" class="sorting-form-button makealink m-0">@(nameof(Model.Username))</button>
+                            </div>
+                        </div>
+                    </form>
+                </th>
                 <th class="col-lg-3">@(nameof(Model.Deleted))</th>
                 <th class="col-lg-3">@(nameof(Model.Admin))</th>
-                <th class="col-lg-3">@(nameof(Model.LockoutFor))</th>
+                <th class="col-lg-3">
+                    <form class="sorting-form" asp-action="UpdateTable" asp-controller="Users" method="post">
+                        <div class="input-group flex-nowrap flex-center">
+                            <div class="input-group-prepend">
+                                <input type="hidden" asp-for="@Model.SortOrder" value="@(Model.SortOrder == nameof(Model.LockoutFor) + "_asc" ? nameof(Model.LockoutFor) + "_desc" : nameof(Model.LockoutFor) + "_asc")">
+                                <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
+                                <input type="hidden" asp-for="@Model.PageNumber" value="1" />
+                                <input type="hidden" asp-for="@Model.SearchString" value="@Model.SearchString" />
+                            </div>
+                            <div class="input-group-append">
+                                <button type="submit" class="sorting-form-button makealink m-0">@(nameof(Model.LockoutFor))</button>
+                            </div>
+                        </div>
+                    </form>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -89,9 +113,7 @@
                             </div>
                         </div>
                     </form>
-                    @*<a class="page-link">@i</a>*@
                 </li>
-
             }
             <li class="page-item">
                 @if (Model.HasNextPage)

@@ -222,4 +222,13 @@ body {
     width: 20%;
 }
 
+.makealink {
+    background: transparent;
+    border: 0px;
+    color: aqua;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+}
+
 

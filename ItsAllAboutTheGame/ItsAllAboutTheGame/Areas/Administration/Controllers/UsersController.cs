@@ -30,6 +30,8 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 
             var model = new UsersViewModel(users);
 
+            model.SortOrder = model.SortOrder ?? DataConstants.DefultSorting;
+
             return View(model);
         }
 
@@ -37,11 +39,13 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult UpdateTable(UsersViewModel model)
         {
-            var users = this.userService.GetAllUsers(model.SearchString, model.PageNumber,model.PageSize);
+            var users = this.userService.GetAllUsers(model.SearchString, model.PageNumber,model.PageSize, model.SortOrder);
 
             var newModel = new UsersViewModel(users);
 
             newModel.SearchString = model.SearchString;
+
+            newModel.SortOrder = model.SortOrder;
 
             return PartialView("_UsersTablePartial", newModel);
         }
