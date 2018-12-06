@@ -22,6 +22,11 @@ namespace ItsAllAboutTheGame.Data.Configurations
                 .WithOne(transaction => transaction.User)
                 .HasForeignKey(user => user.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //builder.HasMany(user => user.UserRoles)
+            //    .WithOne(userRole => userRole.User)
+            //    .HasForeignKey(userRole => userRole.UserId)
+            //    .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

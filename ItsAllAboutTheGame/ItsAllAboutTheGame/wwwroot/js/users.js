@@ -149,17 +149,67 @@ $(function () {
     });
 
     //Page Count Form
-    const $pageCountForm = $container.find('.page-count-form');
+    //const $pageCountForm = $container.find('.page-count-form');
 
-    $pageCountForm.on('submit', function (event) {
-        $currentForm = $(this);
+    //$pageCountForm.on('submit', function (event) {
+    //    $currentForm = $(this);
+
+    //    event.preventDefault();
+
+    //    const dataToSend = $currentForm.serialize();
+
+    //    $.post($currentForm.attr('action'), dataToSend, function (serverData) {
+    //        debugger;
+    //        $('#users-table-pagination').html(serverData);
+    //    });
+    //});
+    //const $pageCountForm = $container.find('.page-count-form');
+    //const $userCount = $container.find('.users-count');
+
+    //Page Count Form
+    $container.on('click', '.page-count-form-button', function (event) {
 
         event.preventDefault();
 
-        const dataToSend = $currentForm.serialize();
+        $button = $(this);
 
-        $.post($currentForm.attr('action'), dataToSend, function (serverData) {
-            debugger;
+        $form = $button.parents('form:first');
+
+        dataToSend = $form.serialize();
+
+        $.post($form.attr('action'), dataToSend, function (serverData) {
+            $('#users-table-pagination').html(serverData);
+        });
+    });
+
+    //Search Form
+    $container.on('click', '.search-form-button', function (event) {
+
+        event.preventDefault();
+
+        $button = $(this);
+
+        $form = $button.parents('form:first');
+
+        dataToSend = $form.serialize();
+
+        $.post($form.attr('action'), dataToSend, function (serverData) {
+            $('#users-table-pagination').html(serverData);
+        });
+    });
+
+    //Pagination Form
+    $container.on('click', '.pagination-form-button', function (event) {
+
+        event.preventDefault();
+
+        $button = $(this);
+
+        $form = $button.parents('form:first');
+
+        dataToSend = $form.serialize();
+
+        $.post($form.attr('action'), dataToSend, function (serverData) {
             $('#users-table-pagination').html(serverData);
         });
     });

@@ -1,4 +1,5 @@
-﻿using ItsAllAboutTheGame.Data.Models;
+﻿using ItsAllAboutTheGame.Data.Constants;
+using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Data.Models.Enums;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using Microsoft.AspNetCore.Identity;
@@ -20,7 +21,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 
         Task<User> GetUser(string username);
 
-        IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = 5, string sortOrder = "firstname_asc");
+        IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = 5, string sortOrder = DataConstants.DefultSorting);
 
         Task<IEnumerable<CreditCard>> UserCards(User user);
 

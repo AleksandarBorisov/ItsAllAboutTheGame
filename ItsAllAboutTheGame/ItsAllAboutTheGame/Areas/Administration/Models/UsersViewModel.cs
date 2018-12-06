@@ -12,18 +12,16 @@ namespace ItsAllAboutTheGame.Areas.Administration.Models
 
         }
 
-        public UsersViewModel(IPagedList<UserDTO> users)
+        public UsersViewModel(IPagedList<UserDTO> usersList)
         {
-            this.Users = users;
-            this.UsersCount = users.Count;
-            this.HasNextPage = users.HasNextPage;
-            this.HasPreviousPage = users.HasPreviousPage;
-            this.IsFirstPage = users.IsFirstPage;
-            this.IsLastPage = users.IsLastPage;
-            this.PageCount = users.PageCount;
-            this.PageNumber = users.PageNumber;
-            this.PageSize = users.PageSize;
-            this.TotalItemCount = users.TotalItemCount;
+            this.Users = usersList;
+            this.UsersCount = usersList.Count;
+            this.HasNextPage = usersList.HasNextPage;
+            this.HasPreviousPage = usersList.HasPreviousPage;
+            this.PageCount = usersList.PageCount;
+            this.PageNumber = usersList.PageNumber;
+            this.PageSize = usersList.PageSize;
+            this.TotalItemCount = usersList.TotalItemCount;
         }
 
         public int UsersCount { get; set; }
@@ -31,10 +29,6 @@ namespace ItsAllAboutTheGame.Areas.Administration.Models
         public bool HasNextPage { get; set; }
 
         public bool HasPreviousPage { get; set; }
-
-        public bool IsFirstPage { get; set; }
-
-        public bool IsLastPage { get; set; }
 
         public int PageCount { get; set; }
 

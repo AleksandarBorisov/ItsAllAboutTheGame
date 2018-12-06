@@ -41,6 +41,8 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 
             var newModel = new UsersViewModel(users);
 
+            newModel.SearchString = model.SearchString;
+
             return PartialView("_UsersTablePartial", newModel);
         }
 

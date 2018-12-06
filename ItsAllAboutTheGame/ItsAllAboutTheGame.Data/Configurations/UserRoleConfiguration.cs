@@ -14,6 +14,13 @@
 //                .HasForeignKey(e => e.RoleId)
 //                .IsRequired()
 //                .OnDelete(DeleteBehavior.Cascade);
+
+//            builder
+//                .HasOne(e => e.User)
+//                .WithMany(u => u.UserRoles)
+//                .HasForeignKey(e => e.UserId)
+//                .IsRequired()
+//                .OnDelete(DeleteBehavior.Cascade);
 //        }
 //    }
 //}

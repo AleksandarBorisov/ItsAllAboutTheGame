@@ -163,28 +163,25 @@ namespace ItsAllAboutTheGame.Services.Data
                 .Where(u => u.Email != DataConstants.MasterAdminEmail)
                 .Include(user => user.Wallet)
                 .Include(user => user.Cards)
-                .ToPagedList(page, size);
+                .Select(u => new UserDTO(u));
 
             var property = sortOrder.Remove(sortOrder.IndexOf("_"));
             PropertyInfo prop = typeof(UserDTO).GetProperty(property, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
             if (!sortOrder.Contains("_desc"))
             {
-                users.OrderBy(user => prop.GetValue(user));
+                users = users.OrderBy(user => prop.GetValue(user));
             }
             else
             {
-                users.OrderByDescending(user => prop.GetValue(user));
+                users = users.OrderByDescending(user => prop.GetValue(user));
             }
 
             if (!string.IsNullOrEmpty(searchByUsername))
             {
-                users.Where(user => user.UserName.Contains(searchByUsername));
+                users = users.Where(user => user.Username.Contains(searchByUsername, StringComparison.InvariantCultureIgnoreCase));
             }
 
-            var map = users
-                .Select(u => new UserDTO(u));
-
-            return map;
+            return users.ToPagedList(page, size);
         }
 
         public async Task<UserDTO> LockoutUser(string userId, int days)

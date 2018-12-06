@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ItsAllAboutTheGame.Data.Models
 {
@@ -31,7 +32,7 @@ namespace ItsAllAboutTheGame.Data.Models
 
         public IEnumerable<Transaction> Transactions { get; set; }
 
-        //public ICollection<UserRole> Roles { get; set; }/* = new List<UserRole>();*/
+        //public ICollection<UserRole> UserRoles { get; set; }/* = new List<UserRole>();*/
 
         public string Image { get; set; }
 

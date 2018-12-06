@@ -14,7 +14,7 @@
 
         public const int DefultPageSize = 5;
 
-        public const string DefultSorting = "firstname_asc";
+        public const string DefultSorting = "username_asc";
 
         //TODO: Create Global Utilities Assembly with this class With Services constants class and 
         //TODO: Account Controller Fix Name
