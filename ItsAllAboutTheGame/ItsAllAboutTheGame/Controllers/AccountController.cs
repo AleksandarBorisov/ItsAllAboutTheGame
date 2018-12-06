@@ -66,17 +66,24 @@ namespace ItsAllAboutTheGame.Controllers
                 var result = await this.signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
-                    logger.LogInformation("User logged in.");
-                    TempData["Success"] = "Login Successful!";
-                    return RedirectToLocal(returnUrl);
+                    var user = await this.userManager.FindByEmailAsync(model.Email);
+
+                    if (user.IsDeleted)
+                    {
+                        return RedirectToAction(nameof(Deleted), new { userEmail = model.Email });
+                    }
+                    else
+                    {
+                        logger.LogInformation("User logged in.");
+                        TempData["Success"] = "Login Successful!";
+                        return RedirectToLocal(returnUrl);
+                    }
                 }
-
-
 
                 if (result.IsLockedOut)
                 {
                     logger.LogWarning("User account locked out.");
-                    return RedirectToAction(nameof(Lockout));
+                    return RedirectToAction(nameof(Lockout), new { userEmail = model.Email });
                 }
                 else
                 {
@@ -89,12 +96,27 @@ namespace ItsAllAboutTheGame.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Lockout(string userEmail)
+        {
+            var user = await this.userManager.FindByEmailAsync(userEmail);
 
+            var lockedOutTime = user.LockoutEnd.Value.DateTime;
+
+            var hours = (int)(lockedOutTime - DateTime.Now).TotalHours;
+
+            var model = new LockedOutViewModel(hours);
+
+            return View(model);
+        }
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Lockout()
+        public async Task<IActionResult> Deleted(string userEmail)
         {
+            var user = await this.userManager.FindByEmailAsync(userEmail);
+
             return View();
         }
 
