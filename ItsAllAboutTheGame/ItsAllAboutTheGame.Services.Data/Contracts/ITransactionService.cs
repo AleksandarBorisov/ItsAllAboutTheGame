@@ -11,5 +11,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
         Task<Transaction> MakeDeposit(User user, int cardId, decimal amount);
 
         IPagedList<TransactionDTO> GetAllTransactions(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefultTransactionSorting);
+
+        Task<TransactionDTO> MakeStake(User user, int amount, string game);
     }
 }

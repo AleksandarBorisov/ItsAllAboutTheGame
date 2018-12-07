@@ -231,4 +231,20 @@ body {
     font-weight: bold;
 }
 
+.game-container {
+    border-radius: 5px;
+    background-color: white;
+    padding: 20px;
+    display: block;
+    overflow-y: auto;
+    width: 25%;
+}
 
+.money-row {
+    border-top: 4px solid black;
+    border-bottom: 4px solid black;
+}
+
+#game-management {
+    padding-top: 20%;
+}

@@ -1,0 +1,34 @@
+﻿@model WalletViewModel
+@{
+    ViewData["Title"] = "_GameOnePartial";
+}
+
+<div class="game-one-table">
+    <div class="row money-row">
+        <div class="col-md-6 align-middle flex-center">
+            <div>Balance: </div>
+            <div id="balance">@Model.Balance</div>
+            <div>@Model.CurrencySymbol</div>
+        </div>
+        <div class="col col-md-6 float-right">
+            <p class="text-right">Win: @Model.Balance@Model.CurrencySymbol</p>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-md-12 spin-row ">
+            <form class="spin-form" asp-controller="Game" asp-action="GameOneSpin" method="post">
+                <div class="input-group mb-3 flex-nowrap align-middle flex-center">
+                    <div class="input-group-prepend input-group-text">
+                        <p>Stake: </p>
+                    </div>
+                    <input asp-for="@Model.Stake" type="text" placeholder="0 @Model.CurrencySymbol" onkeypress="return isNumberKey(event)" class="form-control" id="stake-amount" />
+                    <div class="input-group-append">
+                        <button class="btn btn-orange" type="submit">Spin</button>
+                    </div>
+                </div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </form>
+        </div>
+    </div>
+</div>
+

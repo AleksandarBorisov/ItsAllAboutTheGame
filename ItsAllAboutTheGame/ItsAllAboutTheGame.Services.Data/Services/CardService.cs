@@ -1,6 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data;
 using ItsAllAboutTheGame.Data.Models;
-using ItsAllAboutTheGame.Data.Models.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Services.Data.Services
@@ -40,7 +38,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                 CreatedOn = DateTime.Now
             };
 
-
             this.context.CreditCards.Add(creditCard);
             await this.context.SaveChangesAsync();
 
@@ -55,7 +52,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
 
             return userCard;
         }
-
 
         public async Task<string> GetCardNumber(string cardNumber)
         {

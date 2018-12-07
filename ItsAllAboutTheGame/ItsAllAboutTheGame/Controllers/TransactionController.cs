@@ -5,9 +5,7 @@ using ItsAllAboutTheGame.Services.Data.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -50,9 +48,9 @@ namespace ItsAllAboutTheGame.Controllers
             var userWallet = await this.walletService.GetUserWallet(user);
 
             var model = new NewDepositViewModel();
+
             model.CardCurrency = userWallet.Currency;
             model.Cards = userCards.ToList();
-
 
             return View(model);
         }
@@ -71,10 +69,9 @@ namespace ItsAllAboutTheGame.Controllers
 
             var deposit = await this.transactionService.MakeDeposit(user, model.CreditCardId, model.Amount);
 
-            var resultAmount = await this.foreignExchangeService.AJAXBalance(user);
-           
+            var convertedAmount = await this.walletService.ConvertBalance(user);
 
-            return Json(new { Balance = resultAmount });
+            return Json(new { Balance = convertedAmount });
         }
 
         [HttpGet]
@@ -98,7 +95,6 @@ namespace ItsAllAboutTheGame.Controllers
 
                 return RedirectToAction("Deposit", "Transaction");
             }
-
 
             return this.View();
         }

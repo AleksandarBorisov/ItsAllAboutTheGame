@@ -20,5 +20,9 @@
 
         public const string UsersRolesCache = "UsersRoles";
 
+        public static string DepositDescription = "Deposit with card ";
+
+        public static string StakeDescription = "Stake on game ";
+
     }
 }

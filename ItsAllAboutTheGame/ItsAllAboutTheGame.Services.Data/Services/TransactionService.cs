@@ -2,7 +2,6 @@
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Data.Models.Enums;
 using ItsAllAboutTheGame.GlobalUtilities.Constants;
-using ItsAllAboutTheGame.Services.Data.Constants;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using Microsoft.AspNetCore.Identity;
@@ -46,12 +45,12 @@ namespace ItsAllAboutTheGame.Services.Data.Services
 
             var convertedamount = amount / rates.Rates[userWallet.Currency.ToString()];
 
-             user.Wallet.Balance += convertedamount;
+            user.Wallet.Balance += convertedamount;
 
-            var transaction =   new Transaction()
+            var transaction = new Transaction()
             {
                 Type = TransactionType.Deposit,
-                Description = ServicesDataConstants.DepositDescription + userCardNumber,
+                Description = GlobalConstants.DepositDescription + userCardNumber,
                 User = user,
                 UserId = user.Id,
                 Amount = convertedamount,
@@ -89,6 +88,33 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             }
 
             return transactions.ToPagedList(page, size);
+        }
+
+        public async Task<TransactionDTO> MakeStake(User user, int amount, string game)
+        {
+            var wallet = await this.context.Wallets.FirstOrDefaultAsync(k => k.User == user);
+
+            var rates = await this.foreignExchangeService.GetConvertionRates();
+
+            var convertedAmount = amount / rates.Rates[wallet.Currency.ToString()];
+
+            var transaction = new Transaction()
+            {
+                Type = TransactionType.Stake,
+                Description = GlobalConstants.StakeDescription + game,
+                User = user,
+                UserId = user.Id,
+                Amount = convertedAmount,
+                CreatedOn = DateTime.Now
+            };
+
+            this.context.Transactions.Add(transaction);
+
+            await this.context.SaveChangesAsync();
+
+            var transactionDTO = new TransactionDTO(transaction);
+
+            return transactionDTO;
         }
     }
 }

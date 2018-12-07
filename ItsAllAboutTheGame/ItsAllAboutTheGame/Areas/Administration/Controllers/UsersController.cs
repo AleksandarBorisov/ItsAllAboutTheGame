@@ -40,7 +40,7 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Index");
+                return PartialView("_UsersTablePartial", model);
             }
 
             var users = this.userService.GetAllUsers(model.SearchString, model.PageNumber,model.PageSize, model.SortOrder);
