@@ -1,17 +1,14 @@
-﻿@model UsersViewModel
-
+﻿
 @{
     ViewData["Title"] = "Index";
 }
 
 <main class="text-dark d-flex justify-content-center text-center" id="users-management">
     <div class="container " id="users-container">
-        <partial name="_UsersTablePartial" model="Model" />
+        <partial name="_TransactionsTablePartial" model="Model" />
     </div>
 </main>
 
 @section Scripts{
     <script src="~/js/users.js"></script>
 }
-
-

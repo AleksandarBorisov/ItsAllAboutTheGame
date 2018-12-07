@@ -158,7 +158,7 @@ namespace ItsAllAboutTheGame.Services.Data
             return userCards;
         }
 
-        public IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefultSorting)
+        public IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefultUserSorting)
         {
             var users = this.context
                 .Users

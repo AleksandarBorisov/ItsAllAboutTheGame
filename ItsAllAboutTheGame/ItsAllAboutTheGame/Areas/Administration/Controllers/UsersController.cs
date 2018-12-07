@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 {
     [Area(GlobalConstants.AdminArea)]
-    [Authorize(Roles = "MasterAdministrator")]
+    [Authorize(Roles = GlobalConstants.AdminRole + "," + GlobalConstants.MasterAdminRole)]
     public class UsersController : Controller
     {
         private readonly IUserService userService;
@@ -29,7 +29,7 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 
             var model = new UsersViewModel(users);
 
-            model.SortOrder = model.SortOrder ?? GlobalConstants.DefultSorting;
+            model.SortOrder = model.SortOrder ?? GlobalConstants.DefultUserSorting;
 
             return View(model);
         }
@@ -38,6 +38,11 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult UpdateTable(UsersViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
             var users = this.userService.GetAllUsers(model.SearchString, model.PageNumber,model.PageSize, model.SortOrder);
 
             var newModel = new UsersViewModel(users);

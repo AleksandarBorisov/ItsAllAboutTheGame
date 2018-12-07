@@ -14,7 +14,9 @@
 
         public const int DefultPageSize = 5;
 
-        public const string DefultSorting = "Username_asc";
+        public const string DefultUserSorting = "Username_asc";
+
+        public const string DefultTransactionSorting = "CreatedOn_asc";
 
         public const string UsersRolesCache = "UsersRoles";
 

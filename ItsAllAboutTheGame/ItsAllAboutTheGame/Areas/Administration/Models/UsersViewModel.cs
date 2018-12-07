@@ -15,7 +15,6 @@ namespace ItsAllAboutTheGame.Areas.Administration.Models
         public UsersViewModel(IPagedList<UserDTO> usersList)
         {
             this.Users = usersList;
-            this.UsersCount = usersList.Count;
             this.HasNextPage = usersList.HasNextPage;
             this.HasPreviousPage = usersList.HasPreviousPage;
             this.PageCount = usersList.PageCount;
@@ -24,14 +23,13 @@ namespace ItsAllAboutTheGame.Areas.Administration.Models
             this.TotalItemCount = usersList.TotalItemCount;
         }
 
-        public int UsersCount { get; set; }
-
         public bool HasNextPage { get; set; }
 
         public bool HasPreviousPage { get; set; }
 
         public int PageCount { get; set; }
 
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "Please enter valid positive Page Number.")]
         public int PageNumber { get; set; }
 
         [RegularExpression(@"^[0-9]{2}$", ErrorMessage = "Please enter valid Page Size up to 99.")]
