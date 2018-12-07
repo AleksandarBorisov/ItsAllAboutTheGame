@@ -212,8 +212,8 @@ namespace ItsAllAboutTheGame.Data.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
-                        new { Id = "2a72b974-47b8-4575-a219-bbb9cd97ba3d", ConcurrencyStamp = "5733777b-b2ad-4282-b012-cc570b96b244", Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
-                        new { Id = "c9e4112c-de04-4e88-8425-856b7b4ab3d0", ConcurrencyStamp = "17400254-154e-4847-aedf-00940dbf0201", Name = "MasterAdministrator", NormalizedName = "MASTERADMINISTRATOR" }
+                        new { Id = "4901627d-334c-4528-9648-514e3b983294", ConcurrencyStamp = "87fac042-617a-443b-9386-5d4c3fce1705", Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
+                       new { Id = "206b8c29-579b-43f6-975e-b8d39cafbf07", ConcurrencyStamp = "8c3a04e2-7112-41c6-a63f-b1d9de3eb5f0", Name = "MasterAdministrator", NormalizedName = "MASTERADMINISTRATOR" }
                     );
                 });
 
