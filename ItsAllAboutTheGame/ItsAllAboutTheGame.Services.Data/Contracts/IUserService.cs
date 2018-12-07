@@ -23,6 +23,8 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 
         IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = 5, string sortOrder = GlobalConstants.DefultUserSorting);
 
+        IPagedList<TransactionDTO> GetUserTransactionHistory(string userId, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefultTransactionSorting);
+
         Task<IEnumerable<CreditCard>> UserCards(User user);
 
         Task<UserDTO> LockoutUser(string userId, int days);
