@@ -1,6 +1,6 @@
-﻿using ExpressiveAnnotations.Attributes;
-using ItsAllAboutTheGame.Data.Models.Enums;
+﻿using ItsAllAboutTheGame.Data.Models.Enums;
 using ItsAllAboutTheGame.Services.Data.DTO;
+using ItsAllAboutTheGame.Utilities.CustomAttributes.GameAttributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace ItsAllAboutTheGame.Models.GameViewModels
@@ -14,22 +14,23 @@ namespace ItsAllAboutTheGame.Models.GameViewModels
 
         public WalletViewModel(WalletDTO wallet)
         {
-            this.Balance = (int)wallet.Balance;
+            this.Balance = wallet.Balance;
             this.Currency = wallet.Currency;
             this.CurrencySymbol = wallet.CurrencySymbol;
         }
         
-        public int Balance { get; set; }
+        public decimal Balance { get; set; }
 
         public Currency Currency { get; set; }
 
         public string CurrencySymbol { get; set; }
 
+        //[AssertThat("Stake < Balance", ErrorMessage = "You cannot stake more than you have in your deposit!")]
         [Required]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "Please enter valid positive Page Number.")]
-        [AssertThat("Stake <= Balance", ErrorMessage = "You cannot stake more than you have in your deposit!")]
+        [ValidStake("Balance",ErrorMessage = "You cannot stake more than you have in your deposit!")]
         public int? Stake { get; set; }
 
-        public int Win { get; set; }
+        public decimal Win { get; set; }
     }
 }

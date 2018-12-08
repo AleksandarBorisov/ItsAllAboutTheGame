@@ -1,5 +1,6 @@
 ﻿using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Data.Models.Enums;
+using System;
 
 namespace ItsAllAboutTheGame.Services.Data.DTO
 {
@@ -12,7 +13,7 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
 
         public UserInfoDTO(User user, ForeignExchangeDTO currencies)
         {
-            this.Balance = user.Wallet.Balance * currencies.Rates[user.Wallet.Currency.ToString()];
+            this.Balance = Math.Round(user.Wallet.Balance * currencies.Rates[user.Wallet.Currency.ToString()], 2);
             this.Username = user.UserName;
             this.Currency = user.Wallet.Currency.ToString();
             this.UserId = user.Id;

@@ -3,13 +3,13 @@
     ViewData["Title"] = "GameOne";
 }
 
-<main class="text-dark d-flex justify-content-center text-center" id="game-management">
+<main class="text-dark d-flex justify-content-center text-center" id="game-management" >
     <div class="container game-container font-weight-bold">
         <partial name="_GameOnePartial" model="Model" />
     </div>
 </main>
 
 @section Scripts{
-    @*<script src="~/js/gameone.js"></script>*@
+    <script src="~/js/gameone.js"></script>
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }

@@ -31,6 +31,7 @@
     <ProjectReference Include="..\ItsAllAboutTheGame.Data\ItsAllAboutTheGame.Data.csproj" />
     <ProjectReference Include="..\ItsAllAboutTheGame.Services.Data\ItsAllAboutTheGame.Services.Data.csproj" />
     <ProjectReference Include="..\ItsAllAboutTheGame.Services.External\ItsAllAboutTheGame.Services.External.csproj" />
+    <ProjectReference Include="..\ItsAllAboutTheGame.Services.Game\ItsAllAboutTheGame.Services.Game.csproj" />
   </ItemGroup>
 
   <ItemGroup>

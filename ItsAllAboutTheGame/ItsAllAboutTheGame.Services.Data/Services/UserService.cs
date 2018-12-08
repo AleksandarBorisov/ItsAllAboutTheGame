@@ -127,9 +127,8 @@ namespace ItsAllAboutTheGame.Services.Data
 
                 var userInfo = new UserInfoDTO(user, currencies);
 
-                Math.Round(userInfo.Balance, 2);
-
                 var getCurrencySymbol = ServicesDataConstants.CurrencySymbols.TryGetValue(userInfo.Currency, out string currencySymbol);
+
                 if (!getCurrencySymbol)
                 {
                     throw new EntityNotFoundException("Currency with such ISOCurrencySymbol cannot be found");
