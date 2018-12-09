@@ -289,3 +289,28 @@ body {
 .rules-table-description {
     font-size: 13px;
 }
+
+.game-heading {
+    font-family: 'Gamja Flower', cursive;
+    font-size: 30px;
+    color: darkgoldenrod;
+}
+
+#first-game-image{
+    border: 10px solid darkgreen;
+    border-radius: 7px;
+}
+
+#second-game-image {
+    border: 10px solid dodgerblue;
+    border-radius: 7px;
+}
+
+#third-game-image {
+    border: 10px solid purple;
+    border-radius: 7px;
+}
+
+.contact-page {
+    padding: 15%;
+}
