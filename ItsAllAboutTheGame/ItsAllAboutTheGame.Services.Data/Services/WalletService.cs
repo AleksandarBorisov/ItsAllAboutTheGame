@@ -64,7 +64,7 @@ namespace ItsAllAboutTheGame.Services.Data
             }
         }
 
-        public async Task<WalletDTO> UpdateUserWallet(User user, int stake)
+        public async Task<WalletDTO> UpdateUserWallet(User user, decimal stake)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace ItsAllAboutTheGame.Services.Data
 
                 var currencies = await this.foreignExchangeService.GetConvertionRates();
 
-                oldWallet.Balance -= stake / currencies.Rates[oldWallet.Currency.ToString()];
+                oldWallet.Balance += stake / currencies.Rates[oldWallet.Currency.ToString()];
 
                 this.context.Wallets.Update(oldWallet);
 

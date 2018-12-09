@@ -1,6 +1,8 @@
 ﻿using ItsAllAboutTheGame.Contracts.GlobalUtilities;
 using ItsAllAboutTheGame.Services.Game.Contracts.GameOne;
+using ItsAllAboutTheGame.Services.Game.DTO;
 using ItsAllAboutTheGame.Services.Game.Enums;
+using System.Linq;
 
 namespace ItsAllAboutTheGame.Services.Game.GameOne
 {
@@ -13,25 +15,59 @@ namespace ItsAllAboutTheGame.Services.Game.GameOne
             this.gameRadomizer = gameRadomizer;
         }
 
-        public decimal Play(int stake)
+        public GameResultDTO Play(int stake)
         {
-            var grid = GenerateGrid();
+            var result = GenerateGrid();
 
-            var wonAmount = EvaluateGrid(grid);
+            var evaluatedGrid = EvaluateGrid(result.Grid);
 
-            return wonAmount;
+            result.WonAmount = evaluatedGrid[evaluatedGrid.Length - 1] * stake;
+
+            result.WinningRows = evaluatedGrid.Take(evaluatedGrid.Length - 1).Select(r => r == 1);
+
+            return result;
         }
 
-        private decimal EvaluateGrid(string[,] grid)
+        private decimal[] EvaluateGrid(GameResults[,] grid)
         {
-            decimal wonAmount = 0.0m;
+            decimal[] results = new decimal[grid.GetLength(0) + 1];
 
-            return wonAmount;
+            for (int row = 0; row < grid.GetLength(0); row++)
+            {
+                var rowValue = (decimal)grid[row, 0] / 10.0m;//We take the first value
+
+                var rowPrime = grid[row, 0];
+
+                var rowWins = true;
+
+                for (int col = 1; col < grid.GetLength(1); col++)
+                {
+                    if (rowPrime == GameResults.Wildcard && grid[row, col] != GameResults.Wildcard)
+                    {
+                        rowPrime = grid[row, col];
+                    }
+                    if (grid[row, col] == rowPrime || grid[row, col] == GameResults.Wildcard)
+                    {//We evaluate the current value if it is equal to the previous or to the WildCard
+                        rowValue += (decimal)grid[row, col] / 10.0m;
+                    }
+                    else
+                    {
+                        rowWins = false;
+                        break;
+                    }
+                }
+                if (rowWins)
+                {
+                    results[results.Length - 1] += rowValue;
+                    results[row] = 1;
+                }
+            }
+            return results;
         }
 
-        public string[,] GenerateGrid()
+        public GameResultDTO GenerateGrid()
         {
-            var grid = new string[4, 3];
+            var grid = new GameResults[4, 3];
 
             for (int row = 0; row < grid.GetLength(0); row++)
             {
@@ -41,28 +77,32 @@ namespace ItsAllAboutTheGame.Services.Game.GameOne
                 }
             }
 
-            return grid;
+            var result = new GameResultDTO();
+
+            result.Grid = grid;
+
+            return result;
         }
 
-        private string GenerateValue()
+        private GameResults GenerateValue()
         {
             var value = gameRadomizer.Next(1, 101);
 
             if (value <= 5)
             {
-                return GameResults.Wildcard.ToString();
+                return GameResults.Wildcard;
             }
             else if (value <= 20)
             {
-                return GameResults.Pineapple.ToString();
+                return GameResults.Pineapple;
             }
-            else if( value <= 55)
+            else if (value <= 55)
             {
-                return GameResults.Banana.ToString();
+                return GameResults.Banana;
             }
             else
             {
-                return GameResults.Apple.ToString();
+                return GameResults.Apple;
             }
         }
     }

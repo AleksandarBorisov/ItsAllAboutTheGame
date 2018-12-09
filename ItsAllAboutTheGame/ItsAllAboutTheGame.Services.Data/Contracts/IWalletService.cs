@@ -11,7 +11,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 
         Task<WalletDTO> GetUserWallet(User user);
 
-        Task<WalletDTO> UpdateUserWallet(User user, int stake);
+        Task<WalletDTO> UpdateUserWallet(User user, decimal stake);
 
         Task<decimal> ConvertBalance(User user);
     }

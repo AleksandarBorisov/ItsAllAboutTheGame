@@ -5,6 +5,7 @@ using ItsAllAboutTheGame.Services.Game.Contracts.GameOne;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Controllers
@@ -17,8 +18,8 @@ namespace ItsAllAboutTheGame.Controllers
         private readonly UserManager<User> userManager;
         private readonly IGameOne gameOne;
 
-        public GameController(IWalletService walletService, 
-            UserManager<User> userManager, 
+        public GameController(IWalletService walletService,
+            UserManager<User> userManager,
             ITransactionService transactionService,
             IGameOne gameOne)
         {
@@ -40,7 +41,9 @@ namespace ItsAllAboutTheGame.Controllers
 
             var userWallet = await this.walletService.GetUserWallet(user);
 
-            var model = new WalletViewModel(userWallet);
+            var gameGrid = gameOne.GenerateGrid();
+
+            var model = new WalletViewModel(userWallet, gameGrid);
 
             return View(model);
         }
@@ -48,29 +51,36 @@ namespace ItsAllAboutTheGame.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GameOneSpin(WalletViewModel model)
-        {
-            if (!ModelState.IsValid)
+        {//TODO: Test the view model for int? behaviour
+            var user = await userManager.GetUserAsync(HttpContext.User);
+
+            var oldWallet = await this.walletService.GetUserWallet(user);
+
+            if (!ModelState.IsValid || !(Math.Abs(Math.Round(oldWallet.Balance, 2) - Math.Round(model.Balance, 2)) < 0.02m))
             {
-                var oldUser = await userManager.GetUserAsync(HttpContext.User);
+                ModelState.Clear();
 
-                var oldWallet = await this.walletService.GetUserWallet(oldUser);
+                var gameGrid = gameOne.GenerateGrid();
 
-                var oldModel = new WalletViewModel(oldWallet);
+                var oldModel = new WalletViewModel(oldWallet, gameGrid);
 
                 return PartialView("_GameOnePartial", oldModel);
             }
 
             ModelState.Remove("Stake");
 
-            var user = await userManager.GetUserAsync(HttpContext.User);
-
-            var userWallet = await this.walletService.UpdateUserWallet(user, (int)model.Stake);
+            var userWallet = await this.walletService.UpdateUserWallet(user, -(decimal)model.Stake);
 
             await this.transactionService.MakeStake(user, (int)model.Stake, "3x4");
 
             var gameResult = gameOne.Play((int)model.Stake);
 
-            var newModel = new WalletViewModel(userWallet);
+            if (gameResult.WonAmount != 0.0m)
+            {
+                userWallet = await this.walletService.UpdateUserWallet(user, gameResult.WonAmount);
+            }
+
+            var newModel = new WalletViewModel(userWallet, gameResult);
 
             return PartialView("_GameOnePartial", newModel);
         }

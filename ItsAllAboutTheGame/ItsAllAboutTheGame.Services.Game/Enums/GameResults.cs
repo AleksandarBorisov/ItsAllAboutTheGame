@@ -2,9 +2,9 @@
 {
     public enum GameResults
     {
-        Apple,
-        Banana,
-        Pineapple,
-        Wildcard
+        Apple = 4,
+        Banana = 6,
+        Pineapple = 8,
+        Wildcard = 0
     }
 }

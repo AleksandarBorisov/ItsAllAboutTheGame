@@ -38,6 +38,10 @@ namespace ItsAllAboutTheGame.Middleware
             {
                 context.Response.Redirect("/404");
             }
+            catch (ArgumentException ex)
+            {
+                context.Response.Redirect("/404");
+            }
             catch (HttpRequestException ex)
             {
                 context.Response.Redirect("/ForeignApiError");

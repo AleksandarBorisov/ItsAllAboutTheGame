@@ -35,7 +35,31 @@ $(function () {
 
         $.post($currentForm.attr('action'), dataToSend, function (serverData) {
 
-            $('.game-one-table').html(serverData);
+            const $gameContainer = $('.game-container');
+            //We replace the whole html part
+            $gameContainer.html(serverData);
+            //We find the new balance data
+            var $newBalance = $gameContainer.find('#balance').data('balance');
+            //We are taking the field user-balance
+            const $balance = $('#user-balance');
+            //We update its data-balance with the new balance
+            $balance.attr('data-balance', $newBalance);
+            //We take its data-symbol
+            const symbol = $balance.data('symbol');
+            //Finally we update the text of the text field
+            $('#user-balance-text').text($newBalance + ' ' + symbol);
         });
     });
+
+    //Disable scrolling
+    $('html, body').css({
+        overflow: 'hidden',
+        height: '100%'
+    });
+
+    //Enable scrolling
+    //$('html, body').css({
+    //    overflow: 'auto',
+    //    height: 'auto'
+    //});
 });
