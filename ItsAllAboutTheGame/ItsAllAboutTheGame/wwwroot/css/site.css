@@ -249,6 +249,10 @@ body {
     padding-top: 20%;
 }
 
+#third-game-management {
+    padding-top: 14%;
+}
+
 .spin-form input[name="Balance"] {
     opacity: 0;
 }

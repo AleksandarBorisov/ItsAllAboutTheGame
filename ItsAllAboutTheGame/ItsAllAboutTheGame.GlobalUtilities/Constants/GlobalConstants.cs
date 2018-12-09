@@ -1,4 +1,6 @@
-﻿namespace ItsAllAboutTheGame.GlobalUtilities.Constants
+﻿using System.Collections.Generic;
+
+namespace ItsAllAboutTheGame.GlobalUtilities.Constants
 {
     public class GlobalConstants
     {
@@ -23,6 +25,14 @@
         public static string DepositDescription = "Deposit with card ";
 
         public static string StakeDescription = "Stake on game ";
+
+        public static string GameOneGrid = "3x4";
+
+        public static string GameTwoGrid = "5x5";
+
+        public static string GameThreeGrid = "8x5";
+
+        public static HashSet<string> Games = new HashSet<string>() { GameOneGrid, GameTwoGrid, GameThreeGrid };
 
     }
 }

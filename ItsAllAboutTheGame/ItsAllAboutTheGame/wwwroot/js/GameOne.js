@@ -52,10 +52,10 @@ $(function () {
     });
 
     //Disable scrolling
-    //$('html, body').css({
-    //    overflow: 'hidden',
-    //    height: '100%'
-    //});
+    $('html, body').css({
+        overflow: 'hidden',
+        height: '100%'
+    });
 
     //Enable scrolling
     //$('html, body').css({

@@ -4,8 +4,8 @@ namespace ItsAllAboutTheGame.Services.Game.Contracts.GameOne
 {
     public interface IGameOne
     {
-        GameResultDTO Play(int stake);
+        GameResultDTO Play(int stake, string gridDimensions);
 
-        GameResultDTO GenerateGrid();
+        GameResultDTO GenerateGrid(string gridDimensions);
     }
 }

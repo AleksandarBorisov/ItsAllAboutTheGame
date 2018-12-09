@@ -15,9 +15,9 @@ namespace ItsAllAboutTheGame.Services.Game.GameOne
             this.gameRadomizer = gameRadomizer;
         }
 
-        public GameResultDTO Play(int stake)
+        public GameResultDTO Play(int stake, string gridDimensions)
         {
-            var result = GenerateGrid();
+            var result = GenerateGrid(gridDimensions);
 
             var evaluatedGrid = EvaluateGrid(result.Grid);
 
@@ -65,9 +65,15 @@ namespace ItsAllAboutTheGame.Services.Game.GameOne
             return results;
         }
 
-        public GameResultDTO GenerateGrid()
+        public GameResultDTO GenerateGrid(string gridDimensions)
         {
-            var grid = new GameResults[4, 3];
+            string[] dimensions = gridDimensions.Split('x');
+
+            int rows = int.Parse(dimensions[0]);
+
+            int cows = int.Parse(dimensions[1]);
+
+            var grid = new GameResults[rows, cows];
 
             for (int row = 0; row < grid.GetLength(0); row++)
             {
