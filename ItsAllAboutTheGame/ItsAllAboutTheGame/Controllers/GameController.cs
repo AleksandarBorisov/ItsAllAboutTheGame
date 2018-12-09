@@ -51,7 +51,7 @@ namespace ItsAllAboutTheGame.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> GameOneSpin(WalletViewModel model)
-        {//TODO: Test the view model for int? behaviour
+        {
             var user = await userManager.GetUserAsync(HttpContext.User);
 
             var oldWallet = await this.walletService.GetUserWallet(user);

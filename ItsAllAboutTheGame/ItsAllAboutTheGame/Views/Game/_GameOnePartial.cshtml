@@ -20,27 +20,27 @@
     <div class="money-row ">
         <div class="row m-0">
             <div class="align-middle d-inline-flex">
-                <div class="mr-1">Balance:</div>
-                <div class="mr-1" id="balance" data-balance="@Model.Balance.ToString("0.00")" data-symbol="@Model.CurrencySymbol">@Model.Balance</div>
-                <div id="currency-symbol">@Model.CurrencySymbol</div>
+                <div class="mr-1 font-weight-bold">Balance:</div>
+                <div class="mr-1 font-weight-bold" id="balance" data-balance="@Model.Balance.ToString("0.00")" data-symbol="@Model.CurrencySymbol">@Model.Balance</div>
+                <div id="currency-symbol" class="font-weight-bold">@Model.CurrencySymbol</div>
             </div>
-        </div>
-        <div class="row m-0">
-            <div class="align-middle d-inline-flex">
-                <div class="mr-1">Win:</div>
-                <div class="mr-1" id="win"> @Model.Win.ToString("0.00")</div>
-                <div id="currency-symbol">@Model.CurrencySymbol</div>
+        @*</div>
+        <div class="row m-0">*@
+            <div class="align-middle d-inline-flex ml-auto">
+                <div class="mr-1 font-weight-bold">Win:</div>
+                <div class="mr-1 font-weight-bold" id="win"> @Model.Win.ToString("0.00")</div>
+                <div id="currency-symbol" class="font-weight-bold">@Model.CurrencySymbol</div>
             </div>
         </div>
     </div>
-    <div class="row ">
-        <div class="col-md-12 spin-row ">
+    <div class="row m-0">
+        <div class="col-md-12 spin-row">
             <form class="spin-form" asp-controller="Game" asp-action="GameOneSpin" method="post">
-                <div class="input-group mb-3 flex-nowrap align-middle flex-center">
+                <div class="input-group flex-nowrap align-middle flex-center">
                     <div class="input-group-prepend input-group-text">
-                        <p>Stake: </p>
+                        <p class="font-weight-bold">Stake: </p>
                     </div>
-                    <input asp-for="@Model.Stake" type="text" placeholder="0 @Model.CurrencySymbol" onkeypress="return isNumberKey(event)" class="form-control" id="stake-amount" maxlength="7" />
+                    <input asp-for="@Model.Stake" type="text" placeholder="0 @Model.CurrencySymbol" onkeypress="return isNumberKey(event)" class="form-control font-weight-bold" id="stake-amount" maxlength="7" />
                     <input type="text" asp-for="@Model.Balance" value="@Model.Balance" class="text-hide" />
                     <div class="input-group-append">
                         <button class="btn btn-orange" type="submit">Spin</button>
