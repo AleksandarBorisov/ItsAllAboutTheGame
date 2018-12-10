@@ -235,6 +235,23 @@ body {
     font-weight: bold;
 }
 
+
+
+#transactions-history-container {
+    border-radius: 5px;
+    background-color: gray;
+    padding: 20px;
+    display: block;
+    width:70%;
+    /*max-height: 200px;*/
+    overflow-y: auto;
+}
+
+#transactions-history-management {
+    padding-top: 20%;
+}
+
+
 .game-rules-container {
     border-radius: 5px;
     background-color: white;
@@ -251,6 +268,7 @@ body {
 
 #game-management {
     padding-top: 20%;
+
 }
 
 #third-game-management {

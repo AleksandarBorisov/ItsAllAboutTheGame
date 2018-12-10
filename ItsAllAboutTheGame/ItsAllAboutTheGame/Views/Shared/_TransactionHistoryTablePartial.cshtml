@@ -1,0 +1,81 @@
+﻿@model TransactionHistoryViewModel
+@{
+    ViewData["Title"] = "TransactionHistoryTablePartial";
+}
+
+
+
+<div id="transaction-table-pagination">
+    <table class="table text-nowrap m-0 " id="transactions-table">
+        <tbody>
+            <tr class="amber">
+                <th class="font-weight-bold">@nameof(Model.CreatedOn)</th>
+                <th class="font-weight-bold">@nameof(Model.Type)</th>
+                <th class="font-weight-bold">@nameof(Model.Amount)</th>
+                <th class="font-weight-bold">@nameof(Model.Description)</th>
+            </tr>
+        @foreach (var transaction in Model.Transactions)
+        {
+            <partial name="_TransactionHistoryRowPartial" model="transaction" />
+        }
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination pg-teal">
+            <li class="page-item">
+                @if (Model.HasPreviousPage)
+                {
+                    <form class="float-left pagination-form" asp-area="" asp-action="UpdateTable" asp-controller="Manage" method="post">
+                        <div class="input-group mb-3 flex-nowrap">
+                            <div class="input-group-append">
+                                <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
+                                <input type="hidden" asp-for="@Model.SortOrder" value="@Model.SortOrder" />
+                                <input type="hidden" asp-for="@Model.PageNumber" value="@(Model.PageNumber - 1)" />
+                                <button type="submit" class="page-link pagination-form-button pagination">Previous</button>
+                            </div>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <a class="page-link navigational-disabled">Previous</a>
+                }
+            </li>
+            @for (int p = 1; p <= Model.PageCount; p++)
+            {
+                <li class="page-item @(p == Model.PageNumber ? "active" : "") ">
+                    <form class="float-left pagination-form" asp-area="" asp-action="UpdateTable" asp-controller="Manage" method="post">
+                        <div class="input-group mb-3 flex-nowrap">
+                            <div class="input-group-append">
+                                <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
+                                <input type="hidden" asp-for="@Model.SortOrder" value="@Model.SortOrder" />
+                                <input type="hidden" asp-for="@Model.PageNumber" value="@p" />
+                                <button type="submit" class="page-link pagination-form-button">@p</button>
+                            </div>
+                        </div>
+                    </form>
+                </li>
+            }
+            <li class="page-item">
+                @if (Model.HasNextPage)
+                {
+                    <form class="float-left pagination-form" asp-area="" asp-action="UpdateTable" asp-controller="Manage" method="post">
+                        <div class="input-group mb-3 flex-nowrap">
+                            <div class="input-group-append">
+                                <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
+                                <input type="hidden" asp-for="@Model.SortOrder" value="@Model.SortOrder" />
+                                <input type="hidden" asp-for="@Model.PageNumber" value="@(Model.PageNumber + 1)" />
+                                <button type="submit" class="page-link pagination-form-button pagination">Next</button>
+                            </div>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <a class="page-link navigational-disabled">Next</a>
+                }
+            </li>
+        </ul>
+    </nav>
+</div>
+

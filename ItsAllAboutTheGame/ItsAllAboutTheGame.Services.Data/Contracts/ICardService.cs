@@ -18,6 +18,8 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 
         bool IsExpired(DateTime expiryDate);
 
+        Task<CreditCard> DeleteCard(string userId, int cardId);
+
         Task<CreditCard> GetCard(string userId, int cardId);
 
         Task<string> GetCardNumber(string cardNumber);
@@ -25,6 +27,8 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
         Task<string> GetCardNumber(User user, int cardId);
 
         Task<IEnumerable<SelectListItem>> GetSelectListCards(User user);
+
+        Task<IEnumerable<SelectListItem>> GetSelectListCardsForDelete(User user);
 
         Task<IEnumerable<CreditCard>> GetCards(User user);
     }

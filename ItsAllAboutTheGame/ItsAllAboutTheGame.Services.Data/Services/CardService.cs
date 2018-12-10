@@ -1,12 +1,14 @@
 ﻿using ItsAllAboutTheGame.Data;
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Services.Data.Contracts;
+using ItsAllAboutTheGame.Services.Data.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Services.Data.Services
@@ -43,6 +45,25 @@ namespace ItsAllAboutTheGame.Services.Data.Services
 
             return creditCard;
         }     
+
+
+        public async Task<CreditCard> DeleteCard(string userId, int cardId)
+        {
+            try
+            {
+                var userCardToDelete = await this.context.CreditCards.Where(ci => ci.UserId == userId && ci.Id == cardId).FirstOrDefaultAsync();
+
+                userCardToDelete.IsDeleted = true;
+                await this.context.SaveChangesAsync();
+
+                return userCardToDelete;
+            }
+            catch (Exception ex)
+            {
+                throw new EntityNotFoundException($"Card with ID {cardId} does not exist!", ex);
+            }                      
+        }
+
 
         public async Task<CreditCard> GetCard(string userId, int cardId)
         {
@@ -81,7 +102,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
         {
             var currentDate = DateTime.Now;
 
-            var userCards = await this.context.CreditCards.Where(c => c.User == user)
+            var userCards = await this.context.CreditCards.Where(c => c.User == user && c.IsDeleted == false)
                .Select(c => new SelectListItem
                {
                    Value = c.Id.ToString(),
@@ -90,6 +111,22 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                    ? "expired" : ""),
                    Disabled = c.ExpiryDate < currentDate
                 }).ToListAsync();
+
+            return userCards.ToList();
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetSelectListCardsForDelete(User user)
+        {
+            var currentDate = DateTime.Now;
+
+            var userCards = await this.context.CreditCards.Where(c => c.User == user && c.IsDeleted == false)
+               .Select(c => new SelectListItem
+               {
+                   Value = c.Id.ToString(),
+                   Text = new string('*', c.CardNumber.Length - 4) + c.CardNumber.Substring(c.CardNumber.Length - 4)
+                   + " " + (c.ExpiryDate < currentDate
+                   ? "expired" : ""),
+               }).ToListAsync();
 
             return userCards.ToList();
         }

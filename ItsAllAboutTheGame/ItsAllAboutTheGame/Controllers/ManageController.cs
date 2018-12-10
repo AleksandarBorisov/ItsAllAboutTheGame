@@ -14,6 +14,8 @@ using ItsAllAboutTheGame.Models;
 using ItsAllAboutTheGame.Models.ManageViewModels;
 using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Data.Models;
+using ItsAllAboutTheGame.Services.Data.Contracts;
+using ItsAllAboutTheGame.GlobalUtilities.Constants;
 
 namespace ItsAllAboutTheGame.Controllers
 {
@@ -26,6 +28,7 @@ namespace ItsAllAboutTheGame.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
+        private readonly IUserService _userService;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
@@ -35,13 +38,15 @@ namespace ItsAllAboutTheGame.Controllers
           SignInManager<User> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _userService = userService;
         }
 
         [TempData]
@@ -50,62 +55,40 @@ namespace ItsAllAboutTheGame.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            var claims = HttpContext.User;
+            var userId = _userManager.GetUserId(claims);
+
+            if (userId == null)
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var model = new IndexViewModel
-            {
-                Username = user.UserName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage
-            };
+            var transactions = this._userService.GetUserTransactionHistory(userId);
+
+            var model = new TransactionHistoryViewModel(transactions);
+            
+            model.SortOrder = model.SortOrder ?? GlobalConstants.DefultTransactionSorting;
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(IndexViewModel model)
+        public IActionResult UpdateTable(TransactionHistoryViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            
+            var claims = HttpContext.User;
+            var userId = _userManager.GetUserId(claims);
 
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            var transactions = this._userService.GetUserTransactionHistory(userId, model.PageNumber, model.PageSize, model.SortOrder);
 
-            var email = user.Email;
-            if (model.Email != email)
-            {
-                var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
-                if (!setEmailResult.Succeeded)
-                {
-                    throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
-                }
-            }
+            var newModel = new TransactionHistoryViewModel(transactions);
 
-            var phoneNumber = user.PhoneNumber;
-            if (model.PhoneNumber != phoneNumber)
-            {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
-                }
-            }
+            newModel.SortOrder = model.SortOrder;
 
-            StatusMessage = "Your profile has been updated";
-            return RedirectToAction(nameof(Index));
+            return PartialView("_TransactionHistoryTablePartial", newModel);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -30,6 +30,8 @@ namespace ItsAllAboutTheGame.GlobalUtilities.Constants
 
         public static string GameOneGrid = "4x3";
 
+        public static string WithdrawDescription = "Withdrawal of ";
+
         public static string GameTwoGrid = "5x5";
 
         public static string GameThreeGrid = "8x5";

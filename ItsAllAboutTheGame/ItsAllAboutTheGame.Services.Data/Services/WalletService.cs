@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using ItsAllAboutTheGame.Data;
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Data.Models.Enums;
+using ItsAllAboutTheGame.GlobalUtilities.Constants;
 using ItsAllAboutTheGame.Services.Data.Constants;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
@@ -96,6 +98,47 @@ namespace ItsAllAboutTheGame.Services.Data
                 throw new EntityNotFoundException("Cannot find the specified Wallet", ex);
             }
         }
+
+
+        public async Task<TransactionDTO> WithdrawFromUserBalance(string userId, decimal amount)
+        {
+            try
+            {
+                var user = await this.context.Users.Where(u => u.Id == userId).Include(w => w.Wallet).FirstOrDefaultAsync();
+
+                var userWallet = user.Wallet;               
+
+                var rates =  await this.foreignExchangeService.GetConvertionRates();
+
+                var convertedAmount = amount / rates.Rates[userWallet.Currency.ToString()];
+
+                userWallet.Balance -= convertedAmount;
+
+                var transaction = new Transaction()
+                {
+                    Type = TransactionType.Withdraw,
+                    Description = GlobalConstants.WithdrawDescription + userWallet.Currency + amount,
+                    User = user,
+                    UserId = user.Id,
+                    Amount = convertedAmount,
+                    CreatedOn = DateTime.Now
+                    //TODO: Mock DateTime
+                };
+
+                this.context.Transactions.Add(transaction);
+
+                await this.context.SaveChangesAsync();
+
+                var transactionDTO = new TransactionDTO(transaction);
+
+                return transactionDTO;
+            }
+            catch (Exception ex)
+            {
+                throw new EntityNotFoundException("User wallet not found");
+            }
+        }
+
 
         public async Task<decimal> ConvertBalance(User user)
         {

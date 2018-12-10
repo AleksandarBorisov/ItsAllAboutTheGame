@@ -44,6 +44,7 @@ namespace ItsAllAboutTheGame.Controllers
             var user = await userManager.GetUserAsync(claims);
             var userId = await userManager.GetUserIdAsync(user);
             var userCards = await this.cardService.GetSelectListCards(user);
+            var userCardsForDelete = await this.cardService.GetSelectListCardsForDelete(user);
 
             var userWallet = await this.walletService.GetUserWallet(user);
 
@@ -51,6 +52,7 @@ namespace ItsAllAboutTheGame.Controllers
 
             model.CardCurrency = userWallet.Currency;
             model.Cards = userCards.ToList();
+            model.CardsForDelete = userCardsForDelete.ToList();
 
             return View(model);
         }
@@ -69,7 +71,9 @@ namespace ItsAllAboutTheGame.Controllers
 
             var deposit = await this.transactionService.MakeDeposit(user, model.CreditCardId, model.Amount);
 
+
             var convertedAmount = await this.walletService.ConvertBalance(user);
+
 
             return Json(new { Balance = convertedAmount });
         }
@@ -100,6 +104,32 @@ namespace ItsAllAboutTheGame.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteCard(NewDepositViewModel model)
+        {
+            var claims = HttpContext.User;
+            var user = await userManager.GetUserAsync(claims);
+            var userId = await userManager.GetUserIdAsync(user);
+            var userCardsForDelete = await this.cardService.GetSelectListCardsForDelete(user);
+            
+            var cardToDelete = await this.cardService.DeleteCard(userId, model.CreditCardId);
+
+            return RedirectToAction("Deposit", "Transaction");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Withdraw(NewDepositViewModel model)
+        {
+            var claims = HttpContext.User;
+            var user = await userManager.GetUserAsync(claims);
+            var userId = await userManager.GetUserIdAsync(user);
+
+            var withdrawedAmount = await this.walletService.WithdrawFromUserBalance(userId, model.Amount);
+
+           return RedirectToAction("Deposit", "Transaction");
+        }
+
         // Methods for remote attributes!
         // LOOK DOWN
 
@@ -110,8 +140,8 @@ namespace ItsAllAboutTheGame.Controllers
             try
             {
                 return Json(this.cardService.DoesCardExist(CardNumber));
-                 // if returned boolean is false the card exists
-                 // if returned boolean is true the card does NOT exist so the card number is valid
+                // if returned boolean is false the card exists
+                // if returned boolean is true the card does NOT exist so the card number is valid
             }
             catch (Exception ex)
             {
