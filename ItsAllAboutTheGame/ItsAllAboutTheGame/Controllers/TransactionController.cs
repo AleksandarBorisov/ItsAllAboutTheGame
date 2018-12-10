@@ -69,7 +69,7 @@ namespace ItsAllAboutTheGame.Controllers
             var user = await userManager.GetUserAsync(claims);
             var userCards = await this.cardService.GetSelectListCards(user);
 
-            var deposit = await this.transactionService.MakeDeposit(user, model.CreditCardId, model.Amount);
+            var userDeposit = await this.transactionService.MakeDeposit(user, model.CreditCardId, model.Amount);
 
 
             var convertedAmount = await this.walletService.ConvertBalance(user);
@@ -119,7 +119,7 @@ namespace ItsAllAboutTheGame.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Withdraw(NewDepositViewModel model)
+        public async Task<IActionResult> Withdraw(NewDepositViewModel model, string withdraw, string deposit)
         {
             var claims = HttpContext.User;
             var user = await userManager.GetUserAsync(claims);
@@ -127,7 +127,10 @@ namespace ItsAllAboutTheGame.Controllers
 
             var withdrawedAmount = await this.walletService.WithdrawFromUserBalance(userId, model.Amount);
 
-           return RedirectToAction("Deposit", "Transaction");
+            var convertedAmount = await this.walletService.ConvertBalance(user);
+
+
+            return Json(new { Balance = convertedAmount });
         }
 
         // Methods for remote attributes!

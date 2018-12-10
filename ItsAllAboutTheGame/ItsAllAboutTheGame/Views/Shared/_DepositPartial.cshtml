@@ -26,36 +26,6 @@
 </div>
 
 
-<div class="modal fade" id="Withdraw" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete card</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form asp-area="" asp-controller="Transaction" asp-action="Withdraw">
-                    Pick the amount of money you want to withdraw from your account :
-                    <div class="form-group">
-                        <input asp-for="Amount" class="form-control" />
-                        <span asp-validation-for="Amount" class="text-danger"></span>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
-                        <div class="form-group">
-                            <input type="submit" value="Withdraw" class="btn btn-success " />
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
 <div class="padding">
     <div class="row">
         <div id="" class="col-md-4">
@@ -68,9 +38,7 @@
                         Delete Card?
                     </button>
                 </div>
-                <a asp-area="" asp-controller="Transaction" asp-action="Withdraw" class="btn btn-outline-danger rounded font-weight-bold home-view-color" data-toggle="modal" data-target="#Withdraw">
-                    Withdraw
-                </a>
+
 
                 <div class="form-group">
                     <label asp-for="Amount" class="control-label"></label>
@@ -80,8 +48,14 @@
                 <p style="border-color:red">@Model.CardCurrency</p>
 
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-success" />
+                    <input type="submit" value="Deposit" class="btn btn-success" />
                 </div>
+            </form>
+            <form id="withdraw-form" asp-controller="Transaction" asp-action="Withdraw">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+                <input type="submit" value="Withdraw" class="btn btn-success" />
             </form>
         </div>
     </div>

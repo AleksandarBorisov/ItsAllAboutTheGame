@@ -112,7 +112,15 @@ namespace ItsAllAboutTheGame.Services.Data
 
                 var convertedAmount = amount / rates.Rates[userWallet.Currency.ToString()];
 
-                userWallet.Balance -= convertedAmount;
+                if (userWallet.Balance - convertedAmount < 0)
+                {
+                    return new TransactionDTO();
+                }
+                else
+                {
+                    userWallet.Balance -= convertedAmount;
+                }
+                
 
                 var transaction = new Transaction()
                 {
