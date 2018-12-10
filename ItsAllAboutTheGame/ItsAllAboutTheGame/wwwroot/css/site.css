@@ -232,7 +232,7 @@ body {
     font-weight: bold;
 }
 
-<<<<<<< HEAD
+
 
 #transactions-history-container {
     border-radius: 5px;
@@ -248,10 +248,8 @@ body {
     padding-top: 20%;
 }
 
-.game-container {
-=======
+
 .game-rules-container {
->>>>>>> 0ddee3706c6708c67860edb8e5df2256495c638d
     border-radius: 5px;
     background-color: white;
     padding: 20px;
