@@ -232,6 +232,7 @@ body {
     font-weight: bold;
 }
 
+<<<<<<< HEAD
 
 #transactions-history-container {
     border-radius: 5px;
@@ -248,12 +249,15 @@ body {
 }
 
 .game-container {
+=======
+.game-rules-container {
+>>>>>>> 0ddee3706c6708c67860edb8e5df2256495c638d
     border-radius: 5px;
     background-color: white;
     padding: 20px;
     display: block;
     overflow-y: auto;
-    width: 25%;
+    width: 50%;
 }
 
 .money-row {
@@ -264,4 +268,70 @@ body {
 #game-management {
     padding-top: 20%;
 
+}
+
+#third-game-management {
+    padding-top: 14%;
+}
+
+.spin-form input[name="Balance"] {
+    opacity: 0;
+}
+
+.game-one-table {
+    border-collapse: collapse;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.fruit-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.winning-row {
+    background-color: forestgreen;
+    border-radius: 10px;
+}
+
+.rules-table {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.rules-table-percentage {
+    font-size: 20px;
+}
+
+.rules-table-description {
+    font-size: 13px;
+}
+
+.game-heading {
+    font-family: 'Gamja Flower', cursive;
+    font-size: 30px;
+    color: darkgoldenrod;
+}
+
+#first-game-image{
+    border: 10px solid darkgreen;
+    border-radius: 7px;
+}
+
+#second-game-image {
+    border: 10px solid dodgerblue;
+    border-radius: 7px;
+}
+
+#third-game-image {
+    border: 10px solid purple;
+    border-radius: 7px;
+}
+
+.contact-page {
+    padding: 15%;
 }

@@ -18,6 +18,10 @@ using ItsAllAboutTheGame.Extensions;
 using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Services.Data.Services;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using ItsAllAboutTheGame.Contracts.GlobalUtilities;
+using ItsAllAboutTheGame.GlobalUtilities;
+using ItsAllAboutTheGame.Services.Game.Contracts.GameOne;
+using ItsAllAboutTheGame.Services.Game.GameOne;
 
 namespace ItsAllAboutTheGame
 {
@@ -77,6 +81,8 @@ namespace ItsAllAboutTheGame
             services.AddScoped<IForeignExchangeService, ForeignExchangeService>();
             services.AddScoped<IJsonDeserializer, JsonDeserializer>();
             services.AddScoped<IForeignExchangeApiCaller, ForeignExchangeApiCaller>();
+            services.AddScoped<IGameOne, GameOne>();
+            services.AddSingleton<IGameRandomizer, GameRandomizer>();
         }
 
         private void RegisterAuthentication(IServiceCollection services)

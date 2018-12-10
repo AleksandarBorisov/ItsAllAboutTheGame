@@ -1,17 +1,66 @@
 ﻿@{
     ViewData["Title"] = "Contact";
 }
-<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<main class="contact-page text-white">
+    <div class="container">
+        <!--Section: Gallery-->
+        <section id="gallery">
+            <!-- Heading -->
+            <h2 class="mb-5 font-weight-bold text-center">Contact us</h2>
+            <!--Grid row-->
+            <div class="row">
+                <!--Grid column-->
+                <div class="col-md-6 mb-4">
+                    <!--Google map-->
+                    <!--Grid row-->
+                    <div class="row text-center">
+                        <!--Grid column-->
+                        <div class="col-lg-4 col-md-12">
+                            <p class="float-left"><i class="fa fa-map fa-1x mr-2 grey-text"></i>Sofia</p>
+                        </div>
+                        <!--Grid column-->
+                        <!--Grid column-->
+                        <div class="col-lg-4 col-md-6">
+                            <p><i class="fa fa-building fa-1x mr-2 grey-text"></i>Mon - Sun 0:00-0:00</p>
+                        </div>
+                        <!--Grid column-->
+                        <!--Grid column-->
+                        <div class="col-lg-4 col-md-6">
+                            <p><i class="fa fa-phone fa-1x mr-2 grey-text"></i>+ 01 234 567 89</p>
+                        </div>
+                        <!--Grid column-->
+                    </div>
+                    <!--Grid row-->
+                    <div id="osm-map" class="z-depth-1-half map-container mb-5"></div>
+                </div>
+                <!--Grid column-->
+                <!--Grid column-->
+                <div class="col-md-6">
+                    <h4 class="mb-3"><strong>Our Local Casinos</strong></h4>
+                    <p>
+                        With 50 Casinos nationwide, you're never far from a fantastic night out.
+                        Explore the map to find your local AllAboutTheGame Casino.
+                    </p>
+                    <p>
+                        AllAboutTheGame Casinos are more than just a great place to play your favourite slots,
+                        casino games and card games. With stylish bars, classy restaurants and fantastic
+                        entertainment; a trip to a AllAboutTheGame Casino is a whole night out.
+                    </p>
+                    <p>
+                        Visit your local AllAboutTheGame Casino and experience it for yourself. Each casino has its
+                        own charms and decor but all are guaranteed to provide a fun, safe and friendly
+                        atmosphere in which to play games, meet friends and enjoy excellent entertainment, food and drink.
+                    </p>
+                </div>
+                <!--Grid column-->
+            </div>
+            <!--Grid row-->
+        </section>
+        <!--Section: Gallery-->
+    </div>
+</main>
 
-<address>
-    <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+@section Scripts {
+    <script src="~/js/contact.js"></script>
+}

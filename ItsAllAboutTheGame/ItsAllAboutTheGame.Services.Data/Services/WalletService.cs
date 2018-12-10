@@ -50,7 +50,9 @@ namespace ItsAllAboutTheGame.Services.Data
                     throw new EntityNotFoundException("Currency with such ISOCurrencySymbol cannot be found");
                 }
 
-                var wallet = new WalletDTO(userWallet);
+                var currencies = await this.foreignExchangeService.GetConvertionRates();
+
+                var wallet = new WalletDTO(userWallet, currencies);
 
                 wallet.CurrencySymbol = currencySymbol;
 
@@ -62,7 +64,7 @@ namespace ItsAllAboutTheGame.Services.Data
             }
         }
 
-        public async Task<WalletDTO> UpdateUserWallet(User user, int stake)
+        public async Task<WalletDTO> UpdateUserWallet(User user, decimal stake)
         {
             try
             {
@@ -70,13 +72,22 @@ namespace ItsAllAboutTheGame.Services.Data
 
                 var currencies = await this.foreignExchangeService.GetConvertionRates();
 
-                oldWallet.Balance -= stake / currencies.Rates[oldWallet.Currency.ToString()];
+                oldWallet.Balance += stake / currencies.Rates[oldWallet.Currency.ToString()];
 
                 this.context.Wallets.Update(oldWallet);
 
                 await this.context.SaveChangesAsync();
 
-                var newWallet = new WalletDTO(oldWallet);
+                var newWallet = new WalletDTO(oldWallet, currencies);
+
+                var getCurrencySymbol = ServicesDataConstants.CurrencySymbols.TryGetValue(newWallet.Currency.ToString(), out string currencySymbol);
+
+                if (!getCurrencySymbol)
+                {
+                    throw new EntityNotFoundException("Currency with such ISOCurrencySymbol cannot be found");
+                }
+
+                newWallet.CurrencySymbol = currencySymbol;
 
                 return newWallet;
             }

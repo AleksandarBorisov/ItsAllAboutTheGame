@@ -6,10 +6,10 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
 {
     public class WalletDTO
     {
-        public WalletDTO(Wallet wallet)
+        public WalletDTO(Wallet wallet, ForeignExchangeDTO currencies)
         {
             this.Currency = wallet.Currency;
-            this.Balance = Math.Round(wallet.Balance, 2);
+            this.Balance = Math.Round(wallet.Balance * currencies.Rates[wallet.Currency.ToString()], 2);
         }
 
         public Currency Currency { get; set; }

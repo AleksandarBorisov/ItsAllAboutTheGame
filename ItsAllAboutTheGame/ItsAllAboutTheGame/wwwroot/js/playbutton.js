@@ -8,4 +8,7 @@
         $("html, body").animate({ scrollTop: ($('#games').offset().top - navbar.height() - 20)}, 600);
     });
 
+    
+
+    new WOW().init();
 });

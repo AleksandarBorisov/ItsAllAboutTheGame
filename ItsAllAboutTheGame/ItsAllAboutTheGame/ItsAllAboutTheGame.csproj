@@ -31,6 +31,7 @@
     <ProjectReference Include="..\ItsAllAboutTheGame.Data\ItsAllAboutTheGame.Data.csproj" />
     <ProjectReference Include="..\ItsAllAboutTheGame.Services.Data\ItsAllAboutTheGame.Services.Data.csproj" />
     <ProjectReference Include="..\ItsAllAboutTheGame.Services.External\ItsAllAboutTheGame.Services.External.csproj" />
+    <ProjectReference Include="..\ItsAllAboutTheGame.Services.Game\ItsAllAboutTheGame.Services.Game.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +44,18 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Administration\Views\_ViewStart.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Game\GameThree.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Game\GameTwo.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Game\_GameThreePartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Game\_GameTwoPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>

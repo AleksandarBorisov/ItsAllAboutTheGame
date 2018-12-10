@@ -1,12 +1,7 @@
 ﻿using ItsAllAboutTheGame.Data.Models.Enums;
-using ItsAllAboutTheGame.Data.Models.Utilities.CustomAttributes;
 using ItsAllAboutTheGame.Data.Models.Utilities.CustomAttributes.UserAttributes;
-using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Models.AccountViewModels
 {

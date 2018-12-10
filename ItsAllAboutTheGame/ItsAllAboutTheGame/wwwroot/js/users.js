@@ -178,7 +178,7 @@ $(function () {
         dataToSend = $form.serialize();
 
         $.post($form.attr('action'), dataToSend, function (serverData) {
-            $('#users-table-pagination').html(serverData);
+            $('#users-container').html(serverData);
         });
     });
 
@@ -194,7 +194,7 @@ $(function () {
         dataToSend = $form.serialize();
 
         $.post($form.attr('action'), dataToSend, function (serverData) {
-            $('#users-table-pagination').html(serverData);
+            $('#users-container').html(serverData);
         });
     });
 
@@ -210,7 +210,7 @@ $(function () {
         dataToSend = $form.serialize();
 
         $.post($form.attr('action'), dataToSend, function (serverData) {
-            $('#users-table-pagination').html(serverData);
+            $('#users-container').html(serverData);
         });
     });
 
@@ -226,7 +226,7 @@ $(function () {
         dataToSend = $form.serialize();
 
         $.post($form.attr('action'), dataToSend, function (serverData) {
-            $('#users-table-pagination').html(serverData);
+            $('#users-container').html(serverData);
         });
     });
 });
