@@ -118,6 +118,18 @@ namespace ItsAllAboutTheGame.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> Withdraw(NewDepositViewModel model)
+        {
+            var claims = HttpContext.User;
+            var user = await userManager.GetUserAsync(claims);
+            var userId = await userManager.GetUserIdAsync(user);
+
+            var withdrawedAmount = await this.walletService.WithdrawFromUserBalance(userId, model.Amount);
+
+           return RedirectToAction("Deposit", "Transaction");
+        }
+
         // Methods for remote attributes!
         // LOOK DOWN
 

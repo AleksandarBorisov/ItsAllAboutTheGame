@@ -26,6 +26,8 @@ namespace ItsAllAboutTheGame.GlobalUtilities.Constants
 
         public static string StakeDescription = "Stake on game ";
 
+        public static string WithdrawDescription = "Withdrawal of ";
+
         public static string GameOneGrid = "3x4";
 
         public static string GameTwoGrid = "5x5";
