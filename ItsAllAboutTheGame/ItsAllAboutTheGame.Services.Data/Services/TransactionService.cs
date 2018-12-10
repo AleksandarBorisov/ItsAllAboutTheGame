@@ -43,9 +43,9 @@ namespace ItsAllAboutTheGame.Services.Data.Services
 
             var rates = await this.foreignExchangeService.GetConvertionRates();
 
-            var convertedamount = amount / rates.Rates[userWallet.Currency.ToString()];
+            var convertedAmount = Math.Round(amount / rates.Rates[userWallet.Currency.ToString()], 2);
 
-            user.Wallet.Balance += convertedamount;
+            user.Wallet.Balance += convertedAmount;
 
             var transaction = new Transaction()
             {
@@ -53,7 +53,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                 Description = GlobalConstants.DepositDescription + userCardNumber,
                 User = user,
                 UserId = user.Id,
-                Amount = convertedamount,
+                Amount = convertedAmount,
                 CreatedOn = DateTime.Now
                 //TODO: Mock DateTime
             };
@@ -66,42 +66,45 @@ namespace ItsAllAboutTheGame.Services.Data.Services
 
         public IPagedList<TransactionDTO> GetAllTransactions(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefultTransactionSorting)
         {
-            var transactions = this.context
+            IQueryable<Transaction> transactions = this.context
                 .Transactions
-                .Include(transaction => transaction.User)
-                .Select(u => new TransactionDTO(u));
-
-            var property = sortOrder.Remove(sortOrder.IndexOf("_"));
-            PropertyInfo prop = typeof(UserDTO).GetProperty(property, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
-            if (!sortOrder.Contains("_desc"))
-            {
-                transactions = transactions.OrderBy(transaction => prop.GetValue(transaction));
-            }
-            else
-            {
-                transactions = transactions.OrderByDescending(user => prop.GetValue(user));
-            }
+                .Include(transaction => transaction.User);
 
             if (!string.IsNullOrEmpty(searchByUsername))
             {
-                transactions = transactions.Where(user => user.Username.Contains(searchByUsername, StringComparison.InvariantCultureIgnoreCase));
+                transactions = transactions.Where(transaction => transaction.User.UserName.Contains(searchByUsername, StringComparison.InvariantCultureIgnoreCase));
             }
 
-            return transactions.ToPagedList(page, size);
+            var property = sortOrder.Remove(sortOrder.IndexOf("_"));
+            PropertyInfo prop = typeof(Transaction).GetProperty(property, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
+            if (!sortOrder.Contains("_desc"))
+            {
+                return transactions
+                    .OrderBy(transaction => prop.GetValue(transaction))
+                    .Select(u => new TransactionDTO(u))
+                    .ToPagedList(page, size);
+            }
+            else
+            {
+                return transactions
+                    .OrderByDescending(user => prop.GetValue(user))
+                    .Select(u => new TransactionDTO(u))
+                    .ToPagedList(page, size);
+            }
         }
 
-        public async Task<TransactionDTO> MakeStake(User user, int amount, string game)
+        public async Task<TransactionDTO> GameTransaction(User user, int amount, string game, string description, TransactionType type)
         {
             var wallet = await this.context.Wallets.FirstOrDefaultAsync(k => k.User == user);
 
             var rates = await this.foreignExchangeService.GetConvertionRates();
 
-            var convertedAmount = amount / rates.Rates[wallet.Currency.ToString()];
+            var convertedAmount = Math.Round(amount / rates.Rates[wallet.Currency.ToString()], 2);
 
             var transaction = new Transaction()
             {
-                Type = TransactionType.Stake,
-                Description = GlobalConstants.StakeDescription + game,
+                Type = type,
+                Description = description + game,
                 User = user,
                 UserId = user.Id,
                 Amount = convertedAmount,

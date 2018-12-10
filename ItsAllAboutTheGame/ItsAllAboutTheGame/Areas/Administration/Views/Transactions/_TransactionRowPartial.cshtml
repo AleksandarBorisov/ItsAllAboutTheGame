@@ -1,41 +1,13 @@
-﻿@*@model  TransactionDTO
+﻿@model  TransactionDTO
 @{
     ViewData["Title"] = "_TransactionRowPartial";
 }
 
 <tr>
     <td class="align-middle username">@Model.Username</td>
-    <td class="align-middle">
-        <form class="delete-form" asp-action="Delete" asp-controller="Users" asp-route-username="@Model.Username" method="post">
-            <input class="delete-button" type="checkbox" @(Model.Deleted ? "checked" : "")>
-            <input class="user-id" type="hidden" asp-for="@Model.UserId" value="@Model.UserId" />
-        </form>
-    </td>
-    <td class="align-middle">
-        <form class="toggleadmin-form" asp-action="ToggleAdmin" asp-controller="Users" asp-route-username="@Model.Username" method="post">
-            <input class="toggle-button" type="checkbox" @(Model.Admin ? "checked" : "")>
-            <input class="user-id" type="hidden" asp-for="@Model.UserId" value="@Model.UserId" />
-        </form>
-    </td>
-    <td class="align-middle flex-center">
-        <form class="lockout-form" asp-action="Lockout" asp-controller="Users" method="post">
-            <div class="input-group flex-nowrap">
-                <div class="input-group-prepend">
-                    <span class="input-group-text form-control">Days:</span>
-                </div>
-                <div class="input-group-append">
-                    <input class="user-id" type="hidden" asp-for="@Model.UserId" value="@Model.UserId" />
-                    <input asp-for="@Model.LockoutFor" type="text" class="lockout-for form-control" onkeypress="return isNumberKey(event)" maxlength="3" value="@Model.LockoutFor">
-                </div>
-                <div class="input-group">
-                    <button type="submit" id="user-lockout-button">
-                        <span class="input-group-text" id="basic-addon1">
-                            <i class="fa fa-unlock-alt"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </form>
-    </td>
-</tr>*@
+    <td class="align-middle">@Model.CreatedOn</td>
+    <td class="align-middle">@Model.Type</td>
+    <td class="align-middle flex-center">@Model.Amount</td>
+    <td class="align-middle flex-center">@Model.Description</td>
+</tr>
 

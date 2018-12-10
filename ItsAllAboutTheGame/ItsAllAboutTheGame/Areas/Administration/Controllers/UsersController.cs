@@ -40,7 +40,15 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return PartialView("_UsersTablePartial", model);
+                ModelState.Clear();
+
+                var oldUsers = this.userService.GetAllUsers();
+
+                var oldModel = new UsersViewModel(oldUsers);
+
+                oldModel.SortOrder = oldModel.SortOrder ?? GlobalConstants.DefultUserSorting;
+
+                return PartialView("_UsersTablePartial", oldModel);
             }
 
             var users = this.userService.GetAllUsers(model.SearchString, model.PageNumber,model.PageSize, model.SortOrder);

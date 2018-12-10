@@ -31,21 +31,5 @@
             </div>
         </div>
     </div>
-    <div class="row m-0">
-        <div class="col-md-12 spin-row">
-            <form class="spin-form" asp-controller="Game" asp-action="GameOneSpin" method="post">
-                <div class="input-group flex-nowrap align-middle flex-center">
-                    <div class="input-group-prepend input-group-text">
-                        <p class="font-weight-bold">Stake: </p>
-                    </div>
-                    <input asp-for="@Model.Stake" type="text" placeholder="0 @Model.CurrencySymbol" onkeypress="return isNumberKey(event)" class="form-control font-weight-bold" id="stake-amount" maxlength="7" />
-                    <input type="text" asp-for="@Model.Balance" value="@Model.Balance" class="text-hide" />
-                    <div class="input-group-append">
-                        <button class="btn btn-orange" type="submit">Spin</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
 

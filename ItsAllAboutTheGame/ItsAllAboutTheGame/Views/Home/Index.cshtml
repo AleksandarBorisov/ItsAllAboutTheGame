@@ -45,7 +45,7 @@
                 <div class="col-lg-4 col-md-12 mb-4 wow slideInLeft">
                     <div class="view overlay z-depth-1-half">
                         <img src="~/images/GameSlots.jpg" class="img-fluid" id="first-game-image">
-                        <a asp-controller="Game" asp-action="GameOne">
+                        <a asp-controller="Game" asp-action="GameOne" asp-route-gridSize="@GlobalConstants.GameOneGrid">
                             <div class="mask rgba-white-slight"></div>
                         </a>
                     </div>
@@ -60,7 +60,7 @@
                 <div class="col-lg-4 col-md-6 mb-4 wow jackInTheBox">
                     <div class="view overlay z-depth-1-half">
                         <img src="~/images/GameSlots.jpg" class="img-fluid" id="second-game-image">
-                        <a asp-controller="Game" asp-action="GameTwo">
+                        <a asp-controller="Game" asp-action="GameOne" asp-route-gridSize="@GlobalConstants.GameTwoGrid">
                             <div class="mask rgba-white-slight"></div>
                         </a>
                     </div>
@@ -75,7 +75,7 @@
                 <div class="col-lg-4 col-md-6 mb-4 wow slideInUp">
                     <div class="view overlay z-depth-1-half">
                         <img src="~/images/GameSlots.jpg" class="img-fluid" id="third-game-image">
-                        <a asp-controller="Game" asp-action="GameThree">
+                        <a asp-controller="Game" asp-action="GameOne" asp-route-gridSize="@GlobalConstants.GameThreeGrid">
                             <div class="mask rgba-white-slight"></div>
                         </a>
                     </div>

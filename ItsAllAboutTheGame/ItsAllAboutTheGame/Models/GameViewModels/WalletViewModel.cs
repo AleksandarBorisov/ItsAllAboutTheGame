@@ -15,7 +15,7 @@ namespace ItsAllAboutTheGame.Models.GameViewModels
 
         }
 
-        public WalletViewModel(WalletDTO wallet, GameResultDTO gameResult)
+        public WalletViewModel(WalletDTO wallet, GameResultDTO gameResult, string gridSize)
         {
             this.Win = gameResult.WonAmount;
             this.Balance = wallet.Balance;
@@ -23,6 +23,7 @@ namespace ItsAllAboutTheGame.Models.GameViewModels
             this.CurrencySymbol = wallet.CurrencySymbol;
             this.WinningRows = gameResult.WinningRows == null ? new bool[gameResult.Grid.GetLength(0)] : gameResult.WinningRows.ToArray();
             this.Grid = GridToString(gameResult.Grid);
+            this.GridSize = gridSize;
         }
 
         private string[,] GridToString(GameResults[,] grid)
@@ -48,9 +49,9 @@ namespace ItsAllAboutTheGame.Models.GameViewModels
         public string CurrencySymbol { get; set; }
 
         //[AssertThat("Stake < Balance", ErrorMessage = "You cannot stake more than you have in your deposit!")]
-        [Required]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "Please enter valid positive Page Number.")]
         [ValidStake("Balance", ErrorMessage = "You cannot stake more than you have in your deposit!")]
+        [Required]
         public int? Stake { get; set; }
 
         public decimal Win { get; set; }
@@ -58,5 +59,7 @@ namespace ItsAllAboutTheGame.Models.GameViewModels
         public bool[] WinningRows { get; set; }
 
         public string[,] Grid { get; set; }
+
+        public string GridSize { get; set; }
     }
 }

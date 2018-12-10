@@ -26,13 +26,15 @@ namespace ItsAllAboutTheGame.GlobalUtilities.Constants
 
         public static string StakeDescription = "Stake on game ";
 
-        public static string GameOneGrid = "3x4";
+        public static string WinDescription = "Win on game ";
+
+        public static string GameOneGrid = "4x3";
 
         public static string GameTwoGrid = "5x5";
 
         public static string GameThreeGrid = "8x5";
 
-        public static HashSet<string> Games = new HashSet<string>() { GameOneGrid, GameTwoGrid, GameThreeGrid };
+        public static HashSet<string> GameGrids = new HashSet<string>() { GameOneGrid, GameTwoGrid, GameThreeGrid };
 
     }
 }

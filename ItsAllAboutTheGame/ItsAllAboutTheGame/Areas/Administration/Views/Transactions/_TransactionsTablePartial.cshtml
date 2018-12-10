@@ -1,9 +1,9 @@
-﻿@*@model TransactionsViewModel
+﻿@model TransactionsViewModel
 @{
     ViewData["Title"] = "_TransactionsTablePartial";
 }
 
-<div id="users-table-pagination">
+<div id="transactions-table-pagination">
     <div>
         <form class="float-left page-count-form" asp-action="UpdateTable" asp-controller="Users" method="post">
             <div class="input-group mb-3 flex-nowrap">
@@ -52,7 +52,7 @@
                     </form>
                 </th>
                 <th class="col-lg-3">@(nameof(Model.Type))</th>
-                <th class="col-lg-3">@(nameof(Model.Amount</th>
+                <th class="col-lg-3">@(nameof(Model.Amount))</th>
                 <th class="col-lg-3">@(nameof(Model.Description))</th>
                 <th class="col-lg-3">
                     <form class="sorting-form" asp-action="UpdateTable" asp-controller="Users" method="post">
@@ -72,9 +72,9 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in Model.Transactions)
+            @foreach (var transaction in Model.Transactions)
             {
-                <partial name="_TransactionRowPartial" model="user" />
+                <partial name="_TransactionRowPartial" model="transaction" />
             }
         </tbody>
     </table>
@@ -138,5 +138,5 @@
             </li>
         </ul>
     </nav>
-</div>*@
+</div>
 

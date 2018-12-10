@@ -14,17 +14,12 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 
         public TransactionsController(ITransactionService transactionService)
         {
-
+            this.transactionService = transactionService;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            if (!ModelState.IsValid)
-            {
-                return RedirectToAction("Index");
-            }
-
             var transactions = this.transactionService.GetAllTransactions();
 
             var model = new TransactionsViewModel(transactions);
@@ -40,7 +35,15 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Index");
+                ModelState.Clear();
+
+                var oldTransactions = this.transactionService.GetAllTransactions();
+
+                var oldModel = new TransactionsViewModel(oldTransactions);
+
+                oldModel.SortOrder = oldModel.SortOrder ?? GlobalConstants.DefultTransactionSorting;
+
+                return PartialView("_UsersTablePartial", oldModel);
             }
 
             var transactions = this.transactionService.GetAllTransactions(model.SearchString, model.PageNumber, model.PageSize, model.SortOrder);

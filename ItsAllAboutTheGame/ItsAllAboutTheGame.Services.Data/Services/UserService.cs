@@ -53,7 +53,6 @@ namespace ItsAllAboutTheGame.Services.Data
                 throw new UserNo18Exception(ex.Message);
             }
 
-
             User user = new User
             {
                 Cards = new List<CreditCard>(),
