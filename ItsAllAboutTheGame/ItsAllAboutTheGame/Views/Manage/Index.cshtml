@@ -1,16 +1,15 @@
 ﻿@model TransactionHistoryViewModel
 @{
     ViewData["Title"] = "Profile";
-    ViewData.AddActivePage(ManageNavPages.Index);
 }
 
 
 <main class="text-dark d-flex justify-content-center text-center" id="transactions-history-management">
-    <div class="container " id="transactions-history-container">
+    <div class="container" id="transactions-history-container">
         <partial name="_TransactionHistoryTablePartial" model="Model" />
     </div>
 </main>
 
 @section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/js/transactionhistory.js"></script>
 }

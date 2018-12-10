@@ -32,14 +32,14 @@ namespace ItsAllAboutTheGame.Areas.Administration.Models
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "Please enter valid positive Page Number.")]
         public int PageNumber { get; set; }
 
-        [RegularExpression(@"^[0-9]{2}$", ErrorMessage = "Please enter valid Page Size up to 99.")]
+        [RegularExpression(@"^[0-9]?[0-9]?$", ErrorMessage = "Please enter valid Page Size up to 99.")]
         public int PageSize { get;  set; }
 
         public int TotalItemCount { get; set; }
 
         public IEnumerable<UserDTO> Users { get; set; }
 
-        [RegularExpression(@"^[0-9]{3}$", ErrorMessage = "Please enter valid days up to 999.")]
+        [RegularExpression(@"^[0-9]?[0-9]?[0-9]?$", ErrorMessage = "Please enter valid days up to 999.")]
         public int LockoutFor { get; set; }
 
         public string Username { get; set; }

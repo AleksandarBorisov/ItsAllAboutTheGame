@@ -76,7 +76,7 @@ namespace ItsAllAboutTheGame.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult UpdateTable(TransactionHistoryViewModel model)
         {
-
+            
             var claims = HttpContext.User;
             var userId = _userManager.GetUserId(claims);
 

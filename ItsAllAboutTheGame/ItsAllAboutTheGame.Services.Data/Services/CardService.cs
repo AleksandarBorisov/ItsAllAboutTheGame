@@ -40,7 +40,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                 CreatedOn = DateTime.Now
             };
 
-
             this.context.CreditCards.Add(creditCard);
             await this.context.SaveChangesAsync();
 
@@ -74,7 +73,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
 
             return userCard;
         }
-
 
         public async Task<string> GetCardNumber(string cardNumber)
         {

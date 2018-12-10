@@ -10,8 +10,6 @@ namespace ItsAllAboutTheGame.Services.Data.Constants
     {
         private static string currencies;
 
-        public static string DepositDescription = "Deposit with card ";
-
         private static Dictionary<string, string> currencySymbols;
 
         private static string baseCurrency = "USD";

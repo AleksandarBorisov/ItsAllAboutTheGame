@@ -6,54 +6,13 @@
 
 
 <div id="transaction-table-pagination">
-    <div>
-        <form class="float-left page-count-form"  asp-action="UpdateTable" asp-controller="Manage" method="post">
-            <div class="input-group mb-3 flex-nowrap">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Count:</span>
-                </div>
-                <input type="text" class="form-control transaction-count" onkeypress="return isNumberKey(event)" maxlength="2" asp-for="@Model.PageSize" value="@Model.PageSize">
-                <input type="hidden" asp-for="@Model.SortOrder" value="@Model.SortOrder" />
-                <input type="hidden" asp-for="@Model.PageNumber" value="1" />
-                <div class="input-group-append">
-                    <button type="submit" class="page-count-form-button btn btn-teal btn-md m-0">Change</button>
-                </div>
-            </div>
-        </form>
-        
-        <form class="float-right search-form" asp-action="UpdateTable" asp-controller="Manage" method="post">
-            <div class="input-group mb-3 flex-nowrap">
-                <div class="input-group-prepend">
-                    <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
-                    <input type="hidden" asp-for="@Model.SortOrder" value="@Model.SortOrder" />
-                    <input type="hidden" asp-for="@Model.PageNumber" value="1" />
-                </div>
-            </div>
-        </form>
-    </div>
     <table class="table text-nowrap m-0 " id="transactions-table">
-        <thead>
-            <tr>
-                <th class="col-lg-3">
-                    <form class="sorting-form" asp-area="" asp-action="UpdateTable" asp-controller="Manage" method="post">
-                        <div class="input-group flex-nowrap flex-center">
-                            <div class="input-group-prepend">
-                                <input type="hidden" asp-for="@Model.SortOrder" value="@(Model.SortOrder == nameof(Model.CreatedOn) + "_asc" ? nameof(Model.CreatedOn) + "_desc" : nameof(Model.CreatedOn) + "_asc")">
-                                <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
-                                <input type="hidden" asp-for="@Model.PageNumber" value="1" />
-                            </div>
-                        </div>
-                    </form>
-                </th>
-            </tr>
-        </thead>
-
         <tbody>
             <tr class="amber">
-                <th>@nameof(Model.CreatedOn)</th>
-                <th>@nameof(Model.Type)</th>
-                <th>@nameof(Model.Amount)</th>
-                <th>@nameof(Model.Description)</th>
+                <th class="font-weight-bold">@nameof(Model.CreatedOn)</th>
+                <th class="font-weight-bold">@nameof(Model.Type)</th>
+                <th class="font-weight-bold">@nameof(Model.Amount)</th>
+                <th class="font-weight-bold">@nameof(Model.Description)</th>
             </tr>
         @foreach (var transaction in Model.Transactions)
         {

@@ -8,6 +8,6 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
     {
         Task<ForeignExchangeDTO> GetConvertionRates();
 
-        Task<decimal> AJAXBalance(User user);
+        //Task<decimal> AJAXBalance(User user);
     }
 }

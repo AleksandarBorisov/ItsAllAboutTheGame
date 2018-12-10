@@ -10,6 +10,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="ExpressiveAnnotations.dll" Version="2.7.4" />
     <PackageReference Include="Facebook" Version="7.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4" PrivateAssets="All" />
@@ -34,7 +35,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Administration\Data\" />
-    <Folder Include="Models\GameViewModels\" />
     <Folder Include="wwwroot\lib\jquery\" />
   </ItemGroup>
 

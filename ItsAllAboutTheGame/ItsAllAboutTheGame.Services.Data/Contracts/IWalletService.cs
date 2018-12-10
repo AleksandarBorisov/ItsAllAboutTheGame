@@ -1,8 +1,6 @@
 ﻿using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Data.Models.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using ItsAllAboutTheGame.Services.Data.DTO;
 using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Services.Data.Contracts
@@ -11,6 +9,10 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
     {
         Task<Wallet> CreateUserWallet(User user, Currency userCurrency);
 
-        Task<Wallet> GetUserWallet(User user);
+        Task<WalletDTO> GetUserWallet(User user);
+
+        Task<WalletDTO> UpdateUserWallet(User user, int stake);
+
+        Task<decimal> ConvertBalance(User user);
     }
 }
