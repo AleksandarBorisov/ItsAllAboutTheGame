@@ -40,10 +40,11 @@ namespace ItsAllAboutTheGame.Controllers
         {
             ViewData["ReturnUrl"] = returnUrl;
 
-            var claims = HttpContext.User;
-            var user = await userManager.GetUserAsync(claims);
+            var user = await userManager.GetUserAsync(HttpContext.User);
+
             var userCards = await this.cardService.GetSelectListCards(user);
-            var userCardsForDelete = await this.cardService.GetSelectListCardsForDelete(user);
+
+            var userCardsForDelete = await this.cardService.GetSelectListCards(user, false);
 
             var userWallet = await this.walletService.GetUserWallet(user);
 
@@ -106,36 +107,31 @@ namespace ItsAllAboutTheGame.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteCard(NewDepositViewModel model)
         {
-            var claims = HttpContext.User;
-            var user = await userManager.GetUserAsync(claims);
+            var user = await userManager.GetUserAsync(HttpContext.User);
+
             var userId = await userManager.GetUserIdAsync(user);
-            var userCardsForDelete = await this.cardService.GetSelectListCardsForDelete(user);
+
+            var userCardsForDelete = await this.cardService.GetSelectListCards(user, false);
             
             var cardToDelete = await this.cardService.DeleteCard(userId, model.CreditCardId);
 
             return RedirectToAction("Deposit", "Transaction");
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Withdraw(NewDepositViewModel model, string withdraw, string deposit)
         {
-            var claims = HttpContext.User;
-            var user = await userManager.GetUserAsync(claims);
-            var userId = await userManager.GetUserIdAsync(user);
+            var user = await userManager.GetUserAsync(HttpContext.User);
 
-            var withdrawedAmount = await this.walletService.WithdrawFromUserBalance(userId, model.Amount);
+            var withdrawedAmount = await this.walletService.WithdrawFromUserBalance(user, model.Amount);
 
             var convertedAmount = await this.walletService.ConvertBalance(user);
-
 
             return Json(new { Balance = convertedAmount });
         }
 
         // Methods for remote attributes!
         // LOOK DOWN
-
-
         [AcceptVerbs("Get", "Post")]
         public IActionResult DoesExist(string CardNumber)
         {

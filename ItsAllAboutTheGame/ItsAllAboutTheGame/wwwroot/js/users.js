@@ -26,6 +26,8 @@ $(function () {
             content: `You are about to lockout user with username ${$username} for ${$days} days!`,
             buttons: {
                 confirm: function () {
+                    $('#loading-spinner').delay(200).show(0);
+
                     var lockoutFor = $currentForm.find('.lockout-for').val();
                     var userId = $currentForm.find('.user-id').val();
                     var token = $currentForm.find('[name=__RequestVerificationToken]').val();
@@ -38,11 +40,15 @@ $(function () {
                     }
 
                     $.post($currentForm.attr('action'), dataToSend, function (serverData) {
+
+                        $('#loading-spinner').hide(0);
+
                         $($currentForm.parent('tr')).html(serverData);
-                    });
-                    $.alert({
-                        title: 'Locked!',
-                        content: 'You locked out the user with username: ' + $username,
+
+                        $.alert({
+                            title: 'Locked!',
+                            content: 'You locked out the user with username: ' + $username,
+                        });
                     });
                 },
                 cancel: function () {
@@ -66,6 +72,8 @@ $(function () {
             content: `${$message} user with username: ${$username}?`,
             buttons: {
                 confirm: function () {
+                    $('#loading-spinner').delay(200).show(0);
+
                     var url = '/Administration/Users/Delete';
                     var userId = $checkbox.siblings('.user-id').val();
                     var token = $checkbox.siblings('[name=__RequestVerificationToken]').val();
@@ -76,6 +84,9 @@ $(function () {
                             '__RequestVerificationToken': token
                         }
                         , function (serverData) {
+
+                            $('#loading-spinner').hide(0);
+
                             $($currentForm.parent('tr')).html(serverData);
                         });
                 },
@@ -105,6 +116,8 @@ $(function () {
             content: `${$message} Admin Role to user with username: ${$username}?`,
             buttons: {
                 confirm: function () {
+                    $('#loading-spinner').delay(200).show(0);
+
                     var url = '/Administration/Users/ToggleAdmin';
                     var userId = $checkbox.siblings('.user-id').val();
                     var token = $checkbox.siblings('[name=__RequestVerificationToken]').val();
@@ -115,6 +128,9 @@ $(function () {
                             '__RequestVerificationToken': token
                         }
                         , function (serverData) {
+
+                            $('#loading-spinner').hide(0);
+
                             $($currentForm.parent('tr')).html(serverData);
                         });
                 },
@@ -143,6 +159,8 @@ $(function () {
 
         if ($inputVal > 0) {
 
+            $('#loading-spinner').delay(200).show(0);
+
             $button = $(this);
 
             $form = $button.parents('form:first');
@@ -150,7 +168,10 @@ $(function () {
             dataToSend = $form.serialize();
 
             $.post($form.attr('action'), dataToSend, function (serverData) {
-                $('#users-container').html(serverData);
+
+                $('#loading-spinner').hide(0);
+
+                $container.html(serverData);
             });
         } else {
 
@@ -161,6 +182,8 @@ $(function () {
     //Search Form
     $container.on('click', '.search-form-button', function (event) {
 
+        $('#loading-spinner').delay(200).show(0);
+
         event.preventDefault();
 
         $button = $(this);
@@ -170,13 +193,18 @@ $(function () {
         dataToSend = $form.serialize();
 
         $.post($form.attr('action'), dataToSend, function (serverData) {
-            $('#users-container').html(serverData);
+
+            $('#loading-spinner').hide(0);
+
+            $container.html(serverData);
         });
     });
 
     //Pagination Form
     $container.on('click', '.pagination-form-button', function (event) {
 
+        $('#loading-spinner').delay(200).show(0);
+
         event.preventDefault();
 
         $button = $(this);
@@ -186,13 +214,18 @@ $(function () {
         dataToSend = $form.serialize();
 
         $.post($form.attr('action'), dataToSend, function (serverData) {
-            $('#users-container').html(serverData);
+
+            $('#loading-spinner').hide(0);
+
+            $container.html(serverData);
         });
     });
 
     //Sorting Form
     $container.on('click', '.sorting-form-button', function (event) {
 
+        $('#loading-spinner').delay(200).show(0);
+
         event.preventDefault();
 
         $button = $(this);
@@ -202,7 +235,10 @@ $(function () {
         dataToSend = $form.serialize();
 
         $.post($form.attr('action'), dataToSend, function (serverData) {
-            $('#users-container').html(serverData);
+
+            $('#loading-spinner').hide(0);
+
+            $container.html(serverData);
         });
     });
 });

@@ -145,16 +145,16 @@
                     <a class="page-link navigational-disabled">Last</a>
                 }
             </li>
-            <li class="page-item flex-center mb-2 mt-2 mr-3 ml-3 @TransactionType.Stake.ToString().ToLower()">
+            <li class="page-item flex-center m-2 @TransactionType.Stake.ToString().ToLower()">
                 <span class="mr-1">@Model.Amounts[TransactionType.Stake.ToString()].ToString("0.00")</span>@ViewData["CurrencySymbol"]
             </li>
-            <li class="page-item flex-center mb-2 mt-2 mr-3 ml-3 @TransactionType.Withdraw.ToString().ToLower()">
+            <li class="page-item flex-center m-2 @TransactionType.Withdraw.ToString().ToLower()">
                 <span class="mr-1">@Model.Amounts[TransactionType.Withdraw.ToString()].ToString("0.00")</span>@ViewData["CurrencySymbol"]
             </li>
-            <li class="page-item flex-center mb-2 mt-2 mr-3 ml-3 @TransactionType.Win.ToString().ToLower()">
+            <li class="page-item flex-center m-2 @TransactionType.Win.ToString().ToLower()">
                 <span class="mr-1">@Model.Amounts[TransactionType.Win.ToString()].ToString("0.00")</span>@ViewData["CurrencySymbol"]
             </li>
-            <li class="page-item flex-center mb-2 mt-2 mr-3 ml-3 @TransactionType.Deposit.ToString().ToLower()">
+            <li class="page-item flex-center m-2 @TransactionType.Deposit.ToString().ToLower()">
                 <span class="mr-1">@Model.Amounts[TransactionType.Deposit.ToString()].ToString("0.00")</span>@ViewData["CurrencySymbol"]
             </li>
         </ul>

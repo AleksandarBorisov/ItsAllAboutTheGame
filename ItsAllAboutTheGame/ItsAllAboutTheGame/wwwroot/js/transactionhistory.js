@@ -4,26 +4,43 @@ $(function () {
     //We set an event on all forms
     const $container = $('#transactions-history-container');
 
-
     //Page Count Form
     $container.on('click', '.page-count-form-button', function (event) {
 
         event.preventDefault();
 
-        $button = $(this);
+        var $currentSize = $(this).parent().siblings('.transactions-count').data('transactions-count');
 
-        $form = $button.parents('form:first');
+        var $input = $(this).parent().siblings('.transactions-count');
 
-        dataToSend = $form.serialize();
+        var $inputVal = $input.val();
 
-        $.post($form.attr('action'), dataToSend, function (serverData) {
-            $('#transaction-table-pagination').html(serverData);
-        });
+        if ($inputVal > 0) {
+
+            $('#loading-spinner').delay(200).show(0);
+
+            $button = $(this);
+
+            $form = $button.parents('form:first');
+
+            dataToSend = $form.serialize();
+
+            $.post($form.attr('action'), dataToSend, function (serverData) {
+
+                $('#loading-spinner').hide(0);
+
+                $container.html(serverData);
+            });
+        } else {
+            debugger;
+            $input.val($currentSize);
+        }
     });
-
 
     //Pagination Form
     $container.on('click', '.pagination-form-button', function (event) {
+
+        $('#loading-spinner').delay(200).show(0);
 
         event.preventDefault();
 
@@ -34,13 +51,18 @@ $(function () {
         dataToSend = $form.serialize();
 
         $.post($form.attr('action'), dataToSend, function (serverData) {
-            $('#transaction-table-pagination').html(serverData);
+
+            $('#loading-spinner').hide(0);
+
+            $container.html(serverData);
         });
     });
 
     //Sorting Form
     $container.on('click', '.sorting-form-button', function (event) {
 
+        $('#loading-spinner').delay(200).show(0);
+
         event.preventDefault();
 
         $button = $(this);
@@ -50,7 +72,10 @@ $(function () {
         dataToSend = $form.serialize();
 
         $.post($form.attr('action'), dataToSend, function (serverData) {
-            $('#transaction-table-pagination').html(serverData);
+
+            $('#loading-spinner').hide(0);
+
+            $container.html(serverData);
         });
     });
 });

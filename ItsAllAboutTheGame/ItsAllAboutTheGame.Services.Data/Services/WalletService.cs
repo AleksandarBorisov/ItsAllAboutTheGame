@@ -99,11 +99,11 @@ namespace ItsAllAboutTheGame.Services.Data
             }
         }
 
-        public async Task<TransactionDTO> WithdrawFromUserBalance(string userId, decimal amount)
+        public async Task<TransactionDTO> WithdrawFromUserBalance(User loggedUser, decimal amount)
         {
             try
             {
-                var user = await this.context.Users.Where(u => u.Id == userId).Include(w => w.Wallet).FirstOrDefaultAsync();
+                var user = await this.context.Users.Where(u => u == loggedUser).Include(w => w.Wallet).FirstOrDefaultAsync();
 
                 var userWallet = user.Wallet;               
 

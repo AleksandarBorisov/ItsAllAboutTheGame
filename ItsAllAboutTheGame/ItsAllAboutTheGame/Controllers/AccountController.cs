@@ -9,7 +9,8 @@ using ItsAllAboutTheGame.Models.AccountViewModels;
 using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Services.Data.Contracts;
-using ItsAllAboutTheGame.Services.Data.Exceptions;
+using System.Net;
+using System.Security.Claims;
 
 namespace ItsAllAboutTheGame.Controllers
 {
@@ -20,20 +21,17 @@ namespace ItsAllAboutTheGame.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IEmailSender emailSender;
-        private readonly ILogger logger;
         private readonly IUserService userService;
 
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger,
             IUserService userService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.emailSender = emailSender;
-            this.logger = logger;
             this.userService = userService;
         }
 
@@ -62,7 +60,6 @@ namespace ItsAllAboutTheGame.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-
                 var result = await this.signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
@@ -74,14 +71,11 @@ namespace ItsAllAboutTheGame.Controllers
                     }
                     else
                     {
-                        logger.LogInformation("User logged in.");
                         return RedirectToLocal(returnUrl);
                     }
                 }
-
                 if (result.IsLockedOut)
                 {
-                    logger.LogWarning("User account locked out.");
                     return RedirectToAction(nameof(Lockout), new { userEmail = model.Email });
                 }
                 else
@@ -90,7 +84,6 @@ namespace ItsAllAboutTheGame.Controllers
                     return View(model);
                 }
             }
-
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -139,27 +132,20 @@ namespace ItsAllAboutTheGame.Controllers
             {
                 return View(model);
             }
-
             // call service to register and create a new user
             var user = await this.userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth, model.UserCurrency);
 
             var result = await this.userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                logger.LogInformation("User created a new account with password.");
-
-                var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                await emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
-
                 await signInManager.SignInAsync(user, isPersistent: false);
-                logger.LogInformation("User created a new account with password.");
-                await signInManager.SignOutAsync();
+
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
             else
             {
                 AddErrors(result);
+
                 return View(model);
                 //throw new InvalidOperationException("Could not register user!");
             }
@@ -170,7 +156,7 @@ namespace ItsAllAboutTheGame.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            logger.LogInformation("User logged out.");
+
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
@@ -182,7 +168,9 @@ namespace ItsAllAboutTheGame.Controllers
             // Request a redirect to the external login provider.
 
             var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
+
             var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
             return Challenge(properties, provider);
         }
 
@@ -197,7 +185,6 @@ namespace ItsAllAboutTheGame.Controllers
             }
             var info = await signInManager.GetExternalLoginInfoAsync();
 
-
             if (info == null)
             {
                 return RedirectToAction(nameof(Login));
@@ -207,8 +194,7 @@ namespace ItsAllAboutTheGame.Controllers
             var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
-                logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
-                TempData["Success"] = "Login Successful!";
+                var name = info.Principal.FindFirstValue(ClaimTypes.Name);
                 return RedirectToLocal(returnUrl);
             }
 
@@ -251,7 +237,6 @@ namespace ItsAllAboutTheGame.Controllers
                 if (result.Succeeded)
                 {
                     await signInManager.SignInAsync(user, isPersistent: false);
-                    logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
                     return RedirectToLocal(returnUrl);
                 }
             }
@@ -260,108 +245,7 @@ namespace ItsAllAboutTheGame.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             return View(nameof(ExternalLogin), model);
         }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
-        {
-            if (userId == null || code == null)
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-            var user = await userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{userId}'.");
-            }
-            var result = await userManager.ConfirmEmailAsync(user, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ForgotPassword()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await userManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await userManager.IsEmailConfirmedAsync(user)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToAction(nameof(ForgotPasswordConfirmation));
-                }
-
-                // For more information on how to enable account confirmation and password reset please
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
-                await emailSender.SendEmailAsync(model.Email, "Reset Password",
-                   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                return RedirectToAction(nameof(ForgotPasswordConfirmation));
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ForgotPasswordConfirmation()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
-        {
-            if (code == null)
-            {
-                throw new ApplicationException("A code must be supplied for password reset.");
-            }
-            var model = new ResetPasswordViewModel { Code = code };
-            return View(model);
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = await userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction(nameof(ResetPasswordConfirmation));
-            }
-            var result = await userManager.ResetPasswordAsync(user, model.Code, model.Password);
-            if (result.Succeeded)
-            {
-                return RedirectToAction(nameof(ResetPasswordConfirmation));
-            }
-            AddErrors(result);
-            return View();
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ResetPasswordConfirmation()
-        {
-            return View();
-        }
-
+        
         [HttpGet]
         public IActionResult AccessDenied()
         {
