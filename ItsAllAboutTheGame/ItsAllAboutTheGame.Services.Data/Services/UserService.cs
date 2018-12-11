@@ -37,7 +37,7 @@ namespace ItsAllAboutTheGame.Services.Data
             this.walletService = walletService;
         }
 
-        public async Task<User> RegisterUser(string email, string firstName, string lastName, DateTime dateOfBirth, Currency userCurrency)
+        public async Task<User> RegisterUser(string email, string firstName, string lastName,DateTime dateOfBirth, Currency userCurrency)
         {
             var currentDate = DateTime.Now;
 
@@ -69,6 +69,7 @@ namespace ItsAllAboutTheGame.Services.Data
             Wallet wallet = await walletService.CreateUserWallet(user, userCurrency);
             user.Wallet = wallet;
             user.WalletId = wallet.Id;
+
 
             return user;
         }

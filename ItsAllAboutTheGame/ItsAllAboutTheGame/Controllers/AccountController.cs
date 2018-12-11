@@ -140,9 +140,10 @@ namespace ItsAllAboutTheGame.Controllers
                 return View(model);
             }
 
-            // call service to register and create a new user
+            // call service to register a new user
             var user = await this.userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth, model.UserCurrency);
 
+            // creating the new user
             var result = await this.userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
@@ -208,7 +209,6 @@ namespace ItsAllAboutTheGame.Controllers
             if (result.Succeeded)
             {
                 logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
-                TempData["Success"] = "Login Successful!";
                 return RedirectToLocal(returnUrl);
             }
 
