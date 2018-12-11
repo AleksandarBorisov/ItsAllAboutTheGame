@@ -1,10 +1,6 @@
-using ItsAllAboutTheGame.Data.Models;
-using ItsAllAboutTheGame.Data.Models.Enums;
+using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Models.AccountViewModels
 {

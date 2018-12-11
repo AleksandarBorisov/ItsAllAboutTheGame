@@ -1,13 +1,14 @@
 ﻿@model  TransactionDTO
+
 @{
     ViewData["Title"] = "_TransactionRowPartial";
 }
 
-<tr>
+<tr class="@Model.Type.ToString().ToLower()">
     <td class="align-middle username">@Model.Username</td>
-    <td class="align-middle">@Model.CreatedOn</td>
     <td class="align-middle">@Model.Type</td>
-    <td class="align-middle flex-center">@Model.Amount</td>
-    <td class="align-middle flex-center">@Model.Description</td>
+    <td class="align-middle"><span class="mr-1">@Model.Amount</span>@ViewData["BaseCurrencySymbol"]</td>
+    <td class="align-middle">@Model.Description</td>
+    <td class="align-middle">@Model.CreatedOn</td>
 </tr>
 

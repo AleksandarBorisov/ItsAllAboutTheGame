@@ -1,5 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data.Models;
-using ItsAllAboutTheGame.Data.Models.Enums;
+using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using System;
 
 namespace ItsAllAboutTheGame.Services.Data.DTO

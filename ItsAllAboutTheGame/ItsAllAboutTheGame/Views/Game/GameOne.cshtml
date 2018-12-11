@@ -3,10 +3,10 @@
     ViewData["Title"] = "GameOne";
 }
 
-<main class="text-dark" id="game-management" style="@(Model.GridSize == GlobalConstants.GameThreeGrid ? "padding-top: 14%;" : "")">
-    <div class="container game-rules-container text-center">
+<main class="text-dark" id="game-management" style="@(Model.GridSize == GlobalConstants.GameThreeGrid ? "padding-top: 15%; " : "")">
+    <div class="container game-rules-container text-center" style="@(Model.GridSize == GlobalConstants.GameThreeGrid ? "padding-top: unset; " : "")">
         <div class="row">
-            <div class="col-8 ">
+            <div class="col-8 table-col">
                 <div class="game-container">
                     <partial name="_GameOnePartial" model="Model" />
                 </div>
@@ -17,7 +17,7 @@
                                 <div class="input-group-prepend input-group-text">
                                     <p class="font-weight-bold">Stake: </p>
                                 </div>
-                                <input asp-for="@Model.Stake" type="text" placeholder="0 @Model.CurrencySymbol" onkeypress="return isNumberKey(event)" class="form-control font-weight-bold" id="stake-amount" maxlength="7" />
+                                <input asp-for="@Model.Stake" type="text" placeholder="0 @Model.CurrencySymbol" onkeypress="return isNumberKey(event)" class="form-control font-weight-bold users-count" id="stake-amount" maxlength="7" />
                                 <input type="text" asp-for="@Model.Balance" value="@Model.Balance" class="text-hide" id="hidden-balance"/>
                                 <input type="text" asp-for="@Model.GridSize" value="@Model.GridSize" class="text-hide" id="hidden-balance"/>
                                 <div class="input-group-append">

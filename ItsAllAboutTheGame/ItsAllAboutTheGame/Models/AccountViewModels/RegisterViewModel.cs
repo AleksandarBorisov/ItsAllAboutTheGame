@@ -1,5 +1,5 @@
-﻿using ItsAllAboutTheGame.Data.Models.Enums;
-using ItsAllAboutTheGame.Data.Models.Utilities.CustomAttributes.UserAttributes;
+﻿using ItsAllAboutTheGame.Data.Models.Utilities.CustomAttributes.UserAttributes;
+using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 

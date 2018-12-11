@@ -1,5 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data.Models;
-using ItsAllAboutTheGame.Services.Data.Constants;
+using ItsAllAboutTheGame.GlobalUtilities.Constants;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.DTO;
@@ -32,7 +32,7 @@ namespace ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService
             var currencies = await this.cache.GetOrCreateAsync("ConvertionRates", async entry =>
             {
                 entry.AbsoluteExpiration = DateTime.UtcNow.AddDays(1);
-                string resourceUrl = $"https://api.exchangeratesapi.io/latest?base={ServicesDataConstants.BaseCurrency}&symbols={ServicesDataConstants.Currencies}";
+                string resourceUrl = $"https://api.exchangeratesapi.io/latest?base={GlobalConstants.BaseCurrency}&symbols={GlobalConstants.Currencies}";
                 string currenciesString = await foreignExchangeApiCaller.GetCurrencyData(resourceUrl);
                 var convertionRates = jsonDeserializer.Deserialize<ForeignExchangeDTO>(currenciesString);
 

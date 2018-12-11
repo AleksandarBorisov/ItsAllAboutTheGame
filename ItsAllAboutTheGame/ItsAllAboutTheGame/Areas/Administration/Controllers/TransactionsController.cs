@@ -3,6 +3,7 @@ using ItsAllAboutTheGame.GlobalUtilities.Constants;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 {
@@ -18,11 +19,13 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var transactions = this.transactionService.GetAllTransactions();
+            var transactions = await this.transactionService.GetAllTransactions();
 
             var model = new TransactionsViewModel(transactions);
+
+            ViewData["BaseCurrencySymbol"] = GlobalConstants.BaseCurrencySymbol;
 
             model.SortOrder = model.SortOrder ?? GlobalConstants.DefultTransactionSorting;
 
@@ -31,22 +34,24 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UpdateTable(TransactionsViewModel model)
+        public async Task<IActionResult> UpdateTable(TransactionsViewModel model)
         {
+            ViewData["BaseCurrencySymbol"] = GlobalConstants.BaseCurrencySymbol;
+
             if (!ModelState.IsValid)
             {
                 ModelState.Clear();
 
-                var oldTransactions = this.transactionService.GetAllTransactions();
+                var oldTransactions = await this.transactionService.GetAllTransactions();
 
                 var oldModel = new TransactionsViewModel(oldTransactions);
 
                 oldModel.SortOrder = oldModel.SortOrder ?? GlobalConstants.DefultTransactionSorting;
 
-                return PartialView("_UsersTablePartial", oldModel);
+                return PartialView("_TransactionsTablePartial", oldModel);
             }
 
-            var transactions = this.transactionService.GetAllTransactions(model.SearchString, model.PageNumber, model.PageSize, model.SortOrder);
+            var transactions = await this.transactionService.GetAllTransactions(model.SearchString, model.PageNumber, model.PageSize, model.SortOrder);
 
             var newModel = new TransactionsViewModel(transactions);
 
@@ -54,7 +59,7 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 
             newModel.SortOrder = model.SortOrder;
 
-            return PartialView("_UsersTablePartial", newModel);
+            return PartialView("_TransactionsTablePartial", newModel);
         }
     }
 }

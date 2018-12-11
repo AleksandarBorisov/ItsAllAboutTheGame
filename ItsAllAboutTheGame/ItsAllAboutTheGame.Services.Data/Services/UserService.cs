@@ -1,8 +1,8 @@
 ﻿using ItsAllAboutTheGame.Data;
 using ItsAllAboutTheGame.Data.Models;
-using ItsAllAboutTheGame.Data.Models.Enums;
+using ItsAllAboutTheGame.GlobalUtilities;
 using ItsAllAboutTheGame.GlobalUtilities.Constants;
-using ItsAllAboutTheGame.Services.Data.Constants;
+using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using ItsAllAboutTheGame.Services.Data.Exceptions;
@@ -62,7 +62,8 @@ namespace ItsAllAboutTheGame.Services.Data
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
-                DateOfBirth = dateOfBirth
+                DateOfBirth = dateOfBirth,
+                Role = UserRole.None
             };
 
             Wallet wallet = await walletService.CreateUserWallet(user, userCurrency);
@@ -100,7 +101,8 @@ namespace ItsAllAboutTheGame.Services.Data
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
-                DateOfBirth = dateOfBirth
+                DateOfBirth = dateOfBirth,
+                Role = UserRole.None
             };
 
             Wallet wallet = await walletService.CreateUserWallet(user, userCurrency);
@@ -126,7 +128,7 @@ namespace ItsAllAboutTheGame.Services.Data
 
                 var userInfo = new UserInfoDTO(user, currencies);
 
-                var getCurrencySymbol = ServicesDataConstants.CurrencySymbols.TryGetValue(userInfo.Currency, out string currencySymbol);
+                var getCurrencySymbol = CultureReferences.CurrencySymbols.TryGetValue(userInfo.Currency, out string currencySymbol);
 
                 if (!getCurrencySymbol)
                 {

@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using ItsAllAboutTheGame.Data;
 using ItsAllAboutTheGame.Data.Models;
-using ItsAllAboutTheGame.Data.Models.Enums;
+using ItsAllAboutTheGame.GlobalUtilities;
 using ItsAllAboutTheGame.GlobalUtilities.Constants;
-using ItsAllAboutTheGame.Services.Data.Constants;
+using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using ItsAllAboutTheGame.Services.Data.Exceptions;
@@ -45,7 +45,7 @@ namespace ItsAllAboutTheGame.Services.Data
             {
                 var userWallet = await this.context.Wallets.FirstOrDefaultAsync(k => k.User == user);
 
-                var getCurrencySymbol = ServicesDataConstants.CurrencySymbols.TryGetValue(userWallet.Currency.ToString(), out string currencySymbol);
+                var getCurrencySymbol = CultureReferences.CurrencySymbols.TryGetValue(userWallet.Currency.ToString(), out string currencySymbol);
 
                 if (!getCurrencySymbol)
                 {
@@ -82,7 +82,7 @@ namespace ItsAllAboutTheGame.Services.Data
 
                 var newWallet = new WalletDTO(oldWallet, currencies);
 
-                var getCurrencySymbol = ServicesDataConstants.CurrencySymbols.TryGetValue(newWallet.Currency.ToString(), out string currencySymbol);
+                var getCurrencySymbol = CultureReferences.CurrencySymbols.TryGetValue(newWallet.Currency.ToString(), out string currencySymbol);
 
                 if (!getCurrencySymbol)
                 {

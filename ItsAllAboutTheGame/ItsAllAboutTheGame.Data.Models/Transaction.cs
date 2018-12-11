@@ -1,5 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data.Models.Abstract;
-using ItsAllAboutTheGame.Data.Models.Enums;
+using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

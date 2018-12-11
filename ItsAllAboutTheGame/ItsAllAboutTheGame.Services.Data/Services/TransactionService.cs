@@ -1,7 +1,7 @@
 ﻿using ItsAllAboutTheGame.Data;
 using ItsAllAboutTheGame.Data.Models;
-using ItsAllAboutTheGame.Data.Models.Enums;
 using ItsAllAboutTheGame.GlobalUtilities.Constants;
+using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using Microsoft.AspNetCore.Identity;
@@ -64,33 +64,17 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             return transaction;
         }
 
-        public IPagedList<TransactionDTO> GetAllTransactions(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefultTransactionSorting)
+        public async Task<TransactionListDTO> GetAllTransactions(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefultTransactionSorting)
         {
-            IQueryable<Transaction> transactions = this.context
+            var transactions = await this.context
                 .Transactions
-                .Include(transaction => transaction.User);
+                .Include(transaction => transaction.User)
+                .Where(transaction => transaction.User.UserName.Contains(searchByUsername ?? "", StringComparison.InvariantCultureIgnoreCase))
+                .ToPagedListAsync(page, size);
 
-            if (!string.IsNullOrEmpty(searchByUsername))
-            {
-                transactions = transactions.Where(transaction => transaction.User.UserName.Contains(searchByUsername, StringComparison.InvariantCultureIgnoreCase));
-            }
+            var result = new TransactionListDTO(transactions, sortOrder);
 
-            var property = sortOrder.Remove(sortOrder.IndexOf("_"));
-            PropertyInfo prop = typeof(Transaction).GetProperty(property, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
-            if (!sortOrder.Contains("_desc"))
-            {
-                return transactions
-                    .OrderBy(transaction => prop.GetValue(transaction))
-                    .Select(u => new TransactionDTO(u))
-                    .ToPagedList(page, size);
-            }
-            else
-            {
-                return transactions
-                    .OrderByDescending(user => prop.GetValue(user))
-                    .Select(u => new TransactionDTO(u))
-                    .ToPagedList(page, size);
-            }
+            return result;
         }
 
         public async Task<TransactionDTO> GameTransaction(User user, int amount, string game, string description, TransactionType type)

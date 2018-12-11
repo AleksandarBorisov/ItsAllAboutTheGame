@@ -1,10 +1,9 @@
 ﻿using ItsAllAboutTheGame.Data.Models.Abstract;
-using ItsAllAboutTheGame.Data.Models.Enums;
+using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ItsAllAboutTheGame.Data.Models
 {

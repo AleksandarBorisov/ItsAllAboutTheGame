@@ -4,7 +4,7 @@
 }
 
 <div class="game-one-table">
-    <table class="table ">
+    <table class="table @(Model.GridSize == GlobalConstants.GameThreeGrid ? "mb-0" : "")">
         @for (int row = 0; row < Model.Grid.GetLength(0); row++)
         {
             <tr class="row @(Model.WinningRows[row] == true ? "winning-row" : "") m-0">

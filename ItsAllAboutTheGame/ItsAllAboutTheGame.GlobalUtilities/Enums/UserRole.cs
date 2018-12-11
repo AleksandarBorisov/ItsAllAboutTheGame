@@ -1,4 +1,4 @@
-﻿namespace ItsAllAboutTheGame.Data.Models.Enums
+﻿namespace ItsAllAboutTheGame.GlobalUtilities.Enums
 {
     public enum UserRole
     {

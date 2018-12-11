@@ -1,6 +1,6 @@
 ﻿using ItsAllAboutTheGame.Data.Models;
-using ItsAllAboutTheGame.Data.Models.Enums;
 using ItsAllAboutTheGame.GlobalUtilities.Constants;
+using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using Microsoft.AspNetCore.Identity;
 using System;

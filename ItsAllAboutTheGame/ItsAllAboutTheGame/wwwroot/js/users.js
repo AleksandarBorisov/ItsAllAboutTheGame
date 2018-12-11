@@ -1,6 +1,6 @@
 ﻿function isNumberKey(evt) {
     var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if (charCode != 46 && charCode > 31
+    if (charCode > 31/* && charCode != 46*/
         && (charCode < 48 || charCode > 57))
         return false;
     return true;
@@ -8,11 +8,9 @@
 //If we wrap the entire jQuery function we will take advantage of document.load event for which jQuery lisens by default 
 
 $(function () {
-    //We set an event on all forms
-    const $container = $('#users-container');
-    //const $lockoutForms = $('.lockout-form');
 
-    //$lockoutForms.on('submit', function (event) {
+    const $container = $('#users-container');
+
     $container.on('submit', '.lockout-form', function (event) {
 
         $currentForm = $(this);
@@ -55,8 +53,6 @@ $(function () {
     });
 
     //Delete Form
-    //const $deleteForms = $('.delete-form');
-
     $container.on('click', '.delete-button', function (event) {
 
         $checkbox = $(this);
@@ -64,8 +60,6 @@ $(function () {
         $username = $(this).parents('td').siblings('.username').text();
 
         $message = $checkbox.prop('checked') ? 'Delete' : 'Restore';
-
-        //const dataToSend = $('delete-form').serialize();
 
         $.confirm({
             title: 'Confirm!',
@@ -93,21 +87,11 @@ $(function () {
                         $checkbox.prop('checked', true);
                     }
                 },
-                //somethingElse: {
-                //    text: 'Something else',
-                //    btnClass: 'btn-blue',
-                //    keys: ['enter', 'shift'],
-                //    action: function () {
-                //        $.alert('Something else?');
-                //    }
-                //}
             }
         });
     });
 
     //Toggle Admin Form
-    //const $toggleAdmin = $('.toggleadmin-form');
-
     $container.on('click', '.toggle-button', function (event) {
 
         $checkbox = $(this);
@@ -115,8 +99,6 @@ $(function () {
         $username = $(this).parents('td').siblings('.username').text();
 
         $message = $checkbox.prop('checked') ? 'Assign' : 'Remove';
-
-        //const dataToSend = $('toggleadmin-form').serialize();
 
         $.confirm({
             title: 'Confirm!',
@@ -149,37 +131,31 @@ $(function () {
     });
 
     //Page Count Form
-    //const $pageCountForm = $container.find('.page-count-form');
-
-    //$pageCountForm.on('submit', function (event) {
-    //    $currentForm = $(this);
-
-    //    event.preventDefault();
-
-    //    const dataToSend = $currentForm.serialize();
-
-    //    $.post($currentForm.attr('action'), dataToSend, function (serverData) {
-    //        debugger;
-    //        $('#users-table-pagination').html(serverData);
-    //    });
-    //});
-    //const $pageCountForm = $container.find('.page-count-form');
-    //const $userCount = $container.find('.users-count');
-
-    //Page Count Form
     $container.on('click', '.page-count-form-button', function (event) {
 
         event.preventDefault();
 
-        $button = $(this);
+        var $currentSize = $(this).parent().siblings('.users-count').data('users-count');
 
-        $form = $button.parents('form:first');
+        var $input = $(this).parent().siblings('.users-count');
 
-        dataToSend = $form.serialize();
+        var $inputVal = $input.val();
 
-        $.post($form.attr('action'), dataToSend, function (serverData) {
-            $('#users-container').html(serverData);
-        });
+        if ($inputVal > 0) {
+
+            $button = $(this);
+
+            $form = $button.parents('form:first');
+
+            dataToSend = $form.serialize();
+
+            $.post($form.attr('action'), dataToSend, function (serverData) {
+                $('#users-container').html(serverData);
+            });
+        } else {
+
+            $input.val($currentSize);
+        }
     });
 
     //Search Form

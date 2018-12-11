@@ -5,12 +5,12 @@
 
 <div id="transactions-table-pagination">
     <div>
-        <form class="float-left page-count-form" asp-action="UpdateTable" asp-controller="Users" method="post">
+        <form class="float-left page-count-form" asp-action="UpdateTable" asp-controller="Transactions" method="post">
             <div class="input-group mb-3 flex-nowrap">
                 <div class="input-group-prepend">
                     <span class="input-group-text">Count:</span>
                 </div>
-                <input type="text" class="form-control users-count" onkeypress="return isNumberKey(event)" maxlength="2" asp-for="@Model.PageSize" value="@Model.PageSize">
+                <input type="text" class="form-control transactions-count" onkeypress="return isNumberKey(event)" maxlength="2" asp-for="@Model.PageSize" value="@Model.PageSize" data-transactions-count="@Model.PageSize">
                 <input type="hidden" asp-for="@Model.SearchString" value="@Model.SearchString" />
                 <input type="hidden" asp-for="@Model.SortOrder" value="@Model.SortOrder" />
                 <input type="hidden" asp-for="@Model.PageNumber" value="1" />
@@ -19,10 +19,10 @@
                 </div>
             </div>
         </form>
-        <form class="float-right search-form" asp-action="UpdateTable" asp-controller="Users" method="post">
+        <form class="float-right search-form" asp-action="UpdateTable" asp-controller="Transactions" method="post">
             <div class="input-group mb-3 flex-nowrap">
                 <div class="input-group-prepend">
-                    <input asp-for="@Model.SearchString" value="@Model.SearchString" class="form-control" type="date" placeholder="SearchDate" aria-label="SearchDate">
+                    <input asp-for="@Model.SearchString" value="@Model.SearchString" class="form-control" type="text" placeholder="Search Username" aria-label="Search">
                     <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
                     <input type="hidden" asp-for="@Model.SortOrder" value="@Model.SortOrder" />
                     <input type="hidden" asp-for="@Model.PageNumber" value="1" />
@@ -33,29 +33,15 @@
             </div>
         </form>
     </div>
-    <table class="table text-nowrap m-0 " id="users-table">
+    <table class="table text-nowrap m-0 " id="transactions-table">
         <thead>
             <tr>
-                <th class="col-lg-3">
-                    <form class="sorting-form" asp-action="UpdateTable" asp-controller="Users" method="post">
-                        <div class="input-group flex-nowrap flex-center">
-                            <div class="input-group-prepend">
-                                <input type="hidden" asp-for="@Model.SortOrder" value="@(Model.SortOrder == nameof(Model.Username) + "_asc" ? nameof(Model.Username) + "_desc" : nameof(Model.Username) + "_asc")">
-                                <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
-                                <input type="hidden" asp-for="@Model.PageNumber" value="1" />
-                                <input type="hidden" asp-for="@Model.SearchString" value="@Model.SearchString" />
-                            </div>
-                            <div class="input-group-append">
-                                <button type="submit" class="sorting-form-button makealink m-0">@(nameof(Model.Username))</button>
-                            </div>
-                        </div>
-                    </form>
-                </th>
+                <th class="col-lg-3">@(nameof(Model.Username))</th>
                 <th class="col-lg-3">@(nameof(Model.Type))</th>
                 <th class="col-lg-3">@(nameof(Model.Amount))</th>
                 <th class="col-lg-3">@(nameof(Model.Description))</th>
                 <th class="col-lg-3">
-                    <form class="sorting-form" asp-action="UpdateTable" asp-controller="Users" method="post">
+                    <form class="sorting-form" asp-action="UpdateTable" asp-controller="Transactions" method="post">
                         <div class="input-group flex-nowrap flex-center">
                             <div class="input-group-prepend">
                                 <input type="hidden" asp-for="@Model.SortOrder" value="@(Model.SortOrder == nameof(Model.CreatedOn) + "_asc" ? nameof(Model.CreatedOn) + "_desc" : nameof(Model.CreatedOn) + "_asc")">
@@ -81,9 +67,29 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination pg-teal">
             <li class="page-item">
+                @if (!Model.IsFirstPage)
+                {
+                    <form class="float-left pagination-form" asp-action="UpdateTable" asp-controller="Transactions" method="post">
+                        <div class="input-group mb-3 flex-nowrap">
+                            <div class="input-group-append">
+                                <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
+                                <input type="hidden" asp-for="@Model.SearchString" value="@Model.SearchString" />
+                                <input type="hidden" asp-for="@Model.SortOrder" value="@Model.SortOrder" />
+                                <input type="hidden" asp-for="@Model.PageNumber" value="1" />
+                                <button type="submit" class="page-link pagination-form-button pagination">First</button>
+                            </div>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <a class="page-link navigational-disabled">First</a>
+                }
+            </li>
+            <li class="page-item">
                 @if (Model.HasPreviousPage)
                 {
-                    <form class="float-left pagination-form" asp-action="UpdateTable" asp-controller="Users" method="post">
+                    <form class="float-left pagination-form" asp-action="UpdateTable" asp-controller="Transactions" method="post">
                         <div class="input-group mb-3 flex-nowrap">
                             <div class="input-group-append">
                                 <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
@@ -100,10 +106,10 @@
                     <a class="page-link navigational-disabled">Previous</a>
                 }
             </li>
-            @for (int p = 1; p <= Model.PageCount; p++)
+            @for (int p = Model.FirstDisplayPage; p <= Model.LastDisplayPage; p++)
             {
                 <li class="page-item @(p == Model.PageNumber ? "active" : "") ">
-                    <form class="float-left pagination-form" asp-action="UpdateTable" asp-controller="Users" method="post">
+                    <form class="float-left pagination-form" asp-action="UpdateTable" asp-controller="Transactions" method="post">
                         <div class="input-group mb-3 flex-nowrap">
                             <div class="input-group-append">
                                 <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
@@ -119,7 +125,7 @@
             <li class="page-item">
                 @if (Model.HasNextPage)
                 {
-                    <form class="float-left pagination-form" asp-action="UpdateTable" asp-controller="Users" method="post">
+                    <form class="float-left pagination-form" asp-action="UpdateTable" asp-controller="Transactions" method="post">
                         <div class="input-group mb-3 flex-nowrap">
                             <div class="input-group-append">
                                 <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
@@ -134,6 +140,26 @@
                 else
                 {
                     <a class="page-link navigational-disabled">Next</a>
+                }
+            </li>
+            <li class="page-item">
+                @if (!Model.IsLastPage)
+                {
+                    <form class="float-left pagination-form" asp-action="UpdateTable" asp-controller="Transactions" method="post">
+                        <div class="input-group mb-3 flex-nowrap">
+                            <div class="input-group-append">
+                                <input type="hidden" asp-for="@Model.PageSize" value="@Model.PageSize" />
+                                <input type="hidden" asp-for="@Model.SearchString" value="@Model.SearchString" />
+                                <input type="hidden" asp-for="@Model.SortOrder" value="@Model.SortOrder" />
+                                <input type="hidden" asp-for="@Model.PageNumber" value="@Model.PageCount" />
+                                <button type="submit" class="page-link pagination-form-button pagination">Last</button>
+                            </div>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <a class="page-link navigational-disabled">Last</a>
                 }
             </li>
         </ul>

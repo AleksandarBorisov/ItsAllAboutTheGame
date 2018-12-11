@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using ItsAllAboutTheGame.GlobalUtilities.Enums;
+using System;
+using System.Collections.Generic;
 
 namespace ItsAllAboutTheGame.GlobalUtilities.Constants
 {
@@ -18,7 +20,7 @@ namespace ItsAllAboutTheGame.GlobalUtilities.Constants
 
         public const string DefultUserSorting = "Username_asc";
 
-        public const string DefultTransactionSorting = "CreatedOn_asc";
+        public const string DefultTransactionSorting = "CreatedOn_desc";
 
         public const string UsersRolesCache = "UsersRoles";
 
@@ -37,6 +39,14 @@ namespace ItsAllAboutTheGame.GlobalUtilities.Constants
         public static string GameThreeGrid = "8x5";
 
         public static HashSet<string> GameGrids = new HashSet<string>() { GameOneGrid, GameTwoGrid, GameThreeGrid };
+
+        public static int MaxPageCount = 5;
+
+        public static string BaseCurrency = "USD";
+
+        public static string BaseCurrencySymbol = "$";
+
+        public static string Currencies = string.Join(",", Enum.GetNames(typeof(Currency)));
 
     }
 }

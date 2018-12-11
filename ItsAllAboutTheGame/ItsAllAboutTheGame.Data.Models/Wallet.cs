@@ -1,4 +1,4 @@
-﻿using ItsAllAboutTheGame.Data.Models.Enums;
+﻿using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

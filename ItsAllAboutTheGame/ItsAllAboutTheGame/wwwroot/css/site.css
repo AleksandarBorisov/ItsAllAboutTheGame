@@ -219,6 +219,7 @@ body {
 }
 
 .users-count {
+    min-width: 50px;
     width: 20%;
 }
 
@@ -242,7 +243,7 @@ body {
     background-color: gray;
     padding: 20px;
     display: block;
-    width:70%;
+    width: 70%;
     /*max-height: 200px;*/
     overflow-y: auto;
 }
@@ -257,8 +258,36 @@ body {
     background-color: white;
     padding: 20px;
     display: block;
-    overflow-y: auto;
-    width: 50%;
+    /*overflow-y: auto;*/
+    width: 55%;
+}
+
+@media (max-width: 768px) {
+    .game-rules-container {
+        width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .table-col {
+        flex: none;
+        max-width: none;
+    }
+}
+
+@media (max-width: 768px) {
+    * {
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+    }
+
+        *:before,
+        *:after {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
 }
 
 .money-row {
@@ -268,7 +297,6 @@ body {
 
 #game-management {
     padding-top: 20%;
-
 }
 
 #third-game-management {
@@ -348,4 +376,59 @@ body {
 
 #transactions-management {
     padding-top: 20%;
+}
+
+.transactions-count {
+    min-width: 50px;
+    width: 20%;
+}
+
+#transactions-table th, #transactions-table tr {
+    padding: 10px;
+    border-bottom: 2px solid #ddd;
+}
+
+#transactions-table td {
+    border: none;
+}
+
+#transactions-table tbody tr:hover {
+    background-color: #eee;
+}
+
+#transactions-table {
+    border-collapse: collapse;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+    #transactions-table thead tr:first-child {
+        background-color: #24355C;
+    }
+
+    #transactions-table thead tr {
+        color: aqua;
+    }
+
+    #transactions-table th, #transactions-table td {
+        font-weight: bold;
+    }
+
+.stake {
+    background-color: indianred;
+}
+
+.win {
+    background-color: darkseagreen;
+}
+
+.deposit {
+    background-color: lightgoldenrodyellow;
+}
+
+.withdraw {
+    background-color: darkorange;
 }
