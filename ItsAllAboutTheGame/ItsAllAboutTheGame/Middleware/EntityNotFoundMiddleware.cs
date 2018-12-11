@@ -50,6 +50,10 @@ namespace ItsAllAboutTheGame.Middleware
             {
                 context.Response.Redirect("/ForeignApiError");
             }
+            catch (Exception ex)
+            {
+                context.Response.Redirect("/Error/Index");
+            }
         }
     }
 }

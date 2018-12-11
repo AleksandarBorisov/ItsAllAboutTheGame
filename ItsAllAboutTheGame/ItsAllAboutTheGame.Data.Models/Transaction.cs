@@ -15,6 +15,9 @@ namespace ItsAllAboutTheGame.Data.Models
         public TransactionType Type { get; set; }
 
         [Required]
+        public Currency Currency { get; set; }
+
+        [Required]
         public string Description { get; set; }
 
         [Required]

@@ -159,7 +159,7 @@ namespace ItsAllAboutTheGame.Services.Data
             return userCards;
         }
 
-        public IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefultUserSorting)
+        public IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefaultUserSorting)
         {
             var users = this.context
                 .Users
@@ -186,29 +186,6 @@ namespace ItsAllAboutTheGame.Services.Data
 
             return users.ToPagedList(page, size);
         }
-
-
-        public IPagedList<TransactionDTO> GetUserTransactionHistory(string userId, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefultTransactionSorting)
-        {
-            var user = this.context.Users.Where(u => u.Id == userId).Include(t => t.Transactions).FirstOrDefault();
-
-            var transactions = user.Transactions.Select(tr => new TransactionDTO(tr));
-
-            var property = sortOrder.Remove(sortOrder.IndexOf("_"));
-            PropertyInfo prop = typeof(TransactionDTO).GetProperty(property, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
-            if (!sortOrder.Contains("_desc"))
-            {
-                transactions = transactions.OrderBy(transaction => prop.GetValue(transaction));
-            }
-            else
-            {
-                transactions = transactions.OrderByDescending(transaction => prop.GetValue(transaction));
-            }
-
-
-            return transactions.ToPagedList(page, size);
-        }
-        
 
         public async Task<UserDTO> LockoutUser(string userId, int days)
         {

@@ -99,7 +99,6 @@ namespace ItsAllAboutTheGame.Services.Data
             }
         }
 
-
         public async Task<TransactionDTO> WithdrawFromUserBalance(string userId, decimal amount)
         {
             try
@@ -120,7 +119,6 @@ namespace ItsAllAboutTheGame.Services.Data
                 {
                     userWallet.Balance -= convertedAmount;
                 }
-                
 
                 var transaction = new Transaction()
                 {
@@ -129,7 +127,8 @@ namespace ItsAllAboutTheGame.Services.Data
                     User = user,
                     UserId = user.Id,
                     Amount = convertedAmount,
-                    CreatedOn = DateTime.Now
+                    CreatedOn = DateTime.Now,
+                    Currency = userWallet.Currency
                     //TODO: Mock DateTime
                 };
 

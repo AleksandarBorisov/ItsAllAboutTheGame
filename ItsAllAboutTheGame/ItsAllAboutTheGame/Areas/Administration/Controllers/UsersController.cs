@@ -29,7 +29,7 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 
             var model = new UsersViewModel(users);
 
-            model.SortOrder = model.SortOrder ?? GlobalConstants.DefultUserSorting;
+            model.SortOrder = model.SortOrder ?? GlobalConstants.DefaultUserSorting;
 
             return View(model);
         }
@@ -46,7 +46,7 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 
                 var oldModel = new UsersViewModel(oldUsers);
 
-                oldModel.SortOrder = oldModel.SortOrder ?? GlobalConstants.DefultUserSorting;
+                oldModel.SortOrder = oldModel.SortOrder ?? GlobalConstants.DefaultUserSorting;
 
                 return PartialView("_UsersTablePartial", oldModel);
             }

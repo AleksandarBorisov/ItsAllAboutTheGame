@@ -16,6 +16,10 @@ namespace ItsAllAboutTheGame.Data.Configurations
             builder.Property(transation => transation.Type)
                 .HasConversion<string>()
                 .HasMaxLength(50);
+
+            builder.Property(transation => transation.Currency)
+                .HasConversion<string>()
+                .HasMaxLength(3);
         }
     }
 }

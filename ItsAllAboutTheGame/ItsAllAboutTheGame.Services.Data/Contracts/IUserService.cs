@@ -21,9 +21,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 
         Task<User> GetUser(string username);
 
-        IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = 5, string sortOrder = GlobalConstants.DefultUserSorting);
-
-        IPagedList<TransactionDTO> GetUserTransactionHistory(string userId, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefultTransactionSorting);
+        IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = 5, string sortOrder = GlobalConstants.DefaultUserSorting);
 
         Task<IEnumerable<CreditCard>> UserCards(User user);
 
