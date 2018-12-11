@@ -75,7 +75,6 @@ namespace ItsAllAboutTheGame.Controllers
                     else
                     {
                         logger.LogInformation("User logged in.");
-                        TempData["Success"] = "Login Successful!";
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -135,13 +134,9 @@ namespace ItsAllAboutTheGame.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            bool isAdult = DateTime.Now.Year - model.DateOfBirth.Year > 18;
-            if (!ModelState.IsValid || !isAdult)
+            
+            if (!ModelState.IsValid)
             {
-                if (!isAdult)
-                {
-                    TempData["Failed"] = "User must have 18 years old to register!";
-                }
                 return View(model);
             }
 
@@ -159,7 +154,6 @@ namespace ItsAllAboutTheGame.Controllers
 
                 await signInManager.SignInAsync(user, isPersistent: false);
                 logger.LogInformation("User created a new account with password.");
-                TempData["Success"] = "Registration Successful!";
                 await signInManager.SignOutAsync();
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
