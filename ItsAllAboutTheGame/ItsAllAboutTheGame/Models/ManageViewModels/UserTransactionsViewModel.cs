@@ -4,20 +4,19 @@ using ItsAllAboutTheGame.Services.Data.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using X.PagedList;
 
 namespace ItsAllAboutTheGame.Areas.Administration.Models
 {
-    public class TransactionsViewModel
+    public class UserTransactionsViewModel
     {
-        public TransactionsViewModel()
+        public UserTransactionsViewModel()
         {
 
         }
 
-        public TransactionsViewModel(IPagedList<TransactionDTO> transactionsList, Dictionary<string,decimal> amounts)
+        public UserTransactionsViewModel(TransactionListDTO transactionsList, Dictionary<string, decimal> amounts)
         {
-            this.Transactions = transactionsList;
+            this.Transactions = transactionsList.Transactions;
             this.HasNextPage = transactionsList.HasNextPage;
             this.HasPreviousPage = transactionsList.HasPreviousPage;
             this.PageCount = transactionsList.PageCount;
@@ -26,6 +25,7 @@ namespace ItsAllAboutTheGame.Areas.Administration.Models
             this.TotalItemCount = transactionsList.TotalItemCount;
             this.IsFirstPage = transactionsList.IsFirstPage;
             this.IsLastPage = transactionsList.IsLastPage;
+            this.CurrencySymbol = transactionsList.CurrencySymbol;
             SetDisplayPages();
             this.Amounts = amounts;
         }
@@ -36,7 +36,7 @@ namespace ItsAllAboutTheGame.Areas.Administration.Models
 
             FirstDisplayPage = this.PageNumber;
             LastDisplayPage = this.PageNumber;
-        
+
             while (pages > 1)
             {
                 if (this.FirstDisplayPage > 1)
@@ -90,6 +90,9 @@ namespace ItsAllAboutTheGame.Areas.Administration.Models
 
         public bool IsLastPage { get; set; }
 
+        public string CurrencySymbol { get; set; }
+
         public Dictionary<string, decimal> Amounts { get; set; }
     }
 }
+

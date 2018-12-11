@@ -18,9 +18,9 @@ namespace ItsAllAboutTheGame.GlobalUtilities.Constants
 
         public const int DefultPageSize = 5;
 
-        public const string DefultUserSorting = "Username_asc";
+        public const string DefaultUserSorting = "Username_asc";
 
-        public const string DefultTransactionSorting = "CreatedOn_desc";
+        public const string DefaultTransactionSorting = "CreatedOn_desc";
 
         public const string UsersRolesCache = "UsersRoles";
 
@@ -42,7 +42,7 @@ namespace ItsAllAboutTheGame.GlobalUtilities.Constants
 
         public static int MaxPageCount = 5;
 
-        public static string BaseCurrency = "USD";
+        public const string BaseCurrency = "USD";
 
         public static string BaseCurrencySymbol = "$";
 

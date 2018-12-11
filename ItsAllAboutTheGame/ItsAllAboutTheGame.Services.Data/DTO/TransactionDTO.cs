@@ -15,9 +15,10 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
         {
             this.Type = transaction.Type;
             this.Username = transaction.User.UserName;
-            this.Amount = transaction.Amount;
+            this.Amount = Math.Round(transaction.Amount, 2);
             this.Description = transaction.Description;
             this.CreatedOn = transaction.CreatedOn;
+            this.Currency = transaction.Currency;
         }
 
         public TransactionType Type { get; set; }
@@ -29,5 +30,7 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
         public string Description { get; set; }
 
         public DateTime? CreatedOn { get; set; }
+
+        public Currency Currency { get; set; }
     }
 }
