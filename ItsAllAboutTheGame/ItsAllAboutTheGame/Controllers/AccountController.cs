@@ -75,7 +75,6 @@ namespace ItsAllAboutTheGame.Controllers
                     else
                     {
                         logger.LogInformation("User logged in.");
-                        TempData["Success"] = "Login Successful!";
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -135,13 +134,9 @@ namespace ItsAllAboutTheGame.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            bool isAdult = DateTime.Now.Year - model.DateOfBirth.Year > 18;
-            if (!ModelState.IsValid || !isAdult)
+
+            if (!ModelState.IsValid)
             {
-                if (!isAdult)
-                {
-                    TempData["Failed"] = "User must have 18 years old to register!";
-                }
                 return View(model);
             }
 
@@ -159,7 +154,6 @@ namespace ItsAllAboutTheGame.Controllers
 
                 await signInManager.SignInAsync(user, isPersistent: false);
                 logger.LogInformation("User created a new account with password.");
-                TempData["Success"] = "Registration Successful!";
                 await signInManager.SignOutAsync();
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
@@ -237,40 +231,31 @@ namespace ItsAllAboutTheGame.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginViewModel model, string returnUrl = null)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                // Get the information about the user from the external login provider
-                var info = await signInManager.GetExternalLoginInfoAsync();
-                if (info == null)
-                {
-                    throw new ApplicationException("Error loading external login information during confirmation.");
-                }
-                try
-                {
-                    var user = await this.userService.RegisterUserWithLoginProvider(info, model.UserCurrency, model.DateOfBirth);
-
-                    var result = await userManager.CreateAsync(user, model.Password);
-                    if (result.Succeeded)
-                    {
-                        result = await userManager.AddLoginAsync(user, info);
-                        if (result.Succeeded)
-                        {
-                            await signInManager.SignInAsync(user, isPersistent: false);
-                            logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                            TempData["Success"] = "Login Successful!";
-                            return RedirectToLocal(returnUrl);
-                        }
-                    }
-                    AddErrors(result);
-                }
-                catch (UserNo18Exception ex)
-                {
-                    ViewData["ReturnUrl"] = returnUrl;
-                    TempData["Failed"] = "User must have 18 years old to register!";
-                    return View(nameof(ExternalLogin));
-                }
-
+                return View(nameof(ExternalLogin));
             }
+            // Get the information about the user from the external login provider
+            var info = await signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                throw new ApplicationException("Error loading external login information during confirmation.");
+            }
+
+            var user = await this.userService.RegisterUserWithLoginProvider(info, model.UserCurrency, model.DateOfBirth);
+
+            var result = await userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                result = await userManager.AddLoginAsync(user, info);
+                if (result.Succeeded)
+                {
+                    await signInManager.SignInAsync(user, isPersistent: false);
+                    logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                    return RedirectToLocal(returnUrl);
+                }
+            }
+            AddErrors(result);
 
             ViewData["ReturnUrl"] = returnUrl;
             return View(nameof(ExternalLogin), model);

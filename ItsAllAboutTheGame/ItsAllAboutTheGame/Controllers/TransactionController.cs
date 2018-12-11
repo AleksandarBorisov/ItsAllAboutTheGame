@@ -42,7 +42,6 @@ namespace ItsAllAboutTheGame.Controllers
 
             var claims = HttpContext.User;
             var user = await userManager.GetUserAsync(claims);
-            var userId = await userManager.GetUserIdAsync(user);
             var userCards = await this.cardService.GetSelectListCards(user);
             var userCardsForDelete = await this.cardService.GetSelectListCardsForDelete(user);
 

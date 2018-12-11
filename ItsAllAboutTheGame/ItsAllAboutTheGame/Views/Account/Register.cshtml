@@ -40,10 +40,6 @@
                 <label asp-for="DateOfBirth"></label>
                 <input asp-for="DateOfBirth" type="date" min="1900-01-01" max="2000-01-01" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                @if (TempData["Failed"] != null)
-                {
-                    <p class="text-danger">@TempData["Failed"]</p>
-                }
             </div>
             <div class="form-group">
                 <label asp-for="UserCurrency"></label>
