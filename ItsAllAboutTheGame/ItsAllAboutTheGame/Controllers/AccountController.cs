@@ -11,6 +11,7 @@ using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using System.Net;
 using System.Security.Claims;
+using System.Globalization;
 
 namespace ItsAllAboutTheGame.Controllers
 {
@@ -67,6 +68,8 @@ namespace ItsAllAboutTheGame.Controllers
 
                     if (user.IsDeleted)
                     {
+                        await signInManager.SignOutAsync();
+
                         return RedirectToAction(nameof(Deleted), new { userEmail = model.Email });
                     }
                     else
@@ -81,6 +84,9 @@ namespace ItsAllAboutTheGame.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+
+                    ViewData["InvalidLoginAtempt"] = "Invalid Login Atempt";
+
                     return View(model);
                 }
             }
@@ -133,7 +139,7 @@ namespace ItsAllAboutTheGame.Controllers
                 return View(model);
             }
             // call service to register and create a new user
-            var user = await this.userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth, model.UserCurrency);
+            var user = await this.userService.RegisterUser(model.Email, model.FirstName, model.LastName, DateTime.Parse(model.DateOfBirth), model.UserCurrency);
 
             var result = await this.userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
@@ -269,6 +275,35 @@ namespace ItsAllAboutTheGame.Controllers
             else
             {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        [AllowAnonymous]
+        public IActionResult IsBirthDateValid(string DateOfBirth)
+        {
+            var isValidDate = DateTime.TryParseExact(DateOfBirth,
+                       "dd.MM.yyyy",
+                       CultureInfo.InvariantCulture,
+                       DateTimeStyles.None,
+                       out DateTime birthDate);;
+
+            var now = DateTime.Now.Year;
+
+            if (!isValidDate)
+            {
+                return Json(false);
+            }
+            else
+            {
+                int difference = now - birthDate.Year;
+
+                if (difference < 18 || difference > 100)
+                {//You cannot be under 18 years old or over 100 years
+                    return Json(false);
+                }
+
+                return Json(true);
             }
         }
     }
