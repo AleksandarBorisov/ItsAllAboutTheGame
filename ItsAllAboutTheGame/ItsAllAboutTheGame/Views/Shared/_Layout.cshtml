@@ -56,10 +56,6 @@
                     {
                         <vc:login-status></vc:login-status>
                     }
-                    @*parameter1="parameter1 value"
-                        parameter2="parameter2 value">*@
-
-                    @*@await Html.PartialAsync("_LoginPartial")*@
                 </ul>
             </div>
             <!-- Collapse button -->
@@ -116,7 +112,6 @@
         <!-- Footer -->
         <footer class="page-footer unique-color-dark">
             <!--Footer Links-->
-            <!--Footer Links-->
             <div class="container mt-5 mb-4 text-center text-md-left">
                 <div class="footer-copyright text-center py-3">
                     © @DateTime.Now.Year Copyright:
@@ -124,25 +119,21 @@
                 </div>
             </div>
             <!--/.Footer Links-->
-            <!-- Copyright -->
-            <!-- Copyright -->
-            <!-- Footer -->
         </footer>
     </div>
 
     <environment include="Development">
         <script src="~/lib/mdb/js/jquery-3.3.1.min.js"></script>
+        <script src="~/lib/mdb/js/popper.min.js"></script>
+        <script src="~/lib/mdb/js/bootstrap.min.js"></script>
         <script src="~/lib/mdb/js/mdb.min.js"></script>
-        <script src="~/lib/mdb/js/bootstrap.js"></script>
-        <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+        @*<script src="~/lib/bootstrap/js/bootstrap.js"></script>*@
         <script src="~/js/site.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
         <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-                integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
@@ -159,6 +150,7 @@
                 crossorigin="anonymous"
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
+        <script src="~/lib/mdb/js/popper.min.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.14/js/mdb.min.js"
                 asp-fallback-src="~/lib/mdb/js/mdb.min.js"
@@ -170,6 +162,7 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
                 integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
                 crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
     </environment>
     <script src="~/js/scrolltotop.js"></script>
     @RenderSection("Scripts", required: false)

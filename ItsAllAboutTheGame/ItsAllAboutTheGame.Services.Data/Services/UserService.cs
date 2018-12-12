@@ -37,8 +37,8 @@ namespace ItsAllAboutTheGame.Services.Data
             this.walletService = walletService;
         }
 
-        public async Task<IdentityResult> RegisterUser(string email, string firstName, string lastName,DateTime dateOfBirth, Currency userCurrency, string password)
-        {            
+        public async Task<User> RegisterUser(string email, string firstName, string lastName, DateTime dateOfBirth, Currency userCurrency)
+        {
             User user = new User
             {
                 Cards = new List<CreditCard>(),
@@ -58,10 +58,8 @@ namespace ItsAllAboutTheGame.Services.Data
             user.Wallet = wallet;
 
             user.WalletId = wallet.Id;
-
-            var result = await this.userManager.CreateAsync(user, password);
-
-            return result;
+          
+            return user;
         }
 
         public async Task<User> RegisterUserWithLoginProvider(ExternalLoginInfo info, Currency userCurrency, DateTime dateOfBirth)

@@ -3,7 +3,7 @@
     ViewData["Title"] = "Register";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2 class="padding-form">@ViewData["Title"]</h2>
 <h4>Associate your @ViewData["LoginProvider"] account.</h4>
 <hr />
 
@@ -11,45 +11,47 @@
     You've successfully authenticated with <strong>@ViewData["LoginProvider"]</strong>.
     You have already provided us with your e-mail. Please fill in some additional info for registration!
 </p>
-<header class="padding" style="padding:20px">
-
-</header>
-<main class="padding">
+<main>
     <div class="row">
-        <div class="col-md-4">
-            <form asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div>
-                    <label asp-for="DateOfBirth"></label>
-                    <input asp-for="DateOfBirth" type="date" />
-                </div>
-                <div class="form-group">
-                    <label asp-for="UserCurrency"></label>
-                    <select asp-for="UserCurrency">
-                        <option value="EUR">EUR</option>
-                        <option value="USD">USD</option>
-                        <option value="BGN">BGN</option>
-                        <option value="GBP">GBP</option>
-                    </select>
-                </div>
-                <p class="text-info">
-                    Please specify a password for your account!
-                </p>
-                <div class="form-group">
-                    <label asp-for="Password"></label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ConfirmPassword"></label>
-                    <input asp-for="ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>
-                <button type="submit" class="btn btn-default">Register</button>
-            </form>
+        <div class="col-md-12">
+            <section class="login-form mr-auto ml-auto m-0">
+                <form class="white-text" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <h4 class="text-center valid">@ViewData["Title"]</h4>
+                    <div class="md-form form-sm white-text col-form-label-lg">
+                        <i class="fa fa-calendar prefix"></i>
+                        <input asp-for="DateOfBirth" type="text" class="form-control white-text mb-0" id="birth-date" placeholder="dd.mm.yyyy" />
+                        <small><span asp-validation-for="DateOfBirth" class="text-danger p-0"></span></small>
+                    </div>
+                    <div class="white-text">
+                        <label asp-for="UserCurrency"></label>
+                        <select asp-for="UserCurrency">
+                            <option value="EUR">EUR</option>
+                            <option value="USD">USD</option>
+                            <option value="BGN">BGN</option>
+                            <option value="GBP">GBP</option>
+                        </select>
+                        <small><span asp-validation-for="UserCurrency" class="text-danger"></span></small>
+                        <i class="fa fa-money prefix ml-1"></i>
+                    </div>
+                    <div class="form-group md-form form-sm white-text col-form-label-lg">
+                        <i class="fa fa-key prefix" aria-hidden="true"></i>
+                        <label asp-for="Password" class="font-weight-bold white-text">Your Password</label>
+                        <input asp-for="Password" class="form-control white-text mb-0" maxlength="50" />
+                        <small><span asp-validation-for="Password" class="text-danger p-0 validation-text"></span></small>
+                    </div>
+                    <div class="form-group md-form form-sm white-text col-form-label-lg">
+                        <i class="fa fa-key prefix" aria-hidden="true"></i>
+                        <label asp-for="ConfirmPassword" class="font-weight-bold white-text">Confirm Password</label>
+                        <input asp-for="ConfirmPassword" class="form-control white-text mb-0" maxlength="50" />
+                        <small><span asp-validation-for="ConfirmPassword" class="text-danger p-0"></span></small>
+                    </div>
+                    <div class=" form-group text-center mt-4">
+                        <button class="btn btn-white text-dark waves-effect waves-light" type="submit">@ViewData["Title"]<i class="fa fa-address-book-o ml-2"></i></button>
+                    </div>
+                </form>
+            </section>
         </div>
     </div>
-
 </main>
 
 @section Scripts {
