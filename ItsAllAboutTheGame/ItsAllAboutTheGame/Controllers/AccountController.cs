@@ -133,12 +133,13 @@ namespace ItsAllAboutTheGame.Controllers
                 return View(model);
             }
 
-            var user = await this.userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth, model.UserCurrency);
+            var result = await this.userService.RegisterUser(model.Email, model.FirstName, model.LastName, model.DateOfBirth, model.UserCurrency, model.Password);
 
             // creating the new user
-            var result = await this.userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
+                var user = await userManager.GetUserAsync(HttpContext.User);
+
                 await signInManager.SignInAsync(user, isPersistent: false);
 
                 return RedirectToAction(nameof(HomeController.Index), "Home");

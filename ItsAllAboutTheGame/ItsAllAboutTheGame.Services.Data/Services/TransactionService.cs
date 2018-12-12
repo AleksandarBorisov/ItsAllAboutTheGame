@@ -59,7 +59,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                 Amount = convertedAmount,
                 CreatedOn = DateTime.Now,
                 Currency = userWallet.Currency
-                //TODO: Mock DateTime
             };
 
             this.context.Transactions.Add(transaction);

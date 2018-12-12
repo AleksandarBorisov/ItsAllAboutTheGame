@@ -2,7 +2,6 @@
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.Exceptions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,12 +15,10 @@ namespace ItsAllAboutTheGame.Services.Data.Services
     public class CardService : ICardService
     {
         private readonly ItsAllAboutTheGameDbContext context;
-        private readonly UserManager<User> userManager;
 
-        public CardService(ItsAllAboutTheGameDbContext context, UserManager<User> userManager)
+        public CardService(ItsAllAboutTheGameDbContext context)
         {
             this.context = context;
-            this.userManager = userManager;
         }
 
         public async Task<CreditCard> AddCard(string cardNumber, string cvv, DateTime expiryDate, User user)
