@@ -7,10 +7,11 @@
 }
 
 $(function () {
-    var $currentBalance = parseInt($('#balance').text());
 
     //Client-Side Validation if the Stake is less than the Balance
     $(document).on('input', '#stake-amount', function (e) {
+
+        var $currentBalance = parseInt($('#balance').text());
 
         var $amount = $(this);
 
@@ -27,36 +28,52 @@ $(function () {
     //Submitting Spin Form
     $container.on('submit', '.spin-form', function (event) {
 
-        $currentForm = $(this);
-
         event.preventDefault();
 
-        dataToSend = $currentForm.serialize();
+        var $currentBalance = parseInt($('#balance').text());
 
-        $.post($currentForm.attr('action'), dataToSend, function (serverData, testStatus, response) {
-            
-            //If we return View different from the partial we redirect to home page
-            if (serverData.indexOf("game-one-table") < 0) {
-                window.location.href = "/";
-            }
-            else {//Else we update the partial view
-                const $gameContainer = $('.game-container');
-                //We replace the whole html part
-                $gameContainer.html(serverData);
-                //We find the new balance data
-                var $newBalance = $gameContainer.find('#balance').data('balance');
-                //We replace the hidden data in the spin form
-                $('#hidden-balance').attr("value", $newBalance);;
-                //We are taking the field user-balance
-                const $balance = $('#user-balance');
-                //We update its data-balance with the new balance
-                $balance.attr('data-balance', $newBalance);
-                //We take its data-symbol
-                const symbol = $balance.data('symbol');
-                //Finally we update the text of the text field
-                $('#user-balance-text').text($newBalance + ' ' + symbol);
-            }
-        });
+        var $amount = $(this).find('#stake-amount');
+
+        var $amountVal = parseInt($amount.val());
+
+        if ($amountVal === 0 || $amountVal > $currentBalance) {
+
+            $amount.val($currentBalance);
+        }
+        else {
+            $('#loading-spinner').delay(200).show();
+
+            $currentForm = $(this);
+
+            dataToSend = $currentForm.serialize();
+
+            $.post($currentForm.attr('action'), dataToSend, function (serverData, testStatus, response) {
+
+                $('#loading-spinner').hide(0);
+                //If we return View different from the partial we redirect to home page
+                if (serverData.indexOf("game-one-table") < 0) {
+                    window.location.href = "/";
+                }
+                else {//Else we update the partial view
+                    const $gameContainer = $('.game-container');
+                    //We replace the whole html part
+                    $gameContainer.html(serverData);
+                    //We find the new balance data
+                    var $newBalance = $gameContainer.find('#balance').data('balance');
+                    //We replace the hidden data in the spin form
+                    $('#hidden-balance').attr("value", $newBalance);;
+                    //We are taking the field user-balance
+                    const $balance = $('#user-balance');
+                    //We update its data-balance with the new balance
+                    $balance.attr('data-balance', $newBalance);
+                    //We take its data-symbol
+                    const symbol = $balance.data('symbol');
+                    //Finally we update the text of the text field
+                    $('#user-balance-text').text($newBalance + ' ' + symbol);
+                }
+            });
+        }
+
     });
 
     //Disable scrolling

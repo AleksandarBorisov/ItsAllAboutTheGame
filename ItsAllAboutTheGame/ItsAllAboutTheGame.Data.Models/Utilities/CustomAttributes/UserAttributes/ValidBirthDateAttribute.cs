@@ -10,7 +10,6 @@ namespace ItsAllAboutTheGame.Data.Models.Utilities.CustomAttributes.UserAttribut
             bool result = value != null && ((DateTime)value as DateTime?) <= DateTime.Now.AddYears(-18)
                 && (DateTime)value > DateTime.Now.AddYears(-201);
             
-            
             return result;
         }
     }

@@ -13,7 +13,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 
         Task<WalletDTO> UpdateUserWallet(User user, decimal stake);
 
-        Task<TransactionDTO> WithdrawFromUserBalance(string userId, decimal amount);
+        Task<TransactionDTO> WithdrawFromUserBalance(User loggedUser, decimal amount);
 
         Task<decimal> ConvertBalance(User user);
     }

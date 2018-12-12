@@ -22,13 +22,11 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 
         Task<CreditCard> GetCard(string userId, int cardId);
 
-        Task<string> GetCardNumber(string cardNumber);
-
         Task<string> GetCardNumber(User user, int cardId);
 
-        Task<IEnumerable<SelectListItem>> GetSelectListCards(User user);
+        Task<IEnumerable<SelectListItem>> GetSelectListCards(User user, bool? disabled = null);
 
-        Task<IEnumerable<SelectListItem>> GetSelectListCardsForDelete(User user);
+        //Task<IEnumerable<SelectListItem>> GetSelectListCardsForDelete(User user);
 
         Task<IEnumerable<CreditCard>> GetCards(User user);
     }
