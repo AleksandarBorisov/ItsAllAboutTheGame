@@ -29,10 +29,10 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             {
                 CardNumber = cardNumber,
                 LastDigits = cardNumber.Substring(cardNumber.Length - 4),
-                CVV = cvv,                
+                CVV = cvv,
                 ExpiryDate = expiryDate,
                 UserId = userId,
-                User = user,              
+                User = user,
                 CreatedOn = DateTime.Now
             };
 
@@ -40,23 +40,25 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             await this.context.SaveChangesAsync();
 
             return creditCard;
-        }     
+        }
 
-        public async Task<CreditCard> DeleteCard(string userId, int cardId)
+        public async Task<CreditCard> DeleteCard(int cardId)
         {
             try
             {
-                var userCardToDelete = await this.context.CreditCards.Where(ci => ci.UserId == userId && ci.Id == cardId).FirstOrDefaultAsync();
+                var userCardToDelete = await this.context.CreditCards.FindAsync(cardId);
 
                 userCardToDelete.IsDeleted = true;
+
                 await this.context.SaveChangesAsync();
 
                 return userCardToDelete;
+
             }
             catch (Exception ex)
             {
-                throw new EntityNotFoundException($"Card with ID {cardId} does not exist!", ex);
-            }                      
+                throw new EntityNotFoundException($"Card {cardId} does not exist!", ex);
+            }
         }
 
         public async Task<CreditCard> GetCard(string userId, int cardId)
@@ -71,19 +73,11 @@ namespace ItsAllAboutTheGame.Services.Data.Services
         public async Task<string> GetCardNumber(User user, int cardId)
         {
             var userCardNumber = await this.context.CreditCards
-                .Where(c => c.User == user && c.Id == cardId)
+               .Where(c => c.User == user && c.Id == cardId)
               .Select(n => n.CardNumber)
               .FirstOrDefaultAsync();
 
             return userCardNumber;
-        }
-
-        public async Task<IEnumerable<CreditCard>> GetCards(User user)
-        {
-            var userCards = await this.context.CreditCards
-                .Where(c => c.User == user).ToListAsync();
-
-            return userCards;
         }
 
         public async Task<IEnumerable<SelectListItem>> GetSelectListCards(User user, bool? disabled = null)
@@ -94,11 +88,11 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                .Select(c => new SelectListItem
                {
                    Value = c.Id.ToString(),
-                   Text = new string('*', c.CardNumber.Length - 4) + c.CardNumber.Substring(c.CardNumber.Length - 4)
-                   + " " +(c.ExpiryDate < currentDate 
+                   Text = new string('*', c.CardNumber.Length - 4) + c.LastDigits
+                   + " " + (c.ExpiryDate < currentDate
                    ? "expired" : ""),
                    Disabled = disabled ?? c.ExpiryDate < currentDate
-                }).ToListAsync();
+               }).ToListAsync();
 
             return userCards.ToList();
         }

@@ -94,7 +94,9 @@ namespace ItsAllAboutTheGame.Controllers
             if (ModelState.IsValid)
             {
                 var userName = HttpContext.User.Identity.Name;
+
                 var user = await this.userManager.FindByNameAsync(userName);
+
                 var cardToAdd = await this.cardService.AddCard(model.CardNumber, model.CVV, model.ExpiryDate, user);
 
                 return RedirectToAction("Deposit", "Transaction");
@@ -109,11 +111,9 @@ namespace ItsAllAboutTheGame.Controllers
         {
             var user = await userManager.GetUserAsync(HttpContext.User);
 
-            var userId = await userManager.GetUserIdAsync(user);
-
             var userCardsForDelete = await this.cardService.GetSelectListCards(user, false);
             
-            var cardToDelete = await this.cardService.DeleteCard(userId, model.CreditCardId);
+            var cardToDelete = await this.cardService.DeleteCard(model.CreditCardId);
 
             return RedirectToAction("Deposit", "Transaction");
         }

@@ -22,7 +22,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
         private User user;
 
         [TestMethod]
-        public async Task ReturnsCard_WhenValidParamsPassed()
+        public async Task ReturnCard_WhenValidParamsPassed()
         {
             //Arrange
             contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
@@ -60,7 +60,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
         {
             //Arrange
             contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
-            .UseInMemoryDatabase(databaseName: "ReturnsCard_WhenValidParamsPassed")
+            .UseInMemoryDatabase(databaseName: "BeAddedToContext_WhenAddToCreditCard_IsCalled")
                 .Options;
 
             user = new User
@@ -80,7 +80,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
             //Act
             CreditCard creditCardResult;
             bool doesExist;
-           
+
             using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
                 var cardService = new CardService(actContext);
@@ -90,9 +90,8 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
             }
 
             //Assert
+            Assert.IsNotNull(creditCardResult);
             Assert.IsTrue(doesExist, "CreditCard was not added after AddCard was called");
         }
-
-
     }
 }

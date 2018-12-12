@@ -40,31 +40,49 @@ namespace ItsAllAboutTheGame.Services.Data.Services
 
         public async Task<Transaction> MakeDeposit(User user, int cardId, decimal amount)
         {
-            var userCardNumber = await this.cardService.GetCardNumber(user, cardId);
-
-            var userWallet = await this.walletService.GetUserWallet(user);
-
-            var rates = await this.foreignExchangeService.GetConvertionRates();
-
-            var convertedAmount = Math.Round(amount / rates.Rates[userWallet.Currency.ToString()], 2);
-
-            user.Wallet.Balance += convertedAmount;
-
-            var transaction = new Transaction()
+            try
             {
-                Type = TransactionType.Deposit,
-                Description = GlobalConstants.DepositDescription + userCardNumber,
-                User = user,
-                UserId = user.Id,
-                Amount = convertedAmount,
-                CreatedOn = DateTime.Now,
-                Currency = userWallet.Currency
-            };
+                var card = await this.context.CreditCards.FindAsync(cardId);
 
-            this.context.Transactions.Add(transaction);
-            await this.context.SaveChangesAsync();
+                if (card.IsDeleted == true)
+                {
+                    throw new Exception("Card is deleted!");
+                }
 
-            return transaction;
+                var cardLastDigits = card.LastDigits;
+
+                var userWallet = await this.walletService.GetUserWallet(user);
+
+                var rates = await this.foreignExchangeService.GetConvertionRates();
+
+                var convertedAmount = Math.Round(amount / rates.Rates[userWallet.Currency.ToString()], 2);
+
+                user.Wallet.Balance += convertedAmount;
+
+                var transaction = new Transaction()
+                {
+                    Type = TransactionType.Deposit,
+                    Description = GlobalConstants.DepositDescription + cardLastDigits.PadLeft(16, '*'),
+                    User = user,
+                    UserId = user.Id,
+                    Amount = convertedAmount,
+                    CreatedOn = DateTime.Now,
+                    Currency = userWallet.Currency
+                };
+
+                this.context.Transactions.Add(transaction);
+
+                await this.context.SaveChangesAsync();
+
+                return transaction;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new EntryPointNotFoundException("Could not make the deposit!", ex);
+            }
+
         }
 
         public async Task<IPagedList<TransactionDTO>> GetAllTransactions(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefaultTransactionSorting)
