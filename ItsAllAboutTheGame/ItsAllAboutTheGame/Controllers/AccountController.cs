@@ -136,10 +136,13 @@ namespace ItsAllAboutTheGame.Controllers
             {
                 return View(model);
             }
+
             // call service to register and create a new user
             var user = await this.userService.RegisterUser(model.Email, model.FirstName, model.LastName, DateTime.Parse(model.DateOfBirth), model.UserCurrency);
 
-            var result = await this.userManager.CreateAsync(user, model.Password);
+            var result = await userManager.CreateAsync(user, model.Password);
+           
+            // creating the new user
             if (result.Succeeded)
             {
                 await signInManager.SignInAsync(user, isPersistent: false);
@@ -198,7 +201,6 @@ namespace ItsAllAboutTheGame.Controllers
             var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
-                var name = info.Principal.FindFirstValue(ClaimTypes.Name);
                 return RedirectToLocal(returnUrl);
             }
 

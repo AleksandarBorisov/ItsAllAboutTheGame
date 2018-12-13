@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.Services.Data.Contracts
@@ -14,18 +12,20 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 
         bool DoesCardExist(string cardNumber);
 
-        bool AreOnlyDigits(string cvv);
+        bool IsCVVOnlyDigits(string cvv);
 
         bool IsExpired(DateTime expiryDate);
 
         Task<CreditCard> DeleteCard(int cardId);
 
-        Task<CreditCard> GetCard(string userId, int cardId);
+        //Task<CreditCard> GetCard(string userId, int cardId);
 
-        Task<string> GetCardNumber(User user, int cardId);
+        //Task<string> GetCardNumber(User user, int cardId);
+
+        //Task<IEnumerable<SelectListItem>> GetSelectListCards(User user, bool? disabled = null);
+
+        //Task<IEnumerable<CreditCard>> GetCards(User user);
 
         Task<IEnumerable<SelectListItem>> GetSelectListCards(User user, bool? disabled = null);
-
-        Task<IEnumerable<CreditCard>> GetCards(User user);
     }
 }

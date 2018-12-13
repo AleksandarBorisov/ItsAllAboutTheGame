@@ -7,6 +7,7 @@ namespace ItsAllAboutTheGame.Data.Models.Utilities.CustomAttributes.UserAttribut
     public class ValidBirthDateAttribute : ValidationAttribute
     {
         public override bool IsValid(object DateOfBirth)
+
         {
             var isValidDate = DateTime.TryParseExact((string)DateOfBirth,
                        "dd.MM.yyyy",

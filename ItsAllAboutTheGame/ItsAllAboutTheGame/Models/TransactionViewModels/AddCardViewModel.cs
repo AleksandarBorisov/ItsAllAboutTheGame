@@ -14,7 +14,8 @@ namespace ItsAllAboutTheGame.Models.TransactionViewModels
 
         [Required]
         [MinLength(3), MaxLength(4)]
-        [Remote(action: "AreDigits", controller: "Transaction", ErrorMessage = "CVV must contain only digits!")]
+        [RegularExpression("[0-9]+", ErrorMessage = "Card number should contain digits only!")]
+        [Remote(action: "IsCVVOnlyDigits", controller: "Transaction", ErrorMessage = "CVV must contain only digits!")]
         public string CVV { get; set; }
         
         [Required]

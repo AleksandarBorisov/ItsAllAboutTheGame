@@ -13,7 +13,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 {
     public interface IUserService
     {
-        Task<User> RegisterUser(string email, string firstName, string lastName,  DateTime dateOfBirth, Currency userCurrency);
+        Task<User> RegisterUser(string email, string firstName, string lastName, DateTime dateOfBirth, Currency userCurrency);
 
         Task<User> RegisterUserWithLoginProvider(ExternalLoginInfo info, Currency userCurrency, DateTime dateOfBirth);
 

@@ -142,7 +142,7 @@ namespace ItsAllAboutTheGame.Services.Data
             }
             catch (Exception ex)
             {
-                throw new EntityNotFoundException("User wallet not found");
+                throw new EntityNotFoundException("User wallet not found", ex);
             }
         }
 

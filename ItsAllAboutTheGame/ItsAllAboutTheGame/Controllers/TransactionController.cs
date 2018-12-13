@@ -96,7 +96,9 @@ namespace ItsAllAboutTheGame.Controllers
             if (ModelState.IsValid)
             {
                 var userName = HttpContext.User.Identity.Name;
+
                 var user = await this.userManager.FindByNameAsync(userName);
+
                 var cardToAdd = await this.cardService.AddCard(model.CardNumber, model.CVV, model.ExpiryDate, user);
 
                 return RedirectToAction("Deposit", "Transaction");
@@ -157,18 +159,18 @@ namespace ItsAllAboutTheGame.Controllers
                 // if returned boolean is false the card exists
                 // if returned boolean is true the card does NOT exist so the card number is valid
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Json(false);
             }
         }
 
         [AcceptVerbs("Get", "Post")]
-        public IActionResult AreDigits(string CVV)
+        public IActionResult IsCVVOnlyDigits(string CVV)
         {
             try
             {
-                return Json(this.cardService.AreOnlyDigits(CVV));
+                return Json(this.cardService.IsCVVOnlyDigits(CVV));
             }
             catch (Exception)
             {

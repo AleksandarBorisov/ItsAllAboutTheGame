@@ -2,7 +2,6 @@
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.Exceptions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,12 +15,10 @@ namespace ItsAllAboutTheGame.Services.Data.Services
     public class CardService : ICardService
     {
         private readonly ItsAllAboutTheGameDbContext context;
-        private readonly UserManager<User> userManager;
 
-        public CardService(ItsAllAboutTheGameDbContext context, UserManager<User> userManager)
+        public CardService(ItsAllAboutTheGameDbContext context)
         {
             this.context = context;
-            this.userManager = userManager;
         }
 
         public async Task<CreditCard> AddCard(string cardNumber, string cvv, DateTime expiryDate, User user)
@@ -32,10 +29,10 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             {
                 CardNumber = cardNumber,
                 LastDigits = cardNumber.Substring(cardNumber.Length - 4),
-                CVV = cvv,                
+                CVV = cvv,
                 ExpiryDate = expiryDate,
                 UserId = userId,
-                User = user,              
+                User = user,
                 CreatedOn = DateTime.Now
             };
 
@@ -43,50 +40,25 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             await this.context.SaveChangesAsync();
 
             return creditCard;
-        }     
+        }
 
         public async Task<CreditCard> DeleteCard(int cardId)
         {
             try
             {
-                var userCardToDelete = await this.context.CreditCards.Where(ci => ci.Id == cardId).FirstOrDefaultAsync();
+                var userCardToDelete = await this.context.CreditCards.FindAsync(cardId);
 
                 userCardToDelete.IsDeleted = true;
+
                 await this.context.SaveChangesAsync();
 
                 return userCardToDelete;
+
             }
             catch (Exception ex)
             {
-                throw new EntityNotFoundException($"Card with ID {cardId} does not exist!", ex);
-            }                      
-        }
-
-        public async Task<CreditCard> GetCard(string userId, int cardId)
-        {
-            var userCards = await this.context.CreditCards.ToListAsync();
-
-            var userCard = userCards.Where(ci => ci.Id == cardId && ci.UserId == userId).FirstOrDefault();
-
-            return userCard;
-        }
-
-        public async Task<string> GetCardNumber(User user, int cardId)
-        {
-            var userCardNumber = await this.context.CreditCards
-                .Where(c => c.User == user && c.Id == cardId)
-              .Select(n => n.CardNumber)
-              .FirstOrDefaultAsync();
-
-            return userCardNumber;
-        }
-
-        public async Task<IEnumerable<CreditCard>> GetCards(User user)
-        {
-            var userCards = await this.context.CreditCards
-                .Where(c => c.User == user).ToListAsync();
-
-            return userCards;
+                throw new EntityNotFoundException($"Card {cardId} does not exist!", ex);
+            }
         }
 
         public async Task<IEnumerable<SelectListItem>> GetSelectListCards(User user, bool? disabled = null)
@@ -97,11 +69,11 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                .Select(c => new SelectListItem
                {
                    Value = c.Id.ToString(),
-                   Text = new string('*', c.CardNumber.Length - 4) + c.CardNumber.Substring(c.CardNumber.Length - 4)
-                   + " " +(c.ExpiryDate < currentDate 
+                   Text = new string('*', c.CardNumber.Length - 4) + c.LastDigits
+                   + " " + (c.ExpiryDate < currentDate
                    ? "expired" : "       "),
                    Disabled = disabled ?? c.ExpiryDate < currentDate
-                }).ToListAsync();
+               }).ToListAsync();
 
             return userCards.ToList();
         }
@@ -122,11 +94,11 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             }
         }
 
-        public bool AreOnlyDigits(string cvv)
+        public bool IsCVVOnlyDigits(string cvv)
         {
-            int number;
+            short number;
 
-            bool result = int.TryParse(cvv, out number);
+            bool result = short.TryParse(cvv, out number);
 
             if (result)
             {

@@ -16,7 +16,7 @@ namespace ItsAllAboutTheGame.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-
+            this.ViewData["ReturnUrl"] = "/Home/Index";
             return View();
         }
 

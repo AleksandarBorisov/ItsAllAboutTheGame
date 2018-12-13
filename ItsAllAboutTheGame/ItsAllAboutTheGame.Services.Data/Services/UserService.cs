@@ -39,8 +39,6 @@ namespace ItsAllAboutTheGame.Services.Data
 
         public async Task<User> RegisterUser(string email, string firstName, string lastName, DateTime dateOfBirth, Currency userCurrency)
         {
-            var currentDate = DateTime.Now;
-
             User user = new User
             {
                 Cards = new List<CreditCard>(),
@@ -50,14 +48,17 @@ namespace ItsAllAboutTheGame.Services.Data
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
-                DateOfBirth = dateOfBirth,
-                Role = UserRole.None
+                DateOfBirth = dateOfBirth, 
+                Role = UserRole.None,
+                //TO DO => Mock DateTime
             };
-
+            
             Wallet wallet = await walletService.CreateUserWallet(user, userCurrency);
-            user.Wallet = wallet;
-            user.WalletId = wallet.Id;
 
+            user.Wallet = wallet;
+
+            user.WalletId = wallet.Id;
+          
             return user;
         }
 
@@ -68,19 +69,7 @@ namespace ItsAllAboutTheGame.Services.Data
             string firstName = name[0];
             string lastName = name[1];
 
-            var currentDate = DateTime.Now;
-
-            try
-            {
-                if (currentDate.Subtract(dateOfBirth).TotalDays < 6575)
-                {
-                    throw new UserNo18Exception("User must have 18 years to register!");
-                }
-            }
-            catch (UserNo18Exception ex)
-            {
-                throw new UserNo18Exception(ex.Message);
-            }
+            
 
             User user = new User
             {
