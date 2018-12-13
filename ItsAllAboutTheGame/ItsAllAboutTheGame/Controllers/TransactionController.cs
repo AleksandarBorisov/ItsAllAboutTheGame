@@ -148,11 +148,11 @@ namespace ItsAllAboutTheGame.Controllers
         }
 
         [AcceptVerbs("Get", "Post")]
-        public IActionResult AreDigits(string CVV)
+        public IActionResult IsCVVOnlyDigits(string CVV)
         {
             try
             {
-                return Json(this.cardService.AreOnlyDigits(CVV));
+                return Json(this.cardService.IsCVVOnlyDigits(CVV));
             }
             catch (Exception)
             {

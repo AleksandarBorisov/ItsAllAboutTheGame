@@ -61,25 +61,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             }
         }
 
-        public async Task<CreditCard> GetCard(string userId, int cardId)
-        {
-            var userCards = await this.context.CreditCards.ToListAsync();
-
-            var userCard = userCards.Where(ci => ci.Id == cardId && ci.UserId == userId).FirstOrDefault();
-
-            return userCard;
-        }
-
-        public async Task<string> GetCardNumber(User user, int cardId)
-        {
-            var userCardNumber = await this.context.CreditCards
-               .Where(c => c.User == user && c.Id == cardId)
-              .Select(n => n.CardNumber)
-              .FirstOrDefaultAsync();
-
-            return userCardNumber;
-        }
-
         public async Task<IEnumerable<SelectListItem>> GetSelectListCards(User user, bool? disabled = null)
         {
             var currentDate = DateTime.Now;
@@ -113,11 +94,11 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             }
         }
 
-        public bool AreOnlyDigits(string cvv)
+        public bool IsCVVOnlyDigits(string cvv)
         {
-            int number;
+            short number;
 
-            bool result = int.TryParse(cvv, out number);
+            bool result = short.TryParse(cvv, out number);
 
             if (result)
             {
