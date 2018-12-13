@@ -8,13 +8,10 @@
     @await Html.PartialAsync("_DepositPartial", Model);
 </div>
 
-
-
-<div class="padding">
-    <a asp-action="Index">Back to List</a>
-</div>
 @section Scripts{
     <script src="~/js/deposit.js"></script>
     <script src="~/js/withdraw.js"></script>
+    <script src="~/js/userdeposit.js"></script>
+    @*@await Html.PartialAsync("_ValidationScriptsPartial")*@
 }
 

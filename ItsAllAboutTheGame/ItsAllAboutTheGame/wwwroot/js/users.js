@@ -32,7 +32,6 @@ $(function () {
                     var userId = $currentForm.find('.user-id').val();
                     var token = $currentForm.find('[name=__RequestVerificationToken]').val();
 
-                    //const dataToSend = $currentForm.serialize();
                     const dataToSend = {
                         userId: userId,
                         lockoutFor: lockoutFor,

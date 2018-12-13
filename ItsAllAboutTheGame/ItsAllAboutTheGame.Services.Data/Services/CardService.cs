@@ -45,11 +45,11 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             return creditCard;
         }     
 
-        public async Task<CreditCard> DeleteCard(string userId, int cardId)
+        public async Task<CreditCard> DeleteCard(int cardId)
         {
             try
             {
-                var userCardToDelete = await this.context.CreditCards.Where(ci => ci.UserId == userId && ci.Id == cardId).FirstOrDefaultAsync();
+                var userCardToDelete = await this.context.CreditCards.Where(ci => ci.Id == cardId).FirstOrDefaultAsync();
 
                 userCardToDelete.IsDeleted = true;
                 await this.context.SaveChangesAsync();
@@ -99,7 +99,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                    Value = c.Id.ToString(),
                    Text = new string('*', c.CardNumber.Length - 4) + c.CardNumber.Substring(c.CardNumber.Length - 4)
                    + " " +(c.ExpiryDate < currentDate 
-                   ? "expired" : ""),
+                   ? "expired" : "       "),
                    Disabled = disabled ?? c.ExpiryDate < currentDate
                 }).ToListAsync();
 

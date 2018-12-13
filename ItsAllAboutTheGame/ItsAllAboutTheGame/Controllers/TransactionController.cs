@@ -50,7 +50,7 @@ namespace ItsAllAboutTheGame.Controllers
 
             var model = new NewDepositViewModel();
 
-            model.CardCurrency = userWallet.Currency;
+            model.CardCurrencySymbol = userWallet.CurrencySymbol;
             model.Cards = userCards.ToList();
             model.CardsForDelete = userCardsForDelete.ToList();
 
@@ -58,6 +58,7 @@ namespace ItsAllAboutTheGame.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Deposit(NewDepositViewModel model)
         {
             if (!ModelState.IsValid)
@@ -69,7 +70,7 @@ namespace ItsAllAboutTheGame.Controllers
             var user = await userManager.GetUserAsync(claims);
             var userCards = await this.cardService.GetSelectListCards(user);
 
-            var userDeposit = await this.transactionService.MakeDeposit(user, model.CreditCardId, model.Amount);
+            var userDeposit = await this.transactionService.MakeDeposit(user, model.CreditCardId, (int)model.Amount);
 
 
             var convertedAmount = await this.walletService.ConvertBalance(user);
@@ -87,6 +88,7 @@ namespace ItsAllAboutTheGame.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCard(AddCardViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -103,31 +105,45 @@ namespace ItsAllAboutTheGame.Controllers
             return this.View();
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> DeleteCard(NewDepositViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCard(int? cardId)
         {
+            if (cardId == null)
+            {
+                return RedirectToAction(nameof(TransactionController.Deposit));
+            }
+
             var user = await userManager.GetUserAsync(HttpContext.User);
 
-            var userId = await userManager.GetUserIdAsync(user);
+            var deletedCard = await this.cardService.DeleteCard((int)cardId);
 
-            var userCardsForDelete = await this.cardService.GetSelectListCards(user, false);
-            
-            var cardToDelete = await this.cardService.DeleteCard(userId, model.CreditCardId);
+            var userCardsForDelete = await this.cardService.GetSelectListCards(user, true);
 
-            return RedirectToAction("Deposit", "Transaction");
+            return Json(userCardsForDelete);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Withdraw(NewDepositViewModel model, string withdraw, string deposit)
         {
             var user = await userManager.GetUserAsync(HttpContext.User);
 
-            var withdrawedAmount = await this.walletService.WithdrawFromUserBalance(user, model.Amount);
+            var withdrawedAmount = await this.walletService.WithdrawFromUserBalance(user, (int)model.Amount);
 
             var convertedAmount = await this.walletService.ConvertBalance(user);
 
             return Json(new { Balance = convertedAmount });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllCards()
+        {
+            var user = await userManager.GetUserAsync(HttpContext.User);
+
+            var userCardsForDelete = await this.cardService.GetSelectListCards(user, false);
+
+            return Json(userCardsForDelete);
         }
 
         // Methods for remote attributes!

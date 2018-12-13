@@ -1,5 +1,4 @@
-﻿using ItsAllAboutTheGame.GlobalUtilities.Enums;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,9 +12,10 @@ namespace ItsAllAboutTheGame.Models.TransactionViewModels
 
         }
 
-        public Currency CardCurrency { get; set; }
+        public string CardCurrencySymbol { get; set; }
       
-        [Required]        
+        [Required]
+        [Display(Name = "Choose card")]
         public int CreditCardId { get; set; }    
         
         public List<SelectListItem> CardsForDelete { get; set; }
@@ -24,6 +24,6 @@ namespace ItsAllAboutTheGame.Models.TransactionViewModels
 
         [Required]
         [Range(10, 10000)]
-        public decimal Amount { get; set; }
+        public int? Amount { get; set; }
     }
 }

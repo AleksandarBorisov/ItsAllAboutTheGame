@@ -2,23 +2,24 @@
     const $depositForm = $('#deposit-form');
     debugger;
     $depositForm.on('submit', function (event) {
-        event.preventDefault();
 
-        const dataToSend = $depositForm.serialize();
+        if ($(this).checkValidity())
+        {
+            event.preventDefault();
 
-        
-        
-        $.post($depositForm.attr('action'), dataToSend, function (response) {
+            const dataToSend = $depositForm.serialize();
 
-            const $balance = $('#user-balance');            
-            $balance.data('balance', response.balance);
+            $.post($depositForm.attr('action'), dataToSend, function (response) {
 
-            const symbol = $balance.data('symbol');
-            const $balanceText = $('#user-balance-text');
-            $balanceText.text(response.balance.toFixed(2) + ' ' + symbol);
+                const $balance = $('#user-balance');
+                $balance.data('balance', response.balance);
 
-            console.log(response);            
-        });
+                const symbol = $balance.data('symbol');
+                const $balanceText = $('#user-balance-text');
+                $balanceText.text(response.balance.toFixed(2) + ' ' + symbol);
+
+                console.log(response);
+            });
+        }
     });
-
 });

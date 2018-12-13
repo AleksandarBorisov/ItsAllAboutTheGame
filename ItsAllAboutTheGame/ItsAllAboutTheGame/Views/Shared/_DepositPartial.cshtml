@@ -1,63 +1,55 @@
 ﻿@model ItsAllAboutTheGame.Models.TransactionViewModels.NewDepositViewModel
 
-<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete card</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form asp-area="" asp-controller="Transaction" asp-action="DeleteCard">
-                    Are you sure you want to delete the currently selected card?
-                    <select asp-for="CreditCardId" asp-items="@Model.CardsForDelete" style="width:370px"></select>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
-                        <div class="form-group">
-                            <input type="submit" value="Delete" class="btn btn-success " />
+@{
+    ViewData["Title"] = "Deposit";
+}
+
+<main class="padding-form">
+    <div class="row">
+        <div class="col-md-12">
+            <section class="login-form mr-auto ml-auto m-0">
+                <form class="text-white" id="deposit-form" asp-controller="Transaction" asp-action="Deposit" method="post">
+                    <h4 class="text-center">Deposit</h4>
+                    <div class="form-group form-sm white-text col-form-label-lg mb-0 ">
+                        <label asp-for="CreditCardId" class="white-text"></label>
+                        <select asp-for="CreditCardId" asp-items="@Model.Cards" id="card-collection" class="w-100 form-control mb-0" size="1"></select>
+                        <small><span asp-validation-for="CreditCardId" class="text-danger p-0 validation-text"></span></small>
+                    </div>
+                    <div class="mt-2">
+                        <a asp-area="" asp-controller="Transaction" asp-action="AddCard" class="btn btn-outline-success rounded font-weight-bold delete-card-button pl-2 pr-2 d-inline-block"><i class="fa fa-plus-square" aria-hidden="true"></i><i class="fa fa-credit-card ml-2"></i></a>
+                        <button type="button" class="btn btn-outline-danger rounded font-weight-bold delete-card-button pl-2 pr-2 d-inline-block float-right"><i class="fa fa-minus-square" aria-hidden="true"></i><i class="fa fa-credit-card ml-2"></i></button>
+                    </div>
+                    <div class="form-group md-form form-sm white-text col-form-label-lg input-group flex-nowrap mb-0 mt-2 p-1">
+                        <div class="input-group-lg">
+                            <span class="input-group-text text-white border-0" style="background-color:rgba(0,0,0,0);">Amount:</span>
+                        </div>
+                        <input asp-for="@Model.Amount" class="form-control white-text mb-0" type="text" onkeypress="return isNumberKey(event)" placeholder="0 @Model.CardCurrencySymbol" maxlength="7" />
+                        <div class="input-group-lg">
+                            <span class="input-group-text text-white border-0" style="background-color:rgba(0,0,0,0);">@Model.CardCurrencySymbol</span>
                         </div>
                     </div>
+                    <span asp-validation-for="@Model.Amount" class="text-danger p-0 validation-text"></span>
+                    <div class=" form-group text-center mt-3 align-middle">
+                        <button class="btn btn-outline-white waves-effect waves-light" type="submit">Deposit<i class="fa fa-bank ml-2" aria-hidden="true"></i></button>
+                    </div>
                 </form>
-            </div>
+                @*<form class="text-white" id="withdraw-form" asp-controller="Transaction" asp-action="Withdraw" method="post">*@
+                    <div class="form-group md-form form-sm white-text col-form-label-lg input-group flex-nowrap mb-0 mt-2 p-1">
+                        <div class="input-group-lg">
+                            <span class="input-group-text text-white border-0" style="background-color:rgba(0,0,0,0);">Amount:</span>
+                        </div>
+                        <input asp-for="@Model.Amount" class="form-control white-text mb-0" type="text" onkeypress="return isNumberKey(event)" placeholder="0 @Model.CardCurrencySymbol" maxlength="7" />
+                        <div class="input-group-lg">
+                            <span class="input-group-text text-white border-0" style="background-color:rgba(0,0,0,0);">@Model.CardCurrencySymbol</span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="@Model.Amount" class="text-danger p-0 validation-text"></span>
+                    <div class=" form-group text-center mt-3 align-middle">
+                        <button class="btn btn-outline-white waves-effect waves-light" type="submit" value="Withdraw">Withdraw<i class="fa fa-caret-square-o-down ml-2" aria-hidden="true"></i></button>
+                    </div>
+                @*</form>*@
+            </section>
         </div>
     </div>
-</div>
-
-
-<div class="padding" style="padding-top: 50%;">
-    <div class="row">
-        <div id="" class="col-md-4">
-            <form id="deposit-form" asp-controller="Transaction" asp-action="Deposit">
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <select asp-for="CreditCardId" asp-items="@Model.Cards" style="width:550px"></select>
-                <div>
-                    <a asp-area="" asp-controller="Transaction" asp-action="AddCard" class="btn btn-outline-danger rounded font-weight-bold home-view-color">Add Card?<i class="fa fa-money ml-2"></i><i class="fa fa-credit-card ml-2"></i></a>
-                    <button type="button" class="btn btn-outline-danger rounded font-weight-bold home-view-color" data-toggle="modal" data-target="#Modal">
-                        Delete Card?
-                    </button>
-                </div>
-
-
-                <div class="form-group">
-                    <label asp-for="Amount" class="control-label"></label>
-                    <input asp-for="Amount" class="form-control" />
-                    <span asp-validation-for="Amount" class="text-danger"></span>
-                </div>
-                <p style="border-color:red">@Model.CardCurrency</p>
-
-                <div class="form-group">
-                    <input type="submit" value="Deposit" class="btn btn-success" />
-                </div>
-            </form>
-            <form id="withdraw-form" asp-controller="Transaction" asp-action="Withdraw">
-                <label asp-for="Amount" class="control-label"></label>
-                <input asp-for="Amount" class="form-control" />
-                <span asp-validation-for="Amount" class="text-danger"></span>
-                <input type="submit" value="Withdraw" class="btn btn-success" />
-            </form>
-        </div>
-    </div>
-</div>
-
+</main>
+                

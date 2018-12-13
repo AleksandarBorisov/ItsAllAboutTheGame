@@ -34,7 +34,7 @@ body {
 }
 
 .padding-form {
-    padding: 14%;
+    padding: 16%;
 }
 
 .top-nav-collapse {
@@ -74,10 +74,6 @@ body {
     border-radius: 5px;
     padding: 20px;
     line-height: normal;
-}
-
-.home-view-color {
-    color: aqua;
 }
 
 #user-balance {
@@ -443,7 +439,7 @@ body {
     position: fixed; 
     z-index: 1000; 
     top: 45%; 
-    left: 50%;
+    left: 48%;
     display: none;
 }
 
@@ -461,3 +457,11 @@ body {
     padding: 4px 6px 4px 6px;
     color: #D8000C;
 }
+
+@media (max-width: 768px) {
+    .login-form {
+        width: auto;
+    }
+}
+
+

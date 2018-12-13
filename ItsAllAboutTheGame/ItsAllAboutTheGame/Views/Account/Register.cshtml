@@ -43,7 +43,7 @@
                     </div>
                     <div class="md-form form-sm white-text col-form-label-lg">
                         <i class="fa fa-calendar prefix"></i>
-                        <input asp-for="DateOfBirth" type="text" class="form-control white-text mb-0" id="birth-date" placeholder="dd.mm.yyyy"/>
+                        <input asp-for="DateOfBirth" type="text" class="form-control white-text mb-0" id="birth-date" data-inputmask="'mask': '9999 9999 9999 9999'" />
                         <small><span asp-validation-for="DateOfBirth" class="text-danger p-0"></span></small>
                     </div>
                     <div class="white-text">
