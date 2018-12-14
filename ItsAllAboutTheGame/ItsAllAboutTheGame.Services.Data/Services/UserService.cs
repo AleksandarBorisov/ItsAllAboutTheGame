@@ -55,7 +55,7 @@ namespace ItsAllAboutTheGame.Services.Data
                 Role = UserRole.None,
             };
             
-            Wallet wallet = await walletService.CreateUserWallet(user, userCurrency);
+            Wallet wallet = await walletService.CreateUserWallet(userCurrency);
 
             user.Wallet = wallet;
 
@@ -82,7 +82,7 @@ namespace ItsAllAboutTheGame.Services.Data
                 Role = UserRole.None
             };
 
-            Wallet wallet = await walletService.CreateUserWallet(user, userCurrency);
+            Wallet wallet = await walletService.CreateUserWallet(userCurrency);
             user.Wallet = wallet;
             user.WalletId = wallet.Id;
 

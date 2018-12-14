@@ -28,7 +28,7 @@ namespace ItsAllAboutTheGame.Services.Data
             this.foreignExchangeService = foreignExchangeService;
         }
 
-        public async Task<Wallet> CreateUserWallet(User user, Currency userCurrency)
+        public async Task<Wallet> CreateUserWallet(Currency userCurrency)
         {
             Wallet wallet = new Wallet
             {
@@ -66,7 +66,7 @@ namespace ItsAllAboutTheGame.Services.Data
             }
             catch (Exception ex)
             {
-                throw new EntityNotFoundException("Cannot find the specified Wallet", ex);
+                throw new EntityNotFoundException("Cannot find the specified user", ex);
             }
         }
 
@@ -118,20 +118,13 @@ namespace ItsAllAboutTheGame.Services.Data
 
                 var user = await this.context.Users.Where(u => u == loggedUser).Include(w => w.Wallet).FirstOrDefaultAsync();
 
-                var userWallet = user.Wallet;               
+                var userWallet = user.Wallet;
 
-                var rates =  await this.foreignExchangeService.GetConvertionRates();
+                var rates = await this.foreignExchangeService.GetConvertionRates();
 
                 var convertedAmount = amount / rates.Rates[userWallet.Currency.ToString()];
 
-                if (userWallet.Balance - convertedAmount < 0)
-                {
-                    return new TransactionDTO();
-                }
-                else
-                {
-                    userWallet.Balance -= convertedAmount;
-                }
+                userWallet.Balance -= convertedAmount;
 
                 var transaction = new Transaction()
                 {

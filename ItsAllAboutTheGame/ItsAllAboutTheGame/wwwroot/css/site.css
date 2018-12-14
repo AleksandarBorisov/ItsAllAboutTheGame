@@ -379,7 +379,6 @@ body {
     background-color: gray;
     padding: 20px;
     display: block;
-    /*max-height: 200px;*/
     overflow-y: auto;
 }
 

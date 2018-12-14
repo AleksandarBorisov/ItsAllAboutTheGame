@@ -1,4 +1,5 @@
 using ItsAllAboutTheGame.GlobalUtilities.Enums;
+using Microsoft.AspNetCore.Authentication;
 using System;
 using System.ComponentModel.DataAnnotations;
 
