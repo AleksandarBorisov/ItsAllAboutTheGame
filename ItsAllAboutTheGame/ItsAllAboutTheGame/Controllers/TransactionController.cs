@@ -99,7 +99,7 @@ namespace ItsAllAboutTheGame.Controllers
 
                 var user = await this.userManager.FindByNameAsync(userName);
 
-                var cardToAdd = await this.cardService.AddCard(model.CardNumber, model.CVV, model.ExpiryDate, user);
+                var cardToAdd = await this.cardService.AddCard(model.CardNumber.Replace(" ", ""), model.CVV, model.ExpiryDate, user);
 
                 return RedirectToAction("Deposit", "Transaction");
             }

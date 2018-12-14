@@ -10,6 +10,7 @@ using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using System.Security.Claims;
 using System.Globalization;
+using System.Linq;
 
 namespace ItsAllAboutTheGame.Controllers
 {
@@ -199,15 +200,18 @@ namespace ItsAllAboutTheGame.Controllers
 
             // Sign in the user with this external login provider if the user already has a login.
             var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+
+            var email = info.Principal.Claims.ToList()[1].Value;
             if (result.Succeeded)
             {
                 return RedirectToLocal(returnUrl);
             }
 
-            if (result.IsLockedOut)
+            else if (result.IsLockedOut)
             {
-                return RedirectToAction(nameof(Lockout));
+                return RedirectToAction(nameof(Lockout), new { userEmail = email});
             }
+
             else
             {
                 // If the user does not have an account, then ask the user to create an account.

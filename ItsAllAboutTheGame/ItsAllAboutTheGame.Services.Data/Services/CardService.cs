@@ -25,7 +25,26 @@ namespace ItsAllAboutTheGame.Services.Data.Services
         {
             var userId = user.Id;
 
-            var creditCard = new CreditCard
+            // One card can only be assigned to one user ONLY!!!
+            var creditCard = await this.context.CreditCards.Where(cn => cn.CardNumber == cardNumber).FirstOrDefaultAsync();
+
+            if (creditCard != null && creditCard.IsDeleted == true)
+            {
+                creditCard.ExpiryDate = expiryDate;
+                creditCard.CreatedOn = DateTime.Now;
+                creditCard.IsDeleted = false;
+                this.context.CreditCards.Update(creditCard);
+                await this.context.SaveChangesAsync();
+
+                return creditCard;
+            }
+
+            else if(creditCard != null && creditCard.IsDeleted == false)
+            {
+                throw new EntityAlreadyExistsException("Card already exists in the system!");
+            }
+
+            creditCard = new CreditCard
             {
                 CardNumber = cardNumber,
                 LastDigits = cardNumber.Substring(cardNumber.Length - 4),

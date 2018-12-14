@@ -24,7 +24,7 @@ namespace ItsAllAboutTheGame.Services.Data
             this.foreignExchangeService = foreignExchangeService;
         }
 
-        public async Task<Wallet> CreateUserWallet(User user, Currency userCurrency)
+        public async Task<Wallet> CreateUserWallet(Currency userCurrency)
         {
             Wallet wallet = new Wallet
             {
@@ -62,7 +62,7 @@ namespace ItsAllAboutTheGame.Services.Data
             }
             catch (Exception ex)
             {
-                throw new EntityNotFoundException("Cannot find the specified Wallet", ex);
+                throw new EntityNotFoundException("Cannot find the specified user", ex);
             }
         }
 

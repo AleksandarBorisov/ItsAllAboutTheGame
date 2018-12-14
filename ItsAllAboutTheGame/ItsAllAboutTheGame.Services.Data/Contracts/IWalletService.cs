@@ -7,7 +7,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 {
     public interface IWalletService
     {
-        Task<Wallet> CreateUserWallet(User user, Currency userCurrency);
+        Task<Wallet> CreateUserWallet(Currency userCurrency);
 
         Task<WalletDTO> GetUserWallet(User user);
 

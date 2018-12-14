@@ -34,6 +34,10 @@ namespace ItsAllAboutTheGame.Middleware
             {
                 context.Response.Redirect("/404");
             }
+            catch (EntityAlreadyExistsException ex)
+            {
+                context.Response.Redirect("/404");
+            }
             catch (LockoutUserException ex)
             {
                 context.Response.Redirect("/404");

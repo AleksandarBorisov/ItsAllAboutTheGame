@@ -51,16 +51,13 @@
     </div>
     <div class="text-center">
         @{
-            var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (loginProviders.Count != 0)
+            var loginProvider = (await SignInManager.GetExternalAuthenticationSchemesAsync()).FirstOrDefault();
+            if (loginProvider != null)
             {
                 <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
                     <div>
                         <p>
-                            @foreach (var provider in loginProviders)
-                            {
-                                <button type="submit" class="btn btn-primary btn-fb" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fa fa-facebook pr-1"></i>@provider.Name</button>
-                            }
+                                <button type="submit" class="btn btn-primary btn-fb" name="provider" value="@loginProvider.Name" title="Log in using your @loginProvider.DisplayName account"><i class="fa fa-facebook pr-1"></i>@loginProvider.Name</button>
                         </p>
                     </div>
                 </form>
