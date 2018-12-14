@@ -8,7 +8,6 @@ using ItsAllAboutTheGame.Models.AccountViewModels;
 using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Services.Data.Contracts;
-using System.Security.Claims;
 using System.Globalization;
 using System.Linq;
 
@@ -153,6 +152,8 @@ namespace ItsAllAboutTheGame.Controllers
             else
             {
                 AddErrors(result);
+
+                ViewData["UserExists"] = "User with that email is already registered!";
 
                 return View(model);
                 //throw new InvalidOperationException("Could not register user!");

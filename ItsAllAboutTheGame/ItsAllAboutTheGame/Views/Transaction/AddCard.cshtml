@@ -4,39 +4,48 @@
     ViewData["Title"] = "AddCard";
 }
 
-<h2>Add new card</h2>
-
-
-
-<header class="padding" style="padding:100px"></header>
-<hr />
-
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-controller="Transaction" asp-action="AddCard" method="post">
-            <div class="form-group">
-                <label asp-for="CardNumber" class="control-label"></label>
-                <input asp-for="CardNumber" class="form-control" />
-                <span asp-validation-for="CardNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CVV" class="control-label"></label>
-                <input asp-for="CVV" class="form-control" />
-                <span asp-validation-for="CVV" class="text-danger"></span>
-            </div>
-            <div>
-                <label asp-for="ExpiryDate"></label>
-                <input asp-for="ExpiryDate" type="date" max="2040-01"/>
-                <span asp-validation-for="ExpiryDate" class="text-danger"></span>
-            </div>
-            <div>
-                <button type="submit" class="btn btn-success">Save</button>
-            </div>
-        </form>
+<main class="padding-form">
+    <div class="row">
+        <div class="col-md-12">
+            <section class="credit-card mr-auto ml-auto m-0">
+                <form class="text-white" asp-controller="Transaction" asp-action="AddCard" method="post">
+                    <h4 class="text-center">Credit Card</h4>
+                    <div class="form-group md-form form-sm white-text col-form-label-lg input-group flex-nowrap mb-0 mt-2 p-1">
+                        <div class="input-group-lg">
+                            <span class="input-group-text text-white border-0" style="background-color:rgba(0,0,0,0);">Card Number:</span>
+                        </div>
+                        <input asp-for="@Model.CardNumber" class="form-control white-text mb-0" type="text" onkeypress="return isNumberKey(event)" placeholder="0000 0000 0000 0000" maxlength="19" id="card-number" />
+                    </div>
+                    <span asp-validation-for="@Model.CardNumber" class="text-danger p-0 validation-text"></span>
+                    <div class="col-form-label-lg">
+                        <div class="w-40 float-left ">
+                            <div class="form-group md-form form-sm white-text col-form-label-lg input-group flex-nowrap mb-0 mt-2 p-1">
+                                <div class="input-group-lg">
+                                    <span class="input-group-text text-white border-0" style="background-color:rgba(0,0,0,0);">CVV:</span>
+                                </div>
+                                <input asp-for="@Model.CVV" class="form-control white-text mb-0 pl-2" type="text" onkeypress="return isNumberKey(event)" placeholder="0000" maxlength="4" id="card-cvv" />
+                            </div>
+                        </div>
+                        <div class="w-60 float-right">
+                            <div class="form-group md-form form-sm white-text col-form-label-lg input-group flex-nowrap mb-0 mt-2 p-1">
+                                <div class="input-group-lg">
+                                    <span class="input-group-text text-white border-0" style="background-color:rgba(0,0,0,0);">Expiry Date:</span>
+                                </div>
+                                <input asp-for="ExpiryDate" type="text" class="form-control white-text mb-0 pl-2" id="expiry-date" placeholder="mm/yy" maxlength="5" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" form-group text-center align-middle">
+                        <button class="btn btn-outline-white waves-effect waves-light mt-4" type="submit">Save<i class="fa fa-save ml-2" aria-hidden="true"></i></button>
+                    </div>
+                    <span asp-validation-for="@Model.CVV" class="text-danger p-0 validation-text"></span>
+                    <span asp-validation-for="ExpiryDate" class="text-danger p-0 validation-text pt-3"></span>
+                </form>
+            </section>
+        </div>
     </div>
-</div>
+</main>
 
 @section Scripts{
-
+    <script src="~/js/creditcard.js"></script>
 }

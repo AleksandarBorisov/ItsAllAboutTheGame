@@ -11,7 +11,7 @@
                 @for (int col = 0; col < Model.Grid.GetLength(1); col++)
                 {
                     <td class="col p-1">
-                        <img src="~/images/@(Model.Grid[row, col] + ".png")" alt="@Model.Grid[row, col]" class="fruit-icon" />
+                        <img src="~/images/@(Model.Grid[row, col] + ".png")" alt="@Model.Grid[row, col]" class="@(Model.GridSize == GlobalConstants.GameThreeGrid ?"fruit-icon-third-game" : "fruit-icon")" />
                     </td>
                 }
             </tr>

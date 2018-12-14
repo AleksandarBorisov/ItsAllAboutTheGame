@@ -6,6 +6,7 @@ using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
+using ItsAllAboutTheGame.Services.Data.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -83,6 +84,110 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
                 Assert.IsInstanceOfType(updateWallet, typeof(WalletDTO));
             }         
+        }
+
+
+        [TestMethod]
+        public async Task ReturnCorrectUpdatedWallet()
+        {
+            //Arrange
+            contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
+            .UseInMemoryDatabase(databaseName: "ReturnWalletDTO_When_PassedCorrectParams")
+                .Options;
+
+            decimal stake = 1000;
+
+            user = new User
+            {
+                Id = "randomId",
+                Cards = new List<CreditCard>(),
+                Transactions = new List<Transaction>(),
+                UserName = "Koicho",
+                CreatedOn = DateTime.Now,
+                Email = "testmail@gmail",
+                FirstName = "Koichokov",
+                LastName = "Velichkov",
+                DateOfBirth = DateTime.Parse("02.01.1996"),
+                Role = UserRole.None,
+            };
+
+            userWallet = new Wallet
+            {
+                Currency = Currency.GBP,
+                Balance = 0,
+                User = user,
+            };
+
+            foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
+
+            foreignExchangeDTO = new ForeignExchangeDTO
+            {
+                Base = GlobalConstants.BaseCurrency,
+                Rates = Enum.GetNames(typeof(Currency)).ToDictionary(name => name, value => 2m)
+            };
+
+            var currencies = foreignExchangeServiceMock.Setup(fesm => fesm.GetConvertionRates()).ReturnsAsync(foreignExchangeDTO);
+
+
+            using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
+            {
+                await actContext.Users.AddAsync(user);
+                await actContext.Wallets.AddAsync(userWallet);
+                await actContext.SaveChangesAsync();
+            }
+
+
+            //Assert
+            using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
+            {
+                var walletService = new WalletService(assertContext, foreignExchangeServiceMock.Object);
+                var updateWallet = await walletService.UpdateUserWallet(user, stake);
+
+                Assert.AreEqual(stake, updateWallet.Balance);
+            }
+        }
+
+
+        [TestMethod]
+        public async Task ThrowException_When_NullValuesArePassed()
+        {
+            //Arrange
+            contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
+            .UseInMemoryDatabase(databaseName: "ReturnWalletDTO_When_PassedCorrectParams")
+                .Options;
+
+            decimal stake = 1000;
+
+            user = new User();
+
+            userWallet = new Wallet();
+
+            foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
+
+            foreignExchangeDTO = new ForeignExchangeDTO
+            {
+                Base = GlobalConstants.BaseCurrency,
+                Rates = Enum.GetNames(typeof(Currency)).ToDictionary(name => name, value => 2m)
+            };
+
+            var currencies = foreignExchangeServiceMock.Setup(fesm => fesm.GetConvertionRates()).ReturnsAsync(foreignExchangeDTO);
+
+
+            using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
+            {
+                await actContext.Users.AddAsync(user);
+                await actContext.Wallets.AddAsync(userWallet);
+                await actContext.SaveChangesAsync();
+            }
+
+
+            //Assert
+            using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
+            {
+                var walletService = new WalletService(assertContext, foreignExchangeServiceMock.Object);
+
+                await Assert.ThrowsExceptionAsync<EntityNotFoundException>(async () => await walletService.UpdateUserWallet(user, stake));
+            }
         }
     }
 }

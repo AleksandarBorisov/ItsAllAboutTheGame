@@ -113,22 +113,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             }
         }
 
-        public bool IsCVVOnlyDigits(string cvv)
-        {
-            short number;
-
-            bool result = short.TryParse(cvv, out number);
-
-            if (result)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public bool IsExpired(DateTime expiryDate)
         {
             bool result = expiryDate != null && (expiryDate as DateTime?) > DateTime.Now.AddMonths(1);
