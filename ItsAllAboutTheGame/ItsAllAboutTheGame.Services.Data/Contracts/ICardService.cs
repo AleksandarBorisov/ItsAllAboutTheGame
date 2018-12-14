@@ -12,8 +12,6 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 
         bool DoesCardExist(string cardNumber);
 
-        bool IsExpired(DateTime expiryDate);
-
         Task<CreditCard> DeleteCard(int cardId);
 
         Task<IEnumerable<SelectListItem>> GetSelectListCards(User user, bool? disabled = null);

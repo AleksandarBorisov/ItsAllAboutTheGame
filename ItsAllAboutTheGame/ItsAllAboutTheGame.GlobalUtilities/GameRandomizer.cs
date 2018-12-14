@@ -1,4 +1,4 @@
-﻿using ItsAllAboutTheGame.Contracts.GlobalUtilities;
+﻿using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using System;
 
 namespace ItsAllAboutTheGame.GlobalUtilities

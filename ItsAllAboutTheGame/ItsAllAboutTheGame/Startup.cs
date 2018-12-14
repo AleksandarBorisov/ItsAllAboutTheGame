@@ -16,10 +16,10 @@ using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Extensions;
 using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Services.Data.Services;
-using ItsAllAboutTheGame.Contracts.GlobalUtilities;
 using ItsAllAboutTheGame.GlobalUtilities;
 using ItsAllAboutTheGame.Services.Game.Contracts.GameOne;
 using ItsAllAboutTheGame.Services.Game.GameOne;
+using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 
 namespace ItsAllAboutTheGame
 {
@@ -79,8 +79,9 @@ namespace ItsAllAboutTheGame
             services.AddScoped<IForeignExchangeService, ForeignExchangeService>();
             services.AddScoped<IJsonDeserializer, JsonDeserializer>();
             services.AddScoped<IForeignExchangeApiCaller, ForeignExchangeApiCaller>();
-            services.AddScoped<IGameOne, GameOne>();
+            services.AddSingleton<IGameOne, GameOne>();
             services.AddSingleton<IGameRandomizer, GameRandomizer>();
+            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         }
 
         private void RegisterAuthentication(IServiceCollection services)

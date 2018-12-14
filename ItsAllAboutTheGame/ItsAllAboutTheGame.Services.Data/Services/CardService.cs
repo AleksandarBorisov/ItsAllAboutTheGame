@@ -1,5 +1,6 @@
 ﻿using ItsAllAboutTheGame.Data;
 using ItsAllAboutTheGame.Data.Models;
+using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.Exceptions;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,10 +16,12 @@ namespace ItsAllAboutTheGame.Services.Data.Services
     public class CardService : ICardService
     {
         private readonly ItsAllAboutTheGameDbContext context;
+        private readonly IDateTimeProvider dateTimeProvider;
 
-        public CardService(ItsAllAboutTheGameDbContext context)
+        public CardService(ItsAllAboutTheGameDbContext context, IDateTimeProvider dateTimeProvider)
         {
             this.context = context;
+            this.dateTimeProvider = dateTimeProvider;
         }
 
         public async Task<CreditCard> AddCard(string cardNumber, string cvv, DateTime expiryDate, User user)
@@ -33,7 +36,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                 ExpiryDate = expiryDate,
                 UserId = userId,
                 User = user,
-                CreatedOn = DateTime.Now
+                CreatedOn = dateTimeProvider.Now
             };
 
             this.context.CreditCards.Add(creditCard);
@@ -63,7 +66,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
 
         public async Task<IEnumerable<SelectListItem>> GetSelectListCards(User user, bool? disabled = null)
         {
-            var currentDate = DateTime.Now;
+            var currentDate = dateTimeProvider.Now;
 
             var userCards = await this.context.CreditCards.Where(c => c.User == user && c.IsDeleted == false)
                .Select(c => new SelectListItem
@@ -91,20 +94,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             else
             {
                 return true;
-            }
-        }
-
-        public bool IsExpired(DateTime expiryDate)
-        {
-            bool result = expiryDate != null && (expiryDate as DateTime?) > DateTime.Now.AddMonths(1);
-
-            if (result == true)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
     }

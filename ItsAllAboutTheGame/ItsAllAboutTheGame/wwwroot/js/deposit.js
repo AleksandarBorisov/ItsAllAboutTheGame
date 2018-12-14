@@ -42,9 +42,7 @@ $(function () {
 
                     console.log(response);
                 }
-
             });
-
         } else {
 
             var $currentBalance = parseInt($('#user-balance-text').text());
@@ -84,7 +82,5 @@ $(function () {
                 });
             }
         }
-
-
     });
 });

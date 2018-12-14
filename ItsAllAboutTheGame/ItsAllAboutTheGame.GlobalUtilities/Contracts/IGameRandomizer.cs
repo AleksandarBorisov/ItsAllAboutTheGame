@@ -1,4 +1,4 @@
-﻿namespace ItsAllAboutTheGame.Contracts.GlobalUtilities
+﻿namespace ItsAllAboutTheGame.GlobalUtilities.Contracts
 {
     public interface IGameRandomizer
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
-namespace ItsAllAboutTheGame.Data.Models.Utilities.CustomAttributes.UserAttributes
+namespace ItsAllAboutTheGame.Utilities.CustomAttributes.UserAttributes
 {
     public class ValidBirthDateAttribute : ValidationAttribute
     {

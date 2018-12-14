@@ -1,5 +1,6 @@
 ﻿using ItsAllAboutTheGame.Data;
 using ItsAllAboutTheGame.Data.Models;
+using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using ItsAllAboutTheGame.Models.TransactionViewModels;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using Microsoft.AspNetCore.Authorization;
@@ -22,19 +23,20 @@ namespace ItsAllAboutTheGame.Controllers
         private readonly IWalletService walletService;
         private readonly ITransactionService transactionService;
         private readonly IForeignExchangeService foreignExchangeService;
+        private readonly IDateTimeProvider dateTimeProvider;
 
         public TransactionController(UserManager<User> userManager, ItsAllAboutTheGameDbContext context,
             ICardService cardService, IWalletService walletService, ITransactionService transactionService,
-            IForeignExchangeService foreignExchangeService)
+            IForeignExchangeService foreignExchangeService, IDateTimeProvider dateTimeProvider)
         {
             this.context = context;
             this.userManager = userManager;
             this.cardService = cardService;
             this.walletService = walletService;
+            this.dateTimeProvider = dateTimeProvider;
             this.transactionService = transactionService;
             this.foreignExchangeService = foreignExchangeService;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Deposit(string returnUrl = null)
@@ -45,7 +47,7 @@ namespace ItsAllAboutTheGame.Controllers
 
             var userCards = await this.cardService.GetSelectListCards(user);
 
-            var userCardsForDelete = await this.cardService.GetSelectListCards(user, false);
+            var userCardsForDelete = await this.cardService.GetSelectListCards(user);
 
             var userWallet = await this.walletService.GetUserWallet(user);
 
@@ -91,7 +93,7 @@ namespace ItsAllAboutTheGame.Controllers
                 return RedirectToAction("Deposit", "Transaction");
             }
 
-            var withdrawedAmount = await this.walletService.WithdrawFromUserBalance(user, (int)model.Amount);
+            var withdrawedAmount = await this.walletService.WithdrawFromUserBalance(user, (int)model.Amount, (int)model.CreditCardId);
 
             var convertedAmount = await this.walletService.ConvertBalance(user);
 
@@ -143,7 +145,7 @@ namespace ItsAllAboutTheGame.Controllers
 
             var deletedCard = await this.cardService.DeleteCard((int)cardId);
 
-            var userCardsForDelete = await this.cardService.GetSelectListCards(user, true);
+            var userCardsForDelete = await this.cardService.GetSelectListCards(user);
 
             return Json(userCardsForDelete);
         }
@@ -192,7 +194,7 @@ namespace ItsAllAboutTheGame.Controllers
                        DateTimeStyles.None,
                        out DateTime expiryDateAsDate);
 
-            var now = DateTime.Now;
+            var now = dateTimeProvider.Now;
 
             if (!isValidDate)
             {

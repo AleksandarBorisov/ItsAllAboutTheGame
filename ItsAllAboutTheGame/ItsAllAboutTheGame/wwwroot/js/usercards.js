@@ -49,11 +49,11 @@
                                     '__RequestVerificationToken': token
                                 }
                                 $.post('/Transaction/DeleteCard', dataToSend, function (serverData) {
-
+                                    debugger;
                                     $('#loading-spinner').hide(0);
 
                                     //If the result is redirect or error page 
-                                    if (serverData.indexOf("option") < 0) {
+                                    if (serverData.indexOf("deposit-form") > 0) {
                                         //Redirect to local
                                         window.location.href = "/";
 
@@ -68,6 +68,7 @@
 
                                         $.each(serverData, function (i, card) {
                                             var $expired = card.disabled == true ? 'disabled="disabled"' : '';
+                                            debugger;
                                             $newCollection += '<option ' + $expired + 'value="' + card.value + '">' + card.text + '</option>';
                                         });
 

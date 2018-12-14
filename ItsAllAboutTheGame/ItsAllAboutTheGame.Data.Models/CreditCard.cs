@@ -1,6 +1,5 @@
-﻿using ItsAllAboutTheGame.Data.Models.Abstract;
-using ItsAllAboutTheGame.Data.Models.Utilities.CustomAttributes;
-using System;
+﻿using System;
+using ItsAllAboutTheGame.Data.Models.Abstract;
 using System.ComponentModel.DataAnnotations;
 
 namespace ItsAllAboutTheGame.Data.Models

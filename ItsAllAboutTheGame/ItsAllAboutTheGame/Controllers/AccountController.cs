@@ -9,6 +9,7 @@ using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using System.Globalization;
+using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 
 namespace ItsAllAboutTheGame.Controllers
 {
@@ -20,17 +21,20 @@ namespace ItsAllAboutTheGame.Controllers
         private readonly SignInManager<User> signInManager;
         private readonly IEmailSender emailSender;
         private readonly IUserService userService;
+        private readonly IDateTimeProvider dateTimeProvider;
 
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IEmailSender emailSender,
-            IUserService userService)
+            IUserService userService,
+            IDateTimeProvider dateTimeProvider)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.emailSender = emailSender;
             this.userService = userService;
+            this.dateTimeProvider = dateTimeProvider;
         }
 
         [TempData]
@@ -99,7 +103,7 @@ namespace ItsAllAboutTheGame.Controllers
 
             var lockedOutTime = user.LockoutEnd.Value.DateTime;
 
-            var hours = (int)(lockedOutTime - DateTime.Now).TotalHours;
+            var hours = (int)(lockedOutTime - dateTimeProvider.Now).TotalHours;
 
             var model = new LockedOutViewModel(hours);
 
@@ -289,7 +293,7 @@ namespace ItsAllAboutTheGame.Controllers
                        DateTimeStyles.None,
                        out DateTime birthDate);;
 
-            var now = DateTime.Now.Year;
+            var now = dateTimeProvider.Now.Year;
 
             if (!isValidDate)
             {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using ItsAllAboutTheGame.Services.External.Contracts;
 using ItsAllAboutTheGame.Services.External.Exceptions;

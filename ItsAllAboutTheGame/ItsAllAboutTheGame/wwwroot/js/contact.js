@@ -16,8 +16,9 @@
     // Place a marker on the same location.
     L.marker(target).addTo(map);
 
-    $('html, body').css({
-        overflow: 'hidden',
-        height: '100%'
-    });
+    var contactPage = $('.contact-page');
+
+    contactPage.removeClass('initially-hidden');
+
+    new WOW().init();
 });

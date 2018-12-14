@@ -2,6 +2,7 @@
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.GlobalUtilities;
 using ItsAllAboutTheGame.GlobalUtilities.Constants;
+using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
@@ -25,14 +26,16 @@ namespace ItsAllAboutTheGame.Services.Data
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IWalletService walletService;
+        private readonly IDateTimeProvider dateTimeProvider;
 
         public UserService(ItsAllAboutTheGameDbContext context, UserManager<User> userManager,
             SignInManager<User> signInManager, IForeignExchangeService foreignExchangeService,
-            IWalletService walletService)
+            IWalletService walletService, IDateTimeProvider dateTimeProvider)
         {
             this.context = context;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.dateTimeProvider = dateTimeProvider;
             this.foreignExchangeService = foreignExchangeService;
             this.walletService = walletService;
         }
@@ -44,13 +47,12 @@ namespace ItsAllAboutTheGame.Services.Data
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
                 UserName = email,
-                CreatedOn = DateTime.Now,
+                CreatedOn = dateTimeProvider.Now,
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
                 DateOfBirth = dateOfBirth, 
                 Role = UserRole.None,
-                //TO DO => Mock DateTime
             };
             
             Wallet wallet = await walletService.CreateUserWallet(user, userCurrency);
@@ -69,12 +71,10 @@ namespace ItsAllAboutTheGame.Services.Data
             string firstName = name[0];
             string lastName = name[1];
 
-            
-
             User user = new User
             {
                 UserName = email,
-                CreatedOn = DateTime.Now,
+                CreatedOn = dateTimeProvider.Now,
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
@@ -169,7 +169,7 @@ namespace ItsAllAboutTheGame.Services.Data
             {
                 var user = await this.context.Users.FindAsync(userId);
 
-                var date = DateTime.UtcNow.AddDays(days);
+                var date = dateTimeProvider.UtcNow.AddDays(days);
 
                 user.LockoutEnd = new DateTimeOffset(date, TimeSpan.Zero);
 

@@ -1,4 +1,4 @@
-﻿using ItsAllAboutTheGame.Contracts.GlobalUtilities;
+﻿using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using ItsAllAboutTheGame.Services.Game.Contracts.GameOne;
 using ItsAllAboutTheGame.Services.Game.DTO;
 using ItsAllAboutTheGame.Services.Game.Enums;

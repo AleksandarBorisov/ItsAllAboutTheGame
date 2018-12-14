@@ -2,6 +2,7 @@
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.GlobalUtilities;
 using ItsAllAboutTheGame.GlobalUtilities.Constants;
+using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
@@ -25,16 +26,18 @@ namespace ItsAllAboutTheGame.Services.Data.Services
         private readonly IUserService userService;
         private readonly ICardService cardService;
         private readonly IForeignExchangeService foreignExchangeService;
+        private readonly IDateTimeProvider dateTimeProvider;
 
         public TransactionService(ItsAllAboutTheGameDbContext context, IWalletService walletService,
             UserManager<User> userManager, IUserService userService, IForeignExchangeService foreignExchangeService,
-            ICardService cardService)
+            ICardService cardService, IDateTimeProvider dateTimeProvider)
         {
             this.context = context;
             this.walletService = walletService;
             this.userManager = userManager;
             this.userService = userService;
             this.cardService = cardService;
+            this.dateTimeProvider = dateTimeProvider;
             this.foreignExchangeService = foreignExchangeService;
         }
 
@@ -66,7 +69,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                     User = user,
                     UserId = user.Id,
                     Amount = convertedAmount,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = dateTimeProvider.Now,
                     Currency = userWallet.Currency
                 };
 
@@ -79,7 +82,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             }
             catch (Exception ex)
             {
-
                 throw new EntryPointNotFoundException("Could not make the deposit!", ex);
             }
 
@@ -227,7 +229,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                 User = user,
                 UserId = user.Id,
                 Amount = convertedAmount,
-                CreatedOn = DateTime.Now,
+                CreatedOn = dateTimeProvider.Now,
                 Currency = wallet.Currency
             };
 

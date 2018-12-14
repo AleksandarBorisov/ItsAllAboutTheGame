@@ -5,6 +5,7 @@ using ItsAllAboutTheGame.Data;
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.GlobalUtilities;
 using ItsAllAboutTheGame.GlobalUtilities.Constants;
+using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
@@ -17,10 +18,13 @@ namespace ItsAllAboutTheGame.Services.Data
     {
         private readonly ItsAllAboutTheGameDbContext context;
         private readonly IForeignExchangeService foreignExchangeService;
+        private readonly IDateTimeProvider dateTimeProvider;
 
-        public WalletService(ItsAllAboutTheGameDbContext context, IForeignExchangeService foreignExchangeService)
+        public WalletService(ItsAllAboutTheGameDbContext context, 
+            IForeignExchangeService foreignExchangeService, IDateTimeProvider dateTimeProvider)
         {
             this.context = context;
+            this.dateTimeProvider = dateTimeProvider;
             this.foreignExchangeService = foreignExchangeService;
         }
 
@@ -99,10 +103,19 @@ namespace ItsAllAboutTheGame.Services.Data
             }
         }
 
-        public async Task<TransactionDTO> WithdrawFromUserBalance(User loggedUser, decimal amount)
+        public async Task<TransactionDTO> WithdrawFromUserBalance(User loggedUser, decimal amount, int cardId)
         {
             try
             {
+                var card = await this.context.CreditCards.FindAsync(cardId);
+
+                if (card.IsDeleted == true)
+                {
+                    throw new Exception("Card is deleted!");
+                }
+
+                var cardLastDigits = card.LastDigits;
+
                 var user = await this.context.Users.Where(u => u == loggedUser).Include(w => w.Wallet).FirstOrDefaultAsync();
 
                 var userWallet = user.Wallet;               
@@ -123,13 +136,12 @@ namespace ItsAllAboutTheGame.Services.Data
                 var transaction = new Transaction()
                 {
                     Type = TransactionType.Withdraw,
-                    Description = GlobalConstants.WithdrawDescription + userWallet.Currency + amount,
+                    Description = GlobalConstants.WithdrawDescription + cardLastDigits.PadLeft(16, '*'),
                     User = user,
                     UserId = user.Id,
                     Amount = convertedAmount,
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = dateTimeProvider.Now,
                     Currency = userWallet.Currency
-                    //TODO: Mock DateTime
                 };
 
                 this.context.Transactions.Add(transaction);

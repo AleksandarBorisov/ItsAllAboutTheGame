@@ -20,7 +20,7 @@ namespace ItsAllAboutTheGame.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult ResponsibleGambling()
         {
             ViewData["Message"] = "Your application description page.";
 
