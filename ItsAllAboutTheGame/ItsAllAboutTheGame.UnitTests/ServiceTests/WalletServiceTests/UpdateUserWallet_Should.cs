@@ -92,7 +92,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
         {
             //Arrange
             contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
-            .UseInMemoryDatabase(databaseName: "ReturnWalletDTO_When_PassedCorrectParams")
+            .UseInMemoryDatabase(databaseName: "ReturnCorrectUpdatedWallet")
                 .Options;
 
             decimal stake = 1000;
@@ -153,7 +153,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
         {
             //Arrange
             contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
-            .UseInMemoryDatabase(databaseName: "ReturnWalletDTO_When_PassedCorrectParams")
+            .UseInMemoryDatabase(databaseName: "ThrowException_When_NullValuesArePassed")
                 .Options;
 
             decimal stake = 1000;

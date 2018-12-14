@@ -105,20 +105,13 @@ namespace ItsAllAboutTheGame.Services.Data
             {
                 var user = await this.context.Users.Where(u => u == loggedUser).Include(w => w.Wallet).FirstOrDefaultAsync();
 
-                var userWallet = user.Wallet;               
+                var userWallet = user.Wallet;
 
-                var rates =  await this.foreignExchangeService.GetConvertionRates();
+                var rates = await this.foreignExchangeService.GetConvertionRates();
 
                 var convertedAmount = amount / rates.Rates[userWallet.Currency.ToString()];
 
-                if (userWallet.Balance - convertedAmount < 0)
-                {
-                    return new TransactionDTO();
-                }
-                else
-                {
-                    userWallet.Balance -= convertedAmount;
-                }
+                userWallet.Balance -= convertedAmount;
 
                 var transaction = new Transaction()
                 {
