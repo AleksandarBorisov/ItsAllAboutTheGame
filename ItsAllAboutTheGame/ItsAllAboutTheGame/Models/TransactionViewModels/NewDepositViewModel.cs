@@ -16,7 +16,7 @@ namespace ItsAllAboutTheGame.Models.TransactionViewModels
       
         [Required]
         [Display(Name = "Choose card")]
-        public int CreditCardId { get; set; }    
+        public int? CreditCardId { get; set; }    
         
         public List<SelectListItem> CardsForDelete { get; set; }
                 

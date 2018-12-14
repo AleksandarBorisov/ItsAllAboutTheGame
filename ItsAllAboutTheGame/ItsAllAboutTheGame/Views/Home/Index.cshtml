@@ -2,24 +2,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-
-@*<header>
-    @if (TempData["Success"] != null)
-    {
-        <div id="infoValidationSummary" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="form-horizontal">
-                            @TempData["Success"]
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-</header>*@
-
 <!--Main layout-->
 <main class="index-page">
     <div class="container-fluid d-flex align-items-center justify-content-center" id="play-button">
@@ -41,7 +23,7 @@
             <!--Grid row-->
             <div class="row">
                 <!--Grid column-->
-                <div class="col-lg-4 col-md-12 mb-4 wow slideInLeft">
+                <div class="col-lg-4 col-sm-12 mb-4 wow slideInLeft">
                     <div class="view overlay z-depth-1-half">
                         <img src="~/images/GameSlots.jpg" class="img-fluid" id="first-game-image">
                         <a asp-controller="Game" asp-action="GameOne" asp-route-gridSize="@GlobalConstants.GameOneGrid">

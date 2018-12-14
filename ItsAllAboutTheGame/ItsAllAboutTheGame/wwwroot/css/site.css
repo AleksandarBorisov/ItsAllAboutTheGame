@@ -91,12 +91,6 @@ body {
 }
 
 @media (max-width: 768px) {
-    .index-page {
-        margin-top: 50%;
-    }
-}
-
-@media (max-width: 768px) {
     #navigation {
         overflow-y: scroll;
         max-height: 150px;
@@ -105,6 +99,12 @@ body {
 
 #play-button {
     padding: 25%;
+}
+
+@media (max-width: 768px) {
+    #play-button {
+        width: auto;
+    }
 }
 
 #scrollToTopBtn {
@@ -321,6 +321,11 @@ body {
     height: 40px;
 }
 
+.fruit-icon-third-game {
+    width: 35px;
+    height: 35px;
+}
+
 .winning-row {
     background-color: forestgreen;
     border-radius: 10px;
@@ -458,10 +463,28 @@ body {
     color: #D8000C;
 }
 
+.credit-card {
+    width: 41%;
+}
+
 @media (max-width: 768px) {
+    .credit-card {
+        width: auto;
+    }
     .login-form {
         width: auto;
     }
+    .padding-form {
+        width: auto;
+    }
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.w-60 {
+    width: 60%;
 }
 
 

@@ -14,45 +14,45 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
     {
         private DbContextOptions<ItsAllAboutTheGameDbContext> contextOptions;
 
-        [TestMethod]
-        public void ReturnTrue_When_ParsingCVVToNumber_IsSuccessful()
-        {
-            //Arrange
-            contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
-            .UseInMemoryDatabase(databaseName: "ReturnTrue_When_ParsingToIntIsSuccessful")
-                .Options;
+        //[TestMethod]
+        //public void ReturnTrue_When_ParsingCVVToNumber_IsSuccessful()
+        //{
+        //    //Arrange
+        //    contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
+        //    .UseInMemoryDatabase(databaseName: "ReturnTrue_When_ParsingToIntIsSuccessful")
+        //        .Options;
 
-            var CVV = "3435";
+        //    var CVV = "3435";
 
-            //Act & Assert
-            using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
-            {
-                var cardService = new CardService(assertContext);
-                var areOnlyDigits = cardService.IsCVVOnlyDigits(CVV);
+        //    //Act & Assert
+        //    using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
+        //    {
+        //        var cardService = new CardService(assertContext);
+        //        var areOnlyDigits = cardService.IsCVVOnlyDigits(CVV);
 
-                Assert.IsTrue(areOnlyDigits);
-            }
-        }
+        //        Assert.IsTrue(areOnlyDigits);
+        //    }
+        //}
 
 
-        [DataTestMethod]
-        [DataRow("34t4")]
-        [DataRow(null)]
-        public void ReturnFalse_When_ParsingCVVToNumber_Fails(string CVV)
-        {
-            //Arrange
-            contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
-            .UseInMemoryDatabase(databaseName: "ReturnFalse_When_ParsingCVVToNumber_Fails")
-                .Options;
+        //[DataTestMethod]
+        //[DataRow("34t4")]
+        //[DataRow(null)]
+        //public void ReturnFalse_When_ParsingCVVToNumber_Fails(string CVV)
+        //{
+        //    //Arrange
+        //    contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
+        //    .UseInMemoryDatabase(databaseName: "ReturnFalse_When_ParsingCVVToNumber_Fails")
+        //        .Options;
 
-            //Act & Assert
-            using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
-            {
-                var cardService = new CardService(assertContext);
-                var areOnlyDigits = cardService.IsCVVOnlyDigits(CVV);
+        //    //Act & Assert
+        //    using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
+        //    {
+        //        var cardService = new CardService(assertContext);
+        //        var areOnlyDigits = cardService.IsCVVOnlyDigits(CVV);
 
-                Assert.IsFalse(areOnlyDigits);
-            }
-        }
+        //        Assert.IsFalse(areOnlyDigits);
+        //    }
+        //}
     }
 }

@@ -41,7 +41,7 @@ $(function () {
             $amount.val($currentBalance);
         }
         else {
-            $('#loading-spinner').delay(200).show();
+            $('#loading-spinner').delay(200).show(0);
 
             $currentForm = $(this);
 

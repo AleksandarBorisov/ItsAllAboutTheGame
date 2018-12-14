@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -66,15 +67,33 @@ namespace ItsAllAboutTheGame.Controllers
                 return RedirectToAction("Deposit", "Transaction");
             }
 
-            var claims = HttpContext.User;
-            var user = await userManager.GetUserAsync(claims);
+            var user = await userManager.GetUserAsync(HttpContext.User);
+
             var userCards = await this.cardService.GetSelectListCards(user);
 
-            var userDeposit = await this.transactionService.MakeDeposit(user, model.CreditCardId, (int)model.Amount);
-
+            var userDeposit = await this.transactionService.MakeDeposit(user, (int)model.CreditCardId, (int)model.Amount);
 
             var convertedAmount = await this.walletService.ConvertBalance(user);
 
+            return Json(new { Balance = convertedAmount });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Withdraw(NewDepositViewModel model)
+        {
+            var user = await userManager.GetUserAsync(HttpContext.User);
+
+            var oldWallet = await this.walletService.GetUserWallet(user);
+
+            if (!ModelState.IsValid || (Math.Round(oldWallet.Balance, 2) < Math.Round((decimal)model.Amount, 2)))
+            {
+                return RedirectToAction("Deposit", "Transaction");
+            }
+
+            var withdrawedAmount = await this.walletService.WithdrawFromUserBalance(user, (int)model.Amount);
+
+            var convertedAmount = await this.walletService.ConvertBalance(user);
 
             return Json(new { Balance = convertedAmount });
         }
@@ -99,7 +118,11 @@ namespace ItsAllAboutTheGame.Controllers
 
                 var user = await this.userManager.FindByNameAsync(userName);
 
-                var cardToAdd = await this.cardService.AddCard(model.CardNumber, model.CVV, model.ExpiryDate, user);
+                var dateStrings = model.ExpiryDate.Split('/');
+
+                var expiryDate = $"01.{dateStrings[0]}.20{dateStrings[1]}";
+
+                var cardToAdd = await this.cardService.AddCard(model.CardNumber.Replace(" ",""), model.CVV, DateTime.Parse(expiryDate), user);
 
                 return RedirectToAction("Deposit", "Transaction");
             }
@@ -125,18 +148,6 @@ namespace ItsAllAboutTheGame.Controllers
             return Json(userCardsForDelete);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Withdraw(NewDepositViewModel model, string withdraw, string deposit)
-        {
-            var user = await userManager.GetUserAsync(HttpContext.User);
-
-            var withdrawedAmount = await this.walletService.WithdrawFromUserBalance(user, (int)model.Amount);
-
-            var convertedAmount = await this.walletService.ConvertBalance(user);
-
-            return Json(new { Balance = convertedAmount });
-        }
 
         [HttpGet]
         public async Task<IActionResult> GetAllCards()
@@ -155,7 +166,7 @@ namespace ItsAllAboutTheGame.Controllers
         {
             try
             {
-                return Json(this.cardService.DoesCardExist(CardNumber));
+                return Json(this.cardService.DoesCardExist(CardNumber.Replace(" ", "")));
                 // if returned boolean is false the card exists
                 // if returned boolean is true the card does NOT exist so the card number is valid
             }
@@ -166,27 +177,34 @@ namespace ItsAllAboutTheGame.Controllers
         }
 
         [AcceptVerbs("Get", "Post")]
-        public IActionResult IsCVVOnlyDigits(string CVV)
+        public IActionResult IsDateValid(string ExpiryDate)
         {
-            try
-            {
-                return Json(this.cardService.IsCVVOnlyDigits(CVV));
-            }
-            catch (Exception)
+            var dateStrings = ExpiryDate.Split('/');
+
+            if (dateStrings.Length < 2 || !int.TryParse(dateStrings[0], out int month) || !int.TryParse(dateStrings[0], out int year))
             {
                 return Json(false);
             }
-        }
 
-        [AcceptVerbs("Get", "Post")]
-        public IActionResult IsDateValid(DateTime ExpiryDate)
-        {
-            try
+            var isValidDate = DateTime.TryParseExact($"01.{dateStrings[0]}.20{dateStrings[1]}",
+                       "dd.MM.yyyy",
+                       CultureInfo.InvariantCulture,
+                       DateTimeStyles.None,
+                       out DateTime expiryDateAsDate);
+
+            var now = DateTime.Now;
+
+            if (!isValidDate)
             {
-                return Json(this.cardService.IsExpired(ExpiryDate));
+                return Json(false);
             }
-            catch (Exception)
+            else
             {
+                if (now < expiryDateAsDate)
+                {
+                    return Json(true);
+                }
+
                 return Json(false);
             }
         }
