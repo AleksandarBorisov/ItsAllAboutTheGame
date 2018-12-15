@@ -87,6 +87,7 @@ namespace ItsAllAboutTheGame.Areas.Administration.Models
 
         public string  SearchString { get; set; }
 
+        [Required]
         public string SortOrder { get; set; }
     }
 }

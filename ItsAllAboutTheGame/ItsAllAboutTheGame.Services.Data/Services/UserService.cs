@@ -7,13 +7,10 @@ using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using ItsAllAboutTheGame.Services.Data.Exceptions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using X.PagedList;
 
@@ -23,18 +20,14 @@ namespace ItsAllAboutTheGame.Services.Data
     {
         private readonly IForeignExchangeService foreignExchangeService;
         private readonly ItsAllAboutTheGameDbContext context;
-        private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
         private readonly IWalletService walletService;
         private readonly IDateTimeProvider dateTimeProvider;
 
-        public UserService(ItsAllAboutTheGameDbContext context, UserManager<User> userManager,
-            SignInManager<User> signInManager, IForeignExchangeService foreignExchangeService,
+        public UserService(ItsAllAboutTheGameDbContext context, 
+             IForeignExchangeService foreignExchangeService,
             IWalletService walletService, IDateTimeProvider dateTimeProvider)
         {
             this.context = context;
-            this.userManager = userManager;
-            this.signInManager = signInManager;
             this.dateTimeProvider = dateTimeProvider;
             this.foreignExchangeService = foreignExchangeService;
             this.walletService = walletService;
@@ -45,15 +38,13 @@ namespace ItsAllAboutTheGame.Services.Data
             
         //}
 
-        public async Task<UserInfoDTO> GetUserInfo(ClaimsPrincipal userClaims)
+        public async Task<UserInfoDTO> GetUserInfo(string userId)
         {
             try
             {
-                var userId = userManager.GetUserId(userClaims);
-
                 var currencies = await this.foreignExchangeService.GetConvertionRates();
 
-                var user = await userManager
+                var user = await context
                     .Users
                     .Where(x => x.Id == userId)
                     .Include(u => u.Wallet)
@@ -77,31 +68,36 @@ namespace ItsAllAboutTheGame.Services.Data
             }
         }
 
-        public async Task<User> GetUser(string username)
-        {
-            var user = await this.context.Users.FirstOrDefaultAsync(n => n.UserName == username);
+        //public async Task<User> GetUser(string username)
+        //{
+        //    var user = await this.context.Users.FirstOrDefaultAsync(n => n.UserName == username);
 
-            return user;
-        }
+        //    return user;
+        //}
 
-        public async Task<IEnumerable<CreditCard>> UserCards(User user)
-        {
-            var userCards = await this.context.CreditCards.Where(k => k.User == user).ToListAsync();
+        //public async Task<IEnumerable<CreditCard>> UserCards(User user)
+        //{
+        //    var userCards = await this.context.CreditCards.Where(k => k.User == user).ToListAsync();
 
-            return userCards;
-        }
+        //    return userCards;
+        //}
 
-        public IPagedList<UserDTO> GetAllUsers(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefaultUserSorting)
+        public async Task<IPagedList<UserDTO>> GetAllUsers(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefaultUserSorting)
         {
             var users = this.context
                 .Users
                 .Where(u => u.Email != GlobalConstants.MasterAdminEmail)
-                .Include(user => user.Wallet)
-                .Include(user => user.Cards)
-                .Select(u => new UserDTO(u));
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchByUsername))
+            {
+                users = users
+                    .Where(user => user.UserName.Contains(searchByUsername, StringComparison.InvariantCultureIgnoreCase));
+            }
 
             var property = sortOrder.Remove(sortOrder.IndexOf("_"));
-            PropertyInfo prop = typeof(UserDTO).GetProperty(property, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
+            PropertyInfo prop = typeof(User).GetProperty(property, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
+
             if (!sortOrder.Contains("_desc"))
             {
                 users = users.OrderBy(user => prop.GetValue(user));
@@ -111,12 +107,18 @@ namespace ItsAllAboutTheGame.Services.Data
                 users = users.OrderByDescending(user => prop.GetValue(user));
             }
 
-            if (!string.IsNullOrEmpty(searchByUsername))
-            {
-                users = users.Where(user => user.Username.Contains(searchByUsername, StringComparison.InvariantCultureIgnoreCase));
-            }
+            var result = await users
+                .Select(user => new UserDTO()
+                {
+                    UserId = user.Id,
+                    LockoutFor = GetLockoutDays(user),
+                    Username = user.UserName,
+                    Deleted = user.IsDeleted,
+                    Admin = user.Role.Equals(UserRole.Administrator),
+                })
+                .ToPagedListAsync(page, size);
 
-            return users.ToPagedList(page, size);
+            return result;
         }
 
         public async Task<UserDTO> LockoutUser(string userId, int days)
@@ -129,9 +131,14 @@ namespace ItsAllAboutTheGame.Services.Data
 
                 user.LockoutEnd = new DateTimeOffset(date, TimeSpan.Zero);
 
-                await this.userManager.UpdateAsync(user);
+                this.context.Users.Update(user);
+                await this.context.SaveChangesAsync();
+                //await this.userManager.UpdateAsync(user);
+                var updatedUser = new UserDTO(user);
 
-                return new UserDTO(user);
+                updatedUser.LockoutFor = GetLockoutDays(user);
+
+                return updatedUser;
 
             }
             catch (Exception ex)
@@ -148,7 +155,9 @@ namespace ItsAllAboutTheGame.Services.Data
 
                 user.IsDeleted = !user.IsDeleted;
 
-                await this.userManager.UpdateAsync(user);
+                this.context.Users.Update(user);
+                await this.context.SaveChangesAsync();
+                //await this.userManager.UpdateAsync(user);
 
                 return new UserDTO(user);
 
@@ -165,19 +174,19 @@ namespace ItsAllAboutTheGame.Services.Data
             {
                 var user = await this.context.Users.FindAsync(userId);
 
-                var result = await this.userManager
-                .IsInRoleAsync(user, GlobalConstants.AdminRole);
+                //var result = await this.userManager
+                //.IsInRoleAsync(user, GlobalConstants.AdminRole);
 
-                if (result)
-                {
-                    user.Role = UserRole.None;
-                    await this.userManager.RemoveFromRoleAsync(user, GlobalConstants.AdminRole);
-                }
-                else
-                {
-                    user.Role = UserRole.Administrator;
-                    await this.userManager.AddToRoleAsync(user, GlobalConstants.AdminRole);
-                }
+                //if (result)
+                //{
+                //    user.Role = UserRole.None;
+                //    //await this.userManager.RemoveFromRoleAsync(user, GlobalConstants.AdminRole);
+                //}
+                //else
+                //{
+                //    user.Role = UserRole.Administrator;
+                //    //await this.userManager.AddToRoleAsync(user, GlobalConstants.AdminRole);
+                //}
 
                 return new UserDTO(user);
 
@@ -186,6 +195,22 @@ namespace ItsAllAboutTheGame.Services.Data
             {
                 throw new ToggleAdminException("Unable to toggle Admin Role  the selected user", ex);
             }
+        }
+
+        private int GetLockoutDays(User user)
+        {
+            if (user.LockoutEnd == null)
+            {
+                return 0;
+            }
+
+            var lockOutEndDate = user.LockoutEnd.Value.DateTime;
+
+            var currentDate = dateTimeProvider.Now;
+
+            var difference = (lockOutEndDate - currentDate).TotalDays;
+
+            return (int)(difference > 0 ? Math.Round(difference, 1) : 0);
         }
     }
 }

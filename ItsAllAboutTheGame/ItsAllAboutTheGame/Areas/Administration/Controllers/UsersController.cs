@@ -23,9 +23,9 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var users = this.userService.GetAllUsers();
+            var users = await this.userService.GetAllUsers();
 
             var model = new UsersViewModel(users);
 
@@ -36,13 +36,13 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UpdateTable(UsersViewModel model)
+        public async Task<IActionResult> UpdateTable(UsersViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 ModelState.Clear();
 
-                var oldUsers = this.userService.GetAllUsers();
+                var oldUsers = await this.userService.GetAllUsers();
 
                 var oldModel = new UsersViewModel(oldUsers);
 
@@ -51,7 +51,7 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
                 return PartialView("_UsersTablePartial", oldModel);
             }
 
-            var users = this.userService.GetAllUsers(model.SearchString, model.PageNumber,model.PageSize, model.SortOrder);
+            var users = await this.userService.GetAllUsers(model.SearchString, model.PageNumber,model.PageSize, model.SortOrder);
 
             var newModel = new UsersViewModel(users);
 

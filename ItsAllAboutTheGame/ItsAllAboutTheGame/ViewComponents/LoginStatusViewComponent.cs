@@ -10,11 +10,14 @@ namespace ItsAllAboutTheGame.ViewComponents
     public class LoginStatusViewComponent : ViewComponent
     {
         private readonly SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
         private readonly IUserService userService;
 
-        public LoginStatusViewComponent(IUserService userService, SignInManager<User> signInManager)
+        public LoginStatusViewComponent(IUserService userService, SignInManager<User> signInManager,
+            UserManager<User> userManager)
         {
             this.userService = userService;
+            this.userManager = userManager;
             this.signInManager = signInManager;
         }
 
@@ -22,7 +25,9 @@ namespace ItsAllAboutTheGame.ViewComponents
         {
             if (signInManager.IsSignedIn(HttpContext.User))
             {
-                var userInfo = await this.userService.GetUserInfo(HttpContext.User);
+                var userId = userManager.GetUserId(HttpContext.User);
+
+                var userInfo = await this.userService.GetUserInfo(userId);
 
                 var info = new UserInfoViewModel(userInfo);
 

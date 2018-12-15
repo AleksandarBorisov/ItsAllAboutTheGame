@@ -391,20 +391,20 @@ body {
     width: 20%;
 }
 
-#transactions-table th, #transactions-table tr {
+.transactions-table th, .transactions-table tr {
     padding: 10px;
     border-bottom: 2px solid #ddd;
 }
 
-#transactions-table td {
+.transactions-table td {
     border: none;
 }
 
-#transactions-table tbody tr:hover {
+.transactions-table tbody tr:hover {
     background-color: #eee;
 }
 
-#transactions-table {
+.transactions-table {
     border-collapse: collapse;
     height: 100%;
     width: 100%;
@@ -413,15 +413,15 @@ body {
     border-top-right-radius: 5px;
 }
 
-    #transactions-table thead tr:first-child {
+    .transactions-table thead tr:first-child {
         background-color: #24355C;
     }
 
-    #transactions-table thead tr {
+    .transactions-table thead tr {
         color: aqua;
     }
 
-    #transactions-table th, #transactions-table td {
+    .transactions-table th, .transactions-table td {
         font-weight: bold;
     }
 

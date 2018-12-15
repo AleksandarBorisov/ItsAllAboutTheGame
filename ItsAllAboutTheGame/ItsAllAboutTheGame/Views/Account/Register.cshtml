@@ -41,9 +41,10 @@
                         <input asp-for="ConfirmPassword" class="form-control white-text mb-0" maxlength="50" />
                         <small><span asp-validation-for="ConfirmPassword" class="text-danger p-0 validation-text"></span></small>
                     </div>
-                    <div class="md-form form-sm white-text col-form-label-lg">
+                    <div class="form-group md-form form-sm white-text col-form-label-lg">
                         <i class="fa fa-calendar prefix"></i>
-                        <input asp-for="DateOfBirth" type="text" class="form-control white-text mb-0" id="birth-date" placeholder="dd.mm.yyyy" />
+                        <label asp-for="DateOfBirth" class="font-weight-bold white-text">dd.mm.yyyy</label>
+                        <input asp-for="DateOfBirth" type="text" class="form-control white-text mb-0" id="birth-date" />
                         <small><span asp-validation-for="DateOfBirth" class="text-danger p-0 validation-text"></span></small>
                     </div>
                     <div class="white-text">

@@ -18,8 +18,4 @@
     <ProjectReference Include="..\ItsAllAboutTheGame.Services.Data\ItsAllAboutTheGame.Services.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ServiceTests\UserServiceTests\" />
-  </ItemGroup>
-
 </Project>

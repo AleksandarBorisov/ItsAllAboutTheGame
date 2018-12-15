@@ -91,13 +91,13 @@ namespace ItsAllAboutTheGame.Services.Data.Services
         {
             var transactions = this.context
                 .Transactions
-                .Include(transaction => transaction.User)
+                //.Include(transaction => transaction.User)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(searchByUsername))
             {
                 transactions = transactions
-                    .Where(transaction => transaction.User.UserName.Contains(searchByUsername ?? "", StringComparison.InvariantCultureIgnoreCase));
+                    .Where(transaction => transaction.User.UserName.Contains(searchByUsername, StringComparison.InvariantCultureIgnoreCase));
             }
 
             var property = sortOrder.Remove(sortOrder.IndexOf("_"));
