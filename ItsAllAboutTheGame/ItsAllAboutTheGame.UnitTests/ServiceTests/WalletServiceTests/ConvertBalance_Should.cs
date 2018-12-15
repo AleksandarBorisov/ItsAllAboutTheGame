@@ -25,6 +25,11 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
         private IDateTimeProvider dateTimeProvider;
         private ForeignExchangeDTO foreignExchangeDTO;
         private User user;
+        private string userId = "randomId";
+        private string userName = "Koicho";
+        private string email = "testmail@gmail";
+        private string firstName = "Koichkov";
+        private string lastName = "Velichkov";
         private Wallet userWallet;
 
         [TestMethod]
@@ -39,14 +44,14 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             user = new User
             {
-                Id = "randomId",
+                Id = userId,
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
-                UserName = "Koicho",
+                UserName = userName,
                 CreatedOn = dateTimeProvider.Now,
-                Email = "testmail@gmail",
-                FirstName = "Koichokov",
-                LastName = "Velichkov",
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
                 DateOfBirth = DateTime.Parse("02.01.1996"),
                 Role = UserRole.None,
             };

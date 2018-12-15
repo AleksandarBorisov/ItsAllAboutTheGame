@@ -17,7 +17,14 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
     {
         private DbContextOptions<ItsAllAboutTheGameDbContext> contextOptions;
         private CreditCard creditCard;
+        private string cardNumber = "23232141412";
+        private string cvv = "3232";
         private User user;
+        private string userId = "randomId";
+        private string userName = "Koicho";
+        private string email = "testmail@gmail";
+        private string firstName = "Koichkov";
+        private string lastName = "Velichkov";
         private IDateTimeProvider dateTimeProvider;
 
         [TestMethod]
@@ -32,22 +39,22 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
 
             user = new User
             {
-                Id = "randomId",
+                Id = userId,
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
-                UserName = "Koicho",
+                UserName = userName,
                 CreatedOn = dateTimeProvider.Now,
-                Email = "testmail@gmail",
-                FirstName = "Koichokov",
-                LastName = "Velichkov",
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
                 DateOfBirth = DateTime.Parse("02.01.1996"),
                 Role = UserRole.None,
             };
 
             creditCard = new CreditCard
             {
-                CardNumber = "23232141412",
-                CVV = "3232",
+                CardNumber = cardNumber,
+                CVV = cvv,
                 ExpiryDate = DateTime.Parse("02.03.2020"),
                 User = user,
                 UserId = user.Id,
@@ -84,22 +91,22 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
 
             user = new User
             {
-                Id = "randomId",
+                Id = userId,
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
-                UserName = "Koicho",
+                UserName = userName,
                 CreatedOn = dateTimeProvider.Now,
-                Email = "testmail@gmail",
-                FirstName = "Koichokov",
-                LastName = "Velichkov",
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
                 DateOfBirth = DateTime.Parse("02.01.1996"),
                 Role = UserRole.None,
             };
 
             creditCard = new CreditCard
             {
-                CardNumber = "23232141412",
-                CVV = "3232",
+                CardNumber = cardNumber,
+                CVV = cvv,
                 ExpiryDate = DateTime.Parse("02.03.2020"),
                 User = user,
                 UserId = user.Id,

@@ -24,6 +24,11 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
         private DbContextOptions<ItsAllAboutTheGameDbContext> contextOptions;
         private Mock<IForeignExchangeService> foreignExchangeServiceMock;
         private User user;
+        private string userId = "randomId";
+        private string userName = "Koicho";
+        private string email = "testmail@gmail";
+        private string firstName = "Koichkov";
+        private string lastName = "Velichkov";
         private Wallet userWallet;
         private ForeignExchangeDTO foreignExchangeDTO;
         private IDateTimeProvider dateTimeProvider;
@@ -42,14 +47,14 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             user = new User
             {
-                Id = "randomId",
+                Id = userId,
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
-                UserName = "Koicho",
+                UserName = userName,
                 CreatedOn = dateTimeProvider.Now,
-                Email = "testmail@gmail",
-                FirstName = "Koichokov",
-                LastName = "Velichkov",
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
                 DateOfBirth = DateTime.Parse("02.01.1996"),
                 Role = UserRole.None,
             };
@@ -105,14 +110,14 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             user = new User
             {
-                Id = "randomId",
+                Id = userId,
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
-                UserName = "Koicho",
+                UserName = userName,
                 CreatedOn = dateTimeProvider.Now,
-                Email = "testmail@gmail",
-                FirstName = "Koichokov",
-                LastName = "Velichkov",
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
                 DateOfBirth = DateTime.Parse("02.01.1996"),
                 Role = UserRole.None,
             };

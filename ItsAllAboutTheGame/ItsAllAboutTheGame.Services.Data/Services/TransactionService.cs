@@ -65,7 +65,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                     Type = TransactionType.Deposit,
                     Description = GlobalConstants.DepositDescription + cardLastDigits.PadLeft(16, '*'),
                     User = user,
-                    UserId = user.Id,
+                    //UserId = user.Id,
                     Amount = convertedAmount,
                     CreatedOn = dateTimeProvider.Now,
                     Currency = userWallet.Currency
