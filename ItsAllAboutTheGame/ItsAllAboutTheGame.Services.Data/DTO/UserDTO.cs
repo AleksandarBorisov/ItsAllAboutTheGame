@@ -14,7 +14,6 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
         public UserDTO(User user)
         {
             this.UserId = user.Id;
-            this.LockoutFor = GetLockoutDays(user);
             this.Username = user.UserName;
             this.Deleted = user.IsDeleted;
             this.Admin = user.Role.Equals(UserRole.Administrator);
@@ -30,20 +29,6 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
 
         public bool Admin { get; set; }
 
-        private int GetLockoutDays(User user)
-        {
-            if (user.LockoutEnd == null)
-            {
-                return 0;
-            }
-
-            var lockOutEndDate = user.LockoutEnd.Value.DateTime;
-
-            var currentDate = DateTime.Now;
-
-            var difference = (lockOutEndDate - currentDate).TotalDays;
-
-            return (int)(difference > 0 ? Math.Round(difference, 1) : 0);
-        }
+        
     }
 }

@@ -1,5 +1,4 @@
 ﻿@model UserTransactionsViewModel
-@using ItsAllAboutTheGame.Areas.Administration.Models
 @using ItsAllAboutTheGame.GlobalUtilities.Enums
 @{
     ViewData["Title"] = "TransactionHistoryTablePartial";
@@ -22,9 +21,9 @@
             </div>
         </form>
     </div>
-    <table class="table text-nowrap m-0 " id="transactions-table">
-        <tbody>
-            <tr class="amber">
+    <table class="table text-nowrap m-0 transactions-table">
+        <thead>
+            <tr>
                 <th class="col-lg-3">
                     <form class="sorting-form" asp-action="UpdateTable" asp-controller="Manage" method="post">
                         <div class="input-group flex-nowrap flex-center">
@@ -44,6 +43,8 @@
                 <th class="font-weight-bold col-lg-3">@nameof(Model.Amount)</th>
                 <th class="font-weight-bold col-lg-3">@nameof(Model.Description)</th>
             </tr>
+        </thead>
+        <tbody>
             @foreach (var transaction in Model.Transactions)
             {
                 <partial name="_TransactionHistoryRowPartial" model="transaction" />

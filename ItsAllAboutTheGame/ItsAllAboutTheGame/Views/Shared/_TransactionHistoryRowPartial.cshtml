@@ -4,10 +4,10 @@
 }
 
 <tr class="@Model.Type.ToString().ToLower()">
-    <th>@Model.CreatedOn</th>
-    <th>@Model.Type</th>
-    <th><span class="mr-1">@Model.Amount</span>@ViewData["CurrencySymbol"]</th>
-    <th>@Model.Description</th>
+    <td class="align-middle">@Model.CreatedOn</td>
+    <td class="align-middle" >@Model.Type</td>
+    <td class="align-middle"><span class="mr-1">@Model.Amount</span>@ViewData["CurrencySymbol"]</td>
+    <td class="align-middle">@Model.Description</td>
 </tr>
 
 

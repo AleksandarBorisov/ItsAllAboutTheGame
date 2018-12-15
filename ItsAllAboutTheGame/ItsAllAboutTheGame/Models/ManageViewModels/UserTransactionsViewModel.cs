@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace ItsAllAboutTheGame.Areas.Administration.Models
+namespace ItsAllAboutTheGame.Models.ManageViewModels
 {
     public class UserTransactionsViewModel
     {
@@ -78,6 +78,7 @@ namespace ItsAllAboutTheGame.Areas.Administration.Models
 
         public string SearchString { get; set; }
 
+        [Required]
         public string SortOrder { get; set; }
 
         public TransactionType Type { get; set; }

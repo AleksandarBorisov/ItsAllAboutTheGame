@@ -27,12 +27,13 @@
                         <i class="fa fa-key prefix" aria-hidden="true"></i>
                         <label asp-for="ConfirmPassword" class="font-weight-bold white-text">Confirm Password</label>
                         <input asp-for="ConfirmPassword" class="form-control white-text mb-0" maxlength="50" />
-                        <small><span asp-validation-for="ConfirmPassword" class="text-danger p-0"></span></small>
+                        <small><span asp-validation-for="ConfirmPassword" class="text-danger p-0 validation-text"></span></small>
                     </div>
-                    <div class="md-form form-sm white-text col-form-label-lg">
+                    <div class="form-group md-form form-sm white-text col-form-label-lg">
                         <i class="fa fa-calendar prefix"></i>
-                        <input asp-for="DateOfBirth" type="text" class="form-control white-text mb-0" id="birth-date" placeholder="dd.mm.yyyy" />
-                        <small><span asp-validation-for="DateOfBirth" class="text-danger p-0"></span></small>
+                        <label asp-for="DateOfBirth" class="font-weight-bold white-text">dd.mm.yyyy</label>
+                        <input asp-for="DateOfBirth" type="text" class="form-control white-text mb-0" id="birth-date" />
+                        <small><span asp-validation-for="DateOfBirth" class="text-danger p-0 validation-text"></span></small>
                     </div>
                     <div class="white-text">
                         <label asp-for="UserCurrency"></label>
@@ -42,7 +43,7 @@
                             <option value="BGN">BGN</option>
                             <option value="GBP">GBP</option>
                         </select>
-                        <small><span asp-validation-for="UserCurrency" class="text-danger"></span></small>
+                        <small><span asp-validation-for="UserCurrency" class="text-danger p-0 validation-text"></span></small>
                         <i class="fa fa-money prefix ml-1"></i>
                     </div>
                     <div class=" form-group text-center mt-4">
