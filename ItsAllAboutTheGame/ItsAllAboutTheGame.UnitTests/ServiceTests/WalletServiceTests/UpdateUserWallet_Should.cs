@@ -22,6 +22,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
     public class UpdateUserWallet_Should
     {
         private DbContextOptions<ItsAllAboutTheGameDbContext> contextOptions;
+
         private Mock<IForeignExchangeService> foreignExchangeServiceMock;
         private User user;
         private Wallet userWallet;
