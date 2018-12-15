@@ -231,7 +231,35 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.UserServiceTests
         [TestMethod]
         public async Task ReturnCorrectData_WhenAllParametersArePassed()
         {
+            //Arrange
+            var contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
+                .UseInMemoryDatabase(databaseName: "ReturnCorrectData_WhenAllParametersArePassed")
+                .UseInternalServiceProvider(serviceProvider)
+                .Options;
 
+            var listOfUsers = new List<User>() { testUserOne, testUserTwo };
+
+            //Act
+            using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
+            {
+                await actContext.AddRangeAsync(listOfUsers);
+                await actContext.SaveChangesAsync();
+            }
+
+            //Assert
+            using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
+            {
+                var command = new UserService(assertContext, foreignExchangeServiceMock.Object,
+                    walletServiceMock.Object, dateTimeProviderMock.Object);
+
+                var result = await command.GetAllUsers(testUserOneUsername, 1, GlobalConstants.DefultPageSize, GlobalConstants.DefaultUserSorting);
+
+                Assert.IsInstanceOfType(result, typeof(IPagedList<UserDTO>));
+                Assert.IsTrue(result.Count() == 1);
+                Assert.AreEqual(testUserOne.UserName, result.First().Username);
+                Assert.IsFalse(result.First().Admin);
+                Assert.IsFalse(result.First().Deleted);
+            }
         }
     }
 }

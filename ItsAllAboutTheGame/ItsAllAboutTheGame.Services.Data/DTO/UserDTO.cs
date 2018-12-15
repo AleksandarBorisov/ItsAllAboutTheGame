@@ -1,6 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.GlobalUtilities.Enums;
-using System;
 
 namespace ItsAllAboutTheGame.Services.Data.DTO
 {

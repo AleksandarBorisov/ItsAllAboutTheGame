@@ -33,11 +33,6 @@ namespace ItsAllAboutTheGame.Services.Data
             this.walletService = walletService;
         }
 
-        //public async Task<User> RegisterUserWithLoginProvider(ExternalLoginInfo info, Currency userCurrency, DateTime dateOfBirth)
-        //{
-            
-        //}
-
         public async Task<UserInfoDTO> GetUserInfo(string userId)
         {
             try
@@ -67,20 +62,6 @@ namespace ItsAllAboutTheGame.Services.Data
                 throw new EntityNotFoundException("We cannot find your remembered user. Please manually delete your cookies and Login again.", ex);
             }
         }
-
-        //public async Task<User> GetUser(string username)
-        //{
-        //    var user = await this.context.Users.FirstOrDefaultAsync(n => n.UserName == username);
-
-        //    return user;
-        //}
-
-        //public async Task<IEnumerable<CreditCard>> UserCards(User user)
-        //{
-        //    var userCards = await this.context.CreditCards.Where(k => k.User == user).ToListAsync();
-
-        //    return userCards;
-        //}
 
         public async Task<IPagedList<UserDTO>> GetAllUsers(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefaultUserSorting)
         {
@@ -132,8 +113,9 @@ namespace ItsAllAboutTheGame.Services.Data
                 user.LockoutEnd = new DateTimeOffset(date, TimeSpan.Zero);
 
                 this.context.Users.Update(user);
+
                 await this.context.SaveChangesAsync();
-                //await this.userManager.UpdateAsync(user);
+
                 var updatedUser = new UserDTO(user);
 
                 updatedUser.LockoutFor = GetLockoutDays(user);
@@ -156,8 +138,8 @@ namespace ItsAllAboutTheGame.Services.Data
                 user.IsDeleted = !user.IsDeleted;
 
                 this.context.Users.Update(user);
+
                 await this.context.SaveChangesAsync();
-                //await this.userManager.UpdateAsync(user);
 
                 return new UserDTO(user);
 

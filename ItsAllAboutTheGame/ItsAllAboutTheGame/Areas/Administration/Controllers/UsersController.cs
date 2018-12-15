@@ -66,7 +66,7 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Lockout(string userId, int lockoutFor)
         {
-            if (!ModelState.IsValid)
+            if (userId == null || lockoutFor < 0)
             {
                 return RedirectToAction("Index");
             }
