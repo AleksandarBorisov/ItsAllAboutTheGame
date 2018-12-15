@@ -84,7 +84,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
             var currencies = foreignExchangeServiceMock.Setup(fesm => fesm.GetConvertionRates()).ReturnsAsync(foreignExchangeDTO);
 
             using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
-            { 
+            {
                 await actContext.Users.AddAsync(user);
                 await actContext.CreditCards.AddAsync(creditCard);
                 await actContext.Wallets.AddAsync(userWallet);
@@ -240,13 +240,25 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
         {
             // Arrange
             contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
-            .UseInMemoryDatabase(databaseName: "ThrowException_When_NullOrInvalidParamsPassed")
+            .UseInMemoryDatabase(databaseName: "ThrowException_When_CardIsDeleted")
                 .Options;
 
             decimal amount = 1000;
             dateTimeProvider = new DateTimeProvider();
 
-            user = new User();
+            user = new User
+            {
+                Id = "randomId",
+                Cards = new List<CreditCard>(),
+                Transactions = new List<Transaction>(),
+                UserName = "Koicho",
+                CreatedOn = DateTime.Now,
+                Email = "testmail@gmail",
+                FirstName = "Koichokov",
+                LastName = "Velichkov",
+                DateOfBirth = DateTime.Parse("02.01.1996"),
+                Role = UserRole.None,
+            };
 
             creditCard = new CreditCard
             {
@@ -265,7 +277,8 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
             foreignExchangeDTO = new ForeignExchangeDTO
             {
                 Base = GlobalConstants.BaseCurrency,
-                Rates = null
+                Rates = Enum.GetNames(typeof(Currency)).ToDictionary(name => name, value => 2m)
+                // All of the rates are with value 2 for testing purposes (value => 2m)
             };
 
             var currencies = foreignExchangeServiceMock.Setup(fesm => fesm.GetConvertionRates()).ReturnsAsync(foreignExchangeDTO);
