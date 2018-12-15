@@ -24,7 +24,6 @@ namespace ItsAllAboutTheGame.Models.AccountViewModels
 
         [Required]
         [DataType(DataType.Password)]
-        
         [RegularExpression("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,20}$", ErrorMessage = "[A-Z,a-z,0-9]!@#&() and at least 8 symbols!")]
         [Display(Name = "Password")]
         public string Password { get; set; }
