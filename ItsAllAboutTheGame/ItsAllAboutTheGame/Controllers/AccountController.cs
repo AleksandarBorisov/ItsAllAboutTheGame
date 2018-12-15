@@ -11,6 +11,9 @@ using ItsAllAboutTheGame.Services.Data.Contracts;
 using System.Globalization;
 using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using System.Linq;
+using System.Collections.Generic;
+using ItsAllAboutTheGame.GlobalUtilities.Enums;
+using System.Security.Claims;
 
 namespace ItsAllAboutTheGame.Controllers
 {
@@ -23,18 +26,21 @@ namespace ItsAllAboutTheGame.Controllers
         private readonly IEmailSender emailSender;
         private readonly IUserService userService;
         private readonly IDateTimeProvider dateTimeProvider;
+        private readonly IWalletService walletService;
 
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IEmailSender emailSender,
             IUserService userService,
-            IDateTimeProvider dateTimeProvider)
+            IDateTimeProvider dateTimeProvider,
+            IWalletService walletService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.emailSender = emailSender;
             this.userService = userService;
+            this.walletService = walletService;
             this.dateTimeProvider = dateTimeProvider;
         }
 
@@ -49,6 +55,7 @@ namespace ItsAllAboutTheGame.Controllers
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ViewData["ReturnUrl"] = returnUrl;
+
             return View();
         }
 
@@ -141,12 +148,25 @@ namespace ItsAllAboutTheGame.Controllers
                 return View(model);
             }
 
-            // call service to register and create a new user
-            var user = await this.userService.RegisterUser(model.Email, model.FirstName, model.LastName, DateTime.Parse(model.DateOfBirth), model.UserCurrency);
+            Wallet wallet = await walletService.CreateUserWallet(model.UserCurrency);
+
+            User user = new User
+            {
+                Cards = new List<CreditCard>(),
+                Transactions = new List<Transaction>(),
+                Email = model.Email,
+                UserName = model.Email,
+                CreatedOn = dateTimeProvider.Now,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                DateOfBirth = DateTime.Parse(model.DateOfBirth),
+                Wallet = wallet,
+                WalletId = wallet.Id,
+                Role = UserRole.None,
+            };
 
             var result = await userManager.CreateAsync(user, model.Password);
            
-            // creating the new user
             if (result.Succeeded)
             {
                 await signInManager.SignInAsync(user, isPersistent: false);
@@ -243,7 +263,23 @@ namespace ItsAllAboutTheGame.Controllers
                 throw new ApplicationException("Error loading external login information during confirmation.");
             }
 
-            var user = await this.userService.RegisterUserWithLoginProvider(info, model.UserCurrency, model.DateOfBirth);
+            Wallet wallet = await walletService.CreateUserWallet(model.UserCurrency);
+
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var names = info.Principal.FindFirstValue(ClaimTypes.Name).Split().ToArray();
+
+            User user = new User
+            {
+                UserName = email,
+                Email = email,
+                CreatedOn = dateTimeProvider.Now,
+                FirstName = names[0],
+                LastName = names[1],
+                DateOfBirth = model.DateOfBirth,
+                Wallet = wallet,
+                WalletId = wallet.Id,
+                Role = UserRole.None
+            };
 
             var result = await userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)

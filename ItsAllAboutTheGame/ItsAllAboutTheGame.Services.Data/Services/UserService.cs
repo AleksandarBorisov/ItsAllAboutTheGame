@@ -40,54 +40,10 @@ namespace ItsAllAboutTheGame.Services.Data
             this.walletService = walletService;
         }
 
-        public async Task<User> RegisterUser(string email, string firstName, string lastName, DateTime dateOfBirth, Currency userCurrency)
-        {
-            User user = new User
-            {
-                Cards = new List<CreditCard>(),
-                Transactions = new List<Transaction>(),
-                UserName = email,
-                CreatedOn = dateTimeProvider.Now,
-                Email = email,
-                FirstName = firstName,
-                LastName = lastName,
-                DateOfBirth = dateOfBirth, 
-                Role = UserRole.None,
-            };
+        //public async Task<User> RegisterUserWithLoginProvider(ExternalLoginInfo info, Currency userCurrency, DateTime dateOfBirth)
+        //{
             
-            Wallet wallet = await walletService.CreateUserWallet(userCurrency);
-
-            user.Wallet = wallet;
-
-            user.WalletId = wallet.Id;
-          
-            return user;
-        }
-
-        public async Task<User> RegisterUserWithLoginProvider(ExternalLoginInfo info, Currency userCurrency, DateTime dateOfBirth)
-        {
-            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-            var name = info.Principal.FindFirstValue(ClaimTypes.Name).Split().ToArray();
-            string firstName = name[0];
-            string lastName = name[1];
-
-            User user = new User
-            {
-                UserName = email,
-                CreatedOn = dateTimeProvider.Now,
-                Email = email,
-                FirstName = firstName,
-                LastName = lastName,
-                DateOfBirth = dateOfBirth,
-                Role = UserRole.None
-            };
-
-            Wallet wallet = await walletService.CreateUserWallet(userCurrency);
-            user.Wallet = wallet;
-            user.WalletId = wallet.Id;
-
-            return user;
-        }
+        //}
 
         public async Task<UserInfoDTO> GetUserInfo(ClaimsPrincipal userClaims)
         {
