@@ -25,8 +25,16 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
         private Mock<IForeignExchangeService> foreignExchangeServiceMock;
         private ForeignExchangeDTO foreignExchangeDTO;
         private User user;
+        private string userId = "randomId";
+        private string userName = "Koicho";
+        private string email = "testmail@gmail";
+        private string firstName = "Koichkov";
+        private string lastName = "Velichkov";
         private Wallet userWallet;
         private CreditCard creditCard;
+        private string cardNumber = "23232141412";
+        private string cvv = "3232";
+        private string lastDigits = "1412";
         private IDateTimeProvider dateTimeProvider;
 
         [TestMethod]
@@ -43,17 +51,16 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             user = new User
             {
-                Id = "randomId",
+                Id = userId,
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
-                UserName = "Koicho",
+                UserName = userName,
                 CreatedOn = dateTimeProvider.Now,
-                Email = "testmail@gmail",
-                FirstName = "Koichokov",
-                LastName = "Velichkov",
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
                 DateOfBirth = DateTime.Parse("02.01.1996"),
                 Role = UserRole.None,
-                Wallet = userWallet,
             };
 
             userWallet = new Wallet
@@ -65,9 +72,9 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             creditCard = new CreditCard
             {
-                CardNumber = "342353523532",
-                CVV = "232",
-                LastDigits = "3532",
+                CardNumber = cardNumber,
+                CVV = cvv,
+                LastDigits = lastDigits,
                 ExpiryDate = DateTime.Parse("03.03.2022"),
                 User = user,
                 CreatedOn = dateTimeProvider.Now
@@ -118,14 +125,14 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             user = new User
             {
-                Id = "randomId",
+                Id = userId,
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
-                UserName = "Koicho",
-                CreatedOn = DateTime.Now,
-                Email = "testmail@gmail",
-                FirstName = "Koichokov",
-                LastName = "Velichkov",
+                UserName = userName,
+                CreatedOn = dateTimeProvider.Now,
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
                 DateOfBirth = DateTime.Parse("02.01.1996"),
                 Role = UserRole.None,
             };
@@ -139,9 +146,9 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             creditCard = new CreditCard
             {
-                CardNumber = "342353523532",
-                CVV = "232",
-                LastDigits = "3532",
+                CardNumber = cardNumber,
+                CVV = cvv,
+                LastDigits = lastDigits,
                 ExpiryDate = DateTime.Parse("03.03.2022"),
                 User = user,
                 CreatedOn = dateTimeProvider.Now
@@ -199,9 +206,9 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             creditCard = new CreditCard
             {
-                CardNumber = "342353523532",
-                CVV = "232",
-                LastDigits = "3532",
+                CardNumber = cardNumber,
+                CVV = cvv,
+                LastDigits = lastDigits,
                 ExpiryDate = DateTime.Parse("03.03.2022"),
                 User = user,
                 CreatedOn = dateTimeProvider.Now
@@ -248,27 +255,26 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             user = new User
             {
-                Id = "randomId",
+                Id = userId,
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
-                UserName = "Koicho",
-                CreatedOn = DateTime.Now,
-                Email = "testmail@gmail",
-                FirstName = "Koichokov",
-                LastName = "Velichkov",
+                UserName = userName,
+                CreatedOn = dateTimeProvider.Now,
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
                 DateOfBirth = DateTime.Parse("02.01.1996"),
                 Role = UserRole.None,
             };
 
             creditCard = new CreditCard
             {
-                CardNumber = "342353523532",
-                CVV = "232",
-                LastDigits = "3532",
+                CardNumber = cardNumber,
+                CVV = cvv,
+                LastDigits = lastDigits,
                 ExpiryDate = DateTime.Parse("03.03.2022"),
                 User = user,
-                CreatedOn = dateTimeProvider.Now,
-                IsDeleted = true
+                CreatedOn = dateTimeProvider.Now
             };
 
 

@@ -21,7 +21,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
     public class TransactionService : ITransactionService
     {
         private readonly ItsAllAboutTheGameDbContext context;
-        private readonly UserManager<User> userManager;
         private readonly IWalletService walletService;
         private readonly IUserService userService;
         private readonly ICardService cardService;
@@ -29,19 +28,18 @@ namespace ItsAllAboutTheGame.Services.Data.Services
         private readonly IDateTimeProvider dateTimeProvider;
 
         public TransactionService(ItsAllAboutTheGameDbContext context, IWalletService walletService,
-            UserManager<User> userManager, IUserService userService, IForeignExchangeService foreignExchangeService,
+            IUserService userService, IForeignExchangeService foreignExchangeService,
             ICardService cardService, IDateTimeProvider dateTimeProvider)
         {
             this.context = context;
             this.walletService = walletService;
-            this.userManager = userManager;
             this.userService = userService;
             this.cardService = cardService;
             this.dateTimeProvider = dateTimeProvider;
             this.foreignExchangeService = foreignExchangeService;
         }
 
-        public async Task<Transaction> MakeDeposit(User user, int cardId, decimal amount)
+        public async Task<TransactionDTO> MakeDeposit(User user, int cardId, decimal amount)
         {
             try
             {
@@ -67,7 +65,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                     Type = TransactionType.Deposit,
                     Description = GlobalConstants.DepositDescription + cardLastDigits.PadLeft(16, '*'),
                     User = user,
-                    UserId = user.Id,
+                    //UserId = user.Id,
                     Amount = convertedAmount,
                     CreatedOn = dateTimeProvider.Now,
                     Currency = userWallet.Currency
@@ -77,7 +75,9 @@ namespace ItsAllAboutTheGame.Services.Data.Services
 
                 await this.context.SaveChangesAsync();
 
-                return transaction;
+                TransactionDTO transactionDTO = new TransactionDTO(transaction);
+
+                return transactionDTO;
 
             }
             catch (Exception ex)

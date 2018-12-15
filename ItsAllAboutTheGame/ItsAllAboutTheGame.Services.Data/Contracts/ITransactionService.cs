@@ -10,7 +10,7 @@ namespace ItsAllAboutTheGame.Services.Data.Contracts
 {
     public interface ITransactionService
     {
-        Task<Transaction> MakeDeposit(User user, int cardId, decimal amount);
+        Task<TransactionDTO> MakeDeposit(User user, int cardId, decimal amount);
 
         Task<IPagedList<TransactionDTO>> GetAllTransactions(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefaultTransactionSorting);
 

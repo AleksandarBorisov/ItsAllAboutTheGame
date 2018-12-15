@@ -19,6 +19,8 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
     {
         private DbContextOptions<ItsAllAboutTheGameDbContext> contextOptions;
         private CreditCard creditCard;
+        private string cardNumber = "23232141412";
+        private string cvv = "3232";
         private User user = new User();
         private IDateTimeProvider dateTimeProvider;
 
@@ -54,8 +56,8 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
 
             creditCard = new CreditCard
             {
-                CardNumber = "23232141412",
-                CVV = "3232",
+                CardNumber = cardNumber,
+                CVV = cvv,
                 ExpiryDate = DateTime.Parse("02.03.2018"),
                 User = user,
                 UserId = user.Id,
