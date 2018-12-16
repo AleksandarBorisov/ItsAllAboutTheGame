@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ItsAllAboutTheGame.GlobalUtilities.Contracts;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
@@ -6,19 +7,22 @@ namespace ItsAllAboutTheGame.Utilities.CustomAttributes.UserAttributes
 {
     public class ValidBirthDateAttribute : ValidationAttribute
     {
-        public override bool IsValid(object DateOfBirth)
+        protected override ValidationResult IsValid(object DateOfBirth, ValidationContext validationContext)
         {
+            var dateTimeProvider = (IDateTimeProvider)validationContext
+                         .GetService(typeof(IDateTimeProvider));
+
             var isValidDate = DateTime.TryParseExact((string)DateOfBirth,
                        "dd.MM.yyyy",
                        CultureInfo.InvariantCulture,
                        DateTimeStyles.None,
-                       out DateTime birthDate); ;
+                       out DateTime birthDate);
 
-            var now = DateTime.Now.Year;
+            var now = dateTimeProvider.Now.Year;
 
             if (!isValidDate)
             {
-                return false;
+                return new ValidationResult(ErrorMessage);
             }
             else
             {
@@ -26,10 +30,10 @@ namespace ItsAllAboutTheGame.Utilities.CustomAttributes.UserAttributes
 
                 if (difference < 18 || difference > 100)
                 {//You cannot be under 18 years old or over 100 years
-                    return false;
+                    return new ValidationResult(ErrorMessage);
                 }
 
-                return true;
+                return ValidationResult.Success;
             }
         }
     }

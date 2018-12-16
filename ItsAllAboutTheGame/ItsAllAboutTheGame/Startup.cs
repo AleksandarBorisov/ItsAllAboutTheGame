@@ -47,8 +47,6 @@ namespace ItsAllAboutTheGame
 
         private void RegisterMainComponents(IServiceCollection services)
         {
-            //services.AddMvc();
-
             services.AddHttpClient();
 
             services.AddResponseCaching();
@@ -56,14 +54,6 @@ namespace ItsAllAboutTheGame
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //services.AddMvc(options =>
-            //{
-            //    options.CacheProfiles.Add("Default",
-            //    new CacheProfile()
-            //    {
-            //        Duration = 3600
-            //    });
-            //});
             services.AddMemoryCache();
         }
 
@@ -89,10 +79,6 @@ namespace ItsAllAboutTheGame
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ItsAllAboutTheGameDbContext>()
                 .AddDefaultTokenProviders();
-            //services.AddIdentity<User, IdentityRole<string>>()
-            //        .AddUserStore<UserStore<User, IdentityRole<string>, ItsAllAboutTheGameDbContext, int, IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>, IdentityUserToken<int>, IdentityRoleClaim<int>>>()
-            //        .AddRoleStore<RoleStore<IdentityRole<string>, ItsAllAboutTheGameDbContext, int, UserRole, IdentityRoleClaim<int>>>()
-            //        .AddDefaultTokenProviders();
 
             services.AddAuthentication();
             services.AddAuthorization();

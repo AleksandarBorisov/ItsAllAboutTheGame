@@ -24,7 +24,7 @@
     <table class="table text-nowrap m-0 transactions-table">
         <thead>
             <tr>
-                <th class="col-lg-3">
+                <th class="col-lg-3 p-md-2">
                     <form class="sorting-form" asp-action="UpdateTable" asp-controller="Manage" method="post">
                         <div class="input-group flex-nowrap flex-center">
                             <div class="input-group-prepend">
@@ -39,10 +39,10 @@
                         </div>
                     </form>
                 </th>
-                <th class="font-weight-bold col-lg-3">@nameof(Model.Type)</th>
-                <th class="font-weight-bold col-lg-3">@nameof(Model.Amount)</th>
-                <th class="font-weight-bold col-lg-3">@nameof(Model.Description)</th>
-            </tr>
+                <th class="font-weight-bold col-lg-3 p-md-2">@nameof(Model.Type)</th>
+                <th class="font-weight-bold col-lg-3 p-md-2">@nameof(Model.Amount)</th>
+                <th class="font-weight-bold col-lg-3 p-md-2">@nameof(Model.Description)</th>
+            </tr>                                    
         </thead>
         <tbody>
             @foreach (var transaction in Model.Transactions)

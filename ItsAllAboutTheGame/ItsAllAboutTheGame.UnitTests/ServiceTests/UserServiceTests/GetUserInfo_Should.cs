@@ -23,14 +23,14 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.UserServiceTests
     {
         private ServiceProvider serviceProvider = new ServiceCollection().AddEntityFrameworkInMemoryDatabase().BuildServiceProvider();
         private User testUser;
-        private Wallet testWallet;
-        private int walletBalance = 0;
-        private Currency walletCurrency = Currency.USD;
         private string testUserFirstname = "TestUserFirstname";
         private string testUserLastname = "TestUserLastname";
         private string testUserEmail = "TestUserEmail";
         private string testUserUsername = "TestUserUsername";
         private int wallteId = 1;
+        private Wallet testWallet;
+        private int walletBalance = 0;
+        private Currency walletCurrency = Currency.USD;
         private Mock<IForeignExchangeService> foreignExchangeServiceMock;
         private Mock<IWalletService> walletServiceMock;
         private Mock<IDateTimeProvider> dateTimeProviderMock;

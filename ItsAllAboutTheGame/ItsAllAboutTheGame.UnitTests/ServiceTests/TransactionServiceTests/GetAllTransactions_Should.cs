@@ -33,7 +33,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
         private string firstName = "Koichkov";
         private string lastName = "Velichkov";
 
-
         [TestMethod]
         public async Task ReturnPageList_OfTransactionDTO_WithDefaultParams()
         {
