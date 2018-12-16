@@ -6,7 +6,6 @@ using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using ItsAllAboutTheGame.Services.Data.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -78,8 +77,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
             //Act
             using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
-                //await actContext.Wallets.AddAsync(userWallet);
-                //await actContext.SaveChangesAsync();
                 user = new User
                 {
                     Cards = new List<CreditCard>(),
@@ -94,8 +91,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
                     Wallet = userWallet,
                     WalletId = userWallet.Id
                 };
-                await actContext.Users.AddAsync(user);
-                await actContext.SaveChangesAsync();
                 creditCard = new CreditCard
                 {
                     CVV = cvv,
