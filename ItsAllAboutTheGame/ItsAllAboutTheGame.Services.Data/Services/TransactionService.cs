@@ -46,7 +46,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
 
                 if (card.IsDeleted == true)
                 {
-                    throw new Exception("Card is deleted!");
+                    throw new EntityNotFoundException("Card is deleted!");
                 }
 
                 var cardLastDigits = card.LastDigits;
@@ -235,7 +235,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                 Type = type,
                 Description = description + game,
                 User = user,
-                UserId = user.Id,
                 Amount = convertedAmount,
                 CreatedOn = dateTimeProvider.Now,
                 Currency = wallet.Currency
