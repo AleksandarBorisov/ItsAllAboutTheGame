@@ -6,6 +6,11 @@ namespace ItsAllAboutTheGame.Services.Data.DTO
 {
     public class WalletDTO
     {
+        public WalletDTO()
+        {
+
+        }
+
         public WalletDTO(Wallet wallet, ForeignExchangeDTO currencies)
         {
             this.Currency = wallet.Currency;

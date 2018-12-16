@@ -41,7 +41,6 @@ namespace ItsAllAboutTheGame.Data
             builder.ApplyConfiguration(new WalletConfiguration());
             builder.ApplyConfiguration(new TransactionConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
-            //builder.ApplyConfiguration(new UserRoleConfiguration());
 
             base.OnModelCreating(builder);
         }

@@ -18,7 +18,6 @@ namespace ItsAllAboutTheGame.Services.External
         {
             try
             {
-               // throw new HttpRequestException();
                 var request = new HttpRequestMessage(HttpMethod.Get, resourceUrl);
                 //Add headers to request here if needed
                 var client = clientFactory.CreateClient();

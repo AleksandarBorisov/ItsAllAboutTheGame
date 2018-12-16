@@ -18,8 +18,8 @@ using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Services.Data.Services;
 using ItsAllAboutTheGame.GlobalUtilities;
 using ItsAllAboutTheGame.Services.Game.Contracts.GameOne;
-using ItsAllAboutTheGame.Services.Game.GameOne;
 using ItsAllAboutTheGame.GlobalUtilities.Contracts;
+using ItsAllAboutTheGame.Services.Core.Game;
 
 namespace ItsAllAboutTheGame
 {
@@ -79,7 +79,7 @@ namespace ItsAllAboutTheGame
             services.AddScoped<IForeignExchangeService, ForeignExchangeService>();
             services.AddScoped<IJsonDeserializer, JsonDeserializer>();
             services.AddScoped<IForeignExchangeApiCaller, ForeignExchangeApiCaller>();
-            services.AddSingleton<IGameOne, GameOne>();
+            services.AddSingleton<IGame, Game>();
             services.AddSingleton<IGameRandomizer, GameRandomizer>();
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         }

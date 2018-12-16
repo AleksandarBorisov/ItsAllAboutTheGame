@@ -7,7 +7,6 @@ using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using ItsAllAboutTheGame.Services.Data.Exceptions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -169,7 +168,17 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                 })
                 .ToPagedListAsync(page, size);
 
-            var transactionsCurrency = transactions.First().Currency.ToString();
+            var transactionsCurrency = "";
+
+            if (transactionsDTO.Count == 0)
+            {
+                var userWallet = await this.context.Wallets.Where(wallet => wallet.User.UserName == searchByUsername).FirstOrDefaultAsync();
+                transactionsCurrency = userWallet.Currency.ToString();
+            }
+            else
+            {
+                transactionsCurrency = transactions.First().Currency.ToString();
+            }
 
             var getCurrencySymbol = CultureReferences.CurrencySymbols.TryGetValue(transactionsCurrency, out string currencySymbol);
 

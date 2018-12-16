@@ -1,6 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data;
 using ItsAllAboutTheGame.Data.Models;
-using ItsAllAboutTheGame.GlobalUtilities;
 using ItsAllAboutTheGame.GlobalUtilities.Constants;
 using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using ItsAllAboutTheGame.GlobalUtilities.Enums;
@@ -8,6 +7,7 @@ using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using ItsAllAboutTheGame.Services.Data.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -21,7 +21,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
     [TestClass]
     public class MakeDeposit_Should
     {
-        private DbContextOptions<ItsAllAboutTheGameDbContext> contextOptions;
+        private ServiceProvider serviceProvider = new ServiceCollection().AddEntityFrameworkInMemoryDatabase().BuildServiceProvider();
         private Mock<IForeignExchangeService> foreignExchangeServiceMock;
         private Mock<IWalletService> walletServiceMock;
         private Mock<IUserService> userServiceMock;
@@ -44,11 +44,13 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
         public async Task ReturnTransactionDTO_When_PassedValidParams()
         {
             //Arrange
-            contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
-            .UseInMemoryDatabase(databaseName: "ReturnTransactionDTO_WhenPassedValidParams")
+            var contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
+                .UseInMemoryDatabase(databaseName: "ReturnTransactionDTO_When_PassedValidParamsMakeDeposit")
+                .UseInternalServiceProvider(serviceProvider)
                 .Options;
 
             dateTimeProvider = new Mock<IDateTimeProvider>();
+
             foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
             walletServiceMock = new Mock<IWalletService>();
             userServiceMock = new Mock<IUserService>();
@@ -91,16 +93,23 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
                 Rates = Enum.GetNames(typeof(Currency)).ToDictionary(name => name, value => 2m)
             };
 
+            foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
+            foreignExchangeServiceMock
+                 .Setup(foreign => foreign.GetConvertionRates())
+                 .ReturnsAsync(foreignExchangeDTO);
+
             userWalletDTO = new WalletDTO(userWallet, foreignExchangeDTO);
 
-            var rates = foreignExchangeServiceMock.Setup(fesm => fesm.GetConvertionRates()).ReturnsAsync(foreignExchangeDTO);
-            var wallet = walletServiceMock.Setup(wsm => wsm.GetUserWallet(user)).ReturnsAsync(userWalletDTO);
+            walletServiceMock = new Mock<IWalletService>();
+            walletServiceMock
+                 .Setup(wsm => wsm.GetUserWallet(It.IsAny<User>()))
+                 .ReturnsAsync(userWalletDTO);
 
             //Act
             using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
                 await actContext.Users.AddAsync(user);
-                await actContext.Wallets.AddAsync(userWallet);
+                await actContext.Wallets.AddAsync(userWallet);               
                 await actContext.CreditCards.AddAsync(creditCard);
                 await actContext.SaveChangesAsync();
             }

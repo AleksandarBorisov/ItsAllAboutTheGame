@@ -7,6 +7,7 @@ using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using ItsAllAboutTheGame.Services.Data.Exceptions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -32,11 +33,6 @@ namespace ItsAllAboutTheGame.Services.Data
             this.foreignExchangeService = foreignExchangeService;
             this.walletService = walletService;
         }
-
-        //public async Task<User> RegisterUserWithLoginProvider(ExternalLoginInfo info, Currency userCurrency, DateTime dateOfBirth)
-        //{
-            
-        //}
 
         public async Task<UserInfoDTO> GetUserInfo(string userId)
         {
@@ -67,20 +63,6 @@ namespace ItsAllAboutTheGame.Services.Data
                 throw new EntityNotFoundException("We cannot find your remembered user. Please manually delete your cookies and Login again.", ex);
             }
         }
-
-        //public async Task<User> GetUser(string username)
-        //{
-        //    var user = await this.context.Users.FirstOrDefaultAsync(n => n.UserName == username);
-
-        //    return user;
-        //}
-
-        //public async Task<IEnumerable<CreditCard>> UserCards(User user)
-        //{
-        //    var userCards = await this.context.CreditCards.Where(k => k.User == user).ToListAsync();
-
-        //    return userCards;
-        //}
 
         public async Task<IPagedList<UserDTO>> GetAllUsers(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefaultUserSorting)
         {
@@ -132,8 +114,9 @@ namespace ItsAllAboutTheGame.Services.Data
                 user.LockoutEnd = new DateTimeOffset(date, TimeSpan.Zero);
 
                 this.context.Users.Update(user);
+
                 await this.context.SaveChangesAsync();
-                //await this.userManager.UpdateAsync(user);
+
                 var updatedUser = new UserDTO(user);
 
                 updatedUser.LockoutFor = GetLockoutDays(user);
@@ -156,8 +139,8 @@ namespace ItsAllAboutTheGame.Services.Data
                 user.IsDeleted = !user.IsDeleted;
 
                 this.context.Users.Update(user);
+
                 await this.context.SaveChangesAsync();
-                //await this.userManager.UpdateAsync(user);
 
                 return new UserDTO(user);
 
@@ -174,26 +157,41 @@ namespace ItsAllAboutTheGame.Services.Data
             {
                 var user = await this.context.Users.FindAsync(userId);
 
-                //var result = await this.userManager
-                //.IsInRoleAsync(user, GlobalConstants.AdminRole);
+                var role = await this.context.Roles.Where(r => r.Name == GlobalConstants.AdminRole).FirstOrDefaultAsync();
 
-                //if (result)
-                //{
-                //    user.Role = UserRole.None;
-                //    //await this.userManager.RemoveFromRoleAsync(user, GlobalConstants.AdminRole);
-                //}
-                //else
-                //{
-                //    user.Role = UserRole.Administrator;
-                //    //await this.userManager.AddToRoleAsync(user, GlobalConstants.AdminRole);
-                //}
+                var roleId = role.Id;
+
+                var userRole = await this.context.UserRoles.Where(ur => ur.UserId == userId && ur.RoleId == roleId).FirstOrDefaultAsync();
+
+                if (userRole != null)
+                {
+                    user.Role = UserRole.None;
+
+                    this.context.UserRoles.Remove(userRole);
+
+                    await this.context.SaveChangesAsync();
+                }
+                else
+                {
+                    user.Role = UserRole.Administrator;
+
+                    userRole = new IdentityUserRole<string>();
+
+                    userRole.UserId = userId;
+
+                    userRole.RoleId = roleId;
+
+                    this.context.UserRoles.Add(userRole);
+
+                    await this.context.SaveChangesAsync();
+                }
 
                 return new UserDTO(user);
 
             }
             catch (Exception ex)
             {
-                throw new ToggleAdminException("Unable to toggle Admin Role  the selected user", ex);
+                throw new ToggleAdminException("Unable to toggle Admin Role to the selected user", ex);
             }
         }
 
