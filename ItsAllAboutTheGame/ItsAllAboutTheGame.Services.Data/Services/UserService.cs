@@ -7,6 +7,7 @@ using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using ItsAllAboutTheGame.Services.Data.Exceptions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -156,26 +157,41 @@ namespace ItsAllAboutTheGame.Services.Data
             {
                 var user = await this.context.Users.FindAsync(userId);
 
-                //var result = await this.userManager
-                //.IsInRoleAsync(user, GlobalConstants.AdminRole);
+                var role = await this.context.Roles.Where(r => r.Name == GlobalConstants.AdminRole).FirstOrDefaultAsync();
 
-                //if (result)
-                //{
-                //    user.Role = UserRole.None;
-                //    //await this.userManager.RemoveFromRoleAsync(user, GlobalConstants.AdminRole);
-                //}
-                //else
-                //{
-                //    user.Role = UserRole.Administrator;
-                //    //await this.userManager.AddToRoleAsync(user, GlobalConstants.AdminRole);
-                //}
+                var roleId = role.Id;
+
+                var userRole = await this.context.UserRoles.Where(ur => ur.UserId == userId && ur.RoleId == roleId).FirstOrDefaultAsync();
+
+                if (userRole != null)
+                {
+                    user.Role = UserRole.None;
+
+                    this.context.UserRoles.Remove(userRole);
+
+                    await this.context.SaveChangesAsync();
+                }
+                else
+                {
+                    user.Role = UserRole.Administrator;
+
+                    userRole = new IdentityUserRole<string>();
+
+                    userRole.UserId = userId;
+
+                    userRole.RoleId = roleId;
+
+                    this.context.UserRoles.Add(userRole);
+
+                    await this.context.SaveChangesAsync();
+                }
 
                 return new UserDTO(user);
 
             }
             catch (Exception ex)
             {
-                throw new ToggleAdminException("Unable to toggle Admin Role  the selected user", ex);
+                throw new ToggleAdminException("Unable to toggle Admin Role to the selected user", ex);
             }
         }
 

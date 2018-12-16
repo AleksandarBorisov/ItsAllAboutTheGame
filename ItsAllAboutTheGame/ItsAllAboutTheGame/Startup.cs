@@ -79,7 +79,7 @@ namespace ItsAllAboutTheGame
             services.AddScoped<IForeignExchangeService, ForeignExchangeService>();
             services.AddScoped<IJsonDeserializer, JsonDeserializer>();
             services.AddScoped<IForeignExchangeApiCaller, ForeignExchangeApiCaller>();
-            services.AddSingleton<IGameOne, GameOne>();
+            services.AddSingleton<IGame, Game>();
             services.AddSingleton<IGameRandomizer, GameRandomizer>();
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         }

@@ -2,7 +2,7 @@
 
 namespace ItsAllAboutTheGame.Services.Game.Contracts.GameOne
 {
-    public interface IGameOne
+    public interface IGame
     {
         GameResultDTO Play(int stake, string gridDimensions);
 

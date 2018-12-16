@@ -1,7 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data;
 using ItsAllAboutTheGame.Data.Models;
-using ItsAllAboutTheGame.GlobalUtilities;
-using ItsAllAboutTheGame.GlobalUtilities.Constants;
 using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
@@ -21,12 +19,13 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
     [TestClass]
     public class MakeDeposit_Should
     {
-        private DbContextOptions<ItsAllAboutTheGameDbContext> contextOptions;
+        private ServiceProvider serviceProvider = new ServiceCollection().AddEntityFrameworkInMemoryDatabase().BuildServiceProvider();
         private Mock<IForeignExchangeService> foreignExchangeServiceMock;
         private Mock<IWalletService> walletServiceMock;
         private Mock<IUserService> userServiceMock;
         private Mock<ICardService> cardServiceMock;
         private ForeignExchangeDTO foreignExchangeDTO;
+        private Mock<IDateTimeProvider> dateTimeProvider;
         private User user;
         private string userName = "Koicho";
         private string email = "testmail@gmail";
@@ -38,79 +37,81 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
         private string lastDigits = "1412";
         private Wallet userWallet;
         private WalletDTO userWalletDTO;
-        private IDateTimeProvider dateTimeProvider;
+        private string fakeCreatedDate = "01.01.2000";
+        private string fakeBirthDate = "02.01.1996";
+        private string fakeExpiryDate = "03.03.2022";
+        private decimal amount = 1000;
+        private Currency testCurrency = Currency.EUR;
+        private Dictionary<string, decimal> currencyRates = Enum.GetNames(typeof(Currency)).ToDictionary(name => name, value => 1m);
 
         [TestMethod]
         public async Task ReturnTransactionDTO_When_PassedValidParams()
         {
             //Arrange
-            contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
-            .UseInMemoryDatabase(databaseName: "ReturnTransactionDTO_WhenPassedValidParams")
+            var contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
+                .UseInMemoryDatabase(databaseName: "ReturnTransactionDTO_When_PassedValidParams")
+                .UseInternalServiceProvider(serviceProvider)
                 .Options;
 
-            dateTimeProvider = new DateTimeProvider();
-            foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
-            walletServiceMock = new Mock<IWalletService>();
+            dateTimeProvider = new Mock<IDateTimeProvider>();
             userServiceMock = new Mock<IUserService>();
             cardServiceMock = new Mock<ICardService>();
-            decimal amount = 1000;
+            userWallet = new Wallet();
 
-            user = new User
-            {
-                Cards = new List<CreditCard>(),
-                Transactions = new List<Transaction>(),
-                UserName = userName,
-                CreatedOn = dateTimeProvider.Now,
-                Email = email,
-                FirstName = firstName,
-                LastName = lastName,
-                DateOfBirth = DateTime.Parse("02.01.1996"),
-                Role = UserRole.None,
-                Wallet = userWallet
-            };
+            foreignExchangeDTO = new ForeignExchangeDTO();
+            foreignExchangeDTO.Rates = currencyRates;
 
-            userWallet = new Wallet
-            {
-                Currency = Currency.GBP,
-                Balance = 2000, // we put 2000 in balance otherwise the method will return an null DTO (business logic)
-                User = user,
-            };           
+            foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
+            foreignExchangeServiceMock
+                 .Setup(foreign => foreign.GetConvertionRates())
+                 .ReturnsAsync(foreignExchangeDTO);
 
-            creditCard = new CreditCard
-            {
-                CardNumber = cardNumber,
-                CVV = cvv,
-                LastDigits = lastDigits,
-                ExpiryDate = DateTime.Parse("03.03.2022"),
-                User = user,
-                CreatedOn = dateTimeProvider.Now
-            };
+            userWalletDTO = new WalletDTO();
+            userWalletDTO.Currency = testCurrency;
 
-            foreignExchangeDTO = new ForeignExchangeDTO
-            {
-                Base = GlobalConstants.BaseCurrency,
-                Rates = Enum.GetNames(typeof(Currency)).ToDictionary(name => name, value => 2m)
-            };
-
-            userWalletDTO = new WalletDTO(userWallet, foreignExchangeDTO);
-
-            var rates = foreignExchangeServiceMock.Setup(fesm => fesm.GetConvertionRates()).ReturnsAsync(foreignExchangeDTO);
-            var wallet = walletServiceMock.Setup(wsm => wsm.GetUserWallet(user)).ReturnsAsync(userWalletDTO);
+            walletServiceMock = new Mock<IWalletService>();
+            walletServiceMock
+                 .Setup(wsm => wsm.GetUserWallet(It.IsAny<User>()))
+                 .ReturnsAsync(userWalletDTO);
 
             //Act
             using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
-                await actContext.Users.AddAsync(user);
-                await actContext.Wallets.AddAsync(userWallet);
+                await actContext.AddAsync(userWallet);
+                await actContext.SaveChangesAsync();
+                user = new User
+                {
+                    Cards = new List<CreditCard>(),
+                    Transactions = new List<Transaction>(),
+                    UserName = userName,
+                    CreatedOn = DateTime.Parse(fakeCreatedDate),
+                    Email = email,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    DateOfBirth = DateTime.Parse(fakeBirthDate),
+                    Role = UserRole.None,
+                    Wallet = userWallet
+                };
+
+                creditCard = new CreditCard
+                {
+                    CVV = cvv,
+                    CardNumber = cardNumber,
+                    LastDigits = lastDigits,
+                    ExpiryDate = DateTime.Parse(fakeExpiryDate),
+                    CreatedOn = DateTime.Parse(fakeCreatedDate)
+                };
+
                 await actContext.CreditCards.AddAsync(creditCard);
                 await actContext.SaveChangesAsync();
+                actContext.Entry(creditCard).State = EntityState.Detached;
             }
 
             //Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
                 var sut = new TransactionService(assertContext, walletServiceMock.Object,
-                    userServiceMock.Object, foreignExchangeServiceMock.Object, cardServiceMock.Object, dateTimeProvider);
+                    userServiceMock.Object, foreignExchangeServiceMock.Object, cardServiceMock.Object, dateTimeProvider.Object);
                 var transactionDTO = await sut.MakeDeposit(user, creditCard.Id, amount);
 
                 Assert.IsInstanceOfType(transactionDTO, typeof(TransactionDTO));

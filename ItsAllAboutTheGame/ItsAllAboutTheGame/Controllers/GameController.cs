@@ -18,12 +18,12 @@ namespace ItsAllAboutTheGame.Controllers
         private readonly IWalletService walletService;
         private readonly ITransactionService transactionService;
         private readonly UserManager<User> userManager;
-        private readonly IGameOne gameOne;
+        private readonly IGame gameOne;
 
         public GameController(IWalletService walletService,
             UserManager<User> userManager,
             ITransactionService transactionService,
-            IGameOne gameOne)
+            IGame gameOne)
         {
             this.transactionService = transactionService;
             this.walletService = walletService;

@@ -7,7 +7,6 @@ using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using ItsAllAboutTheGame.Services.Data.Exceptions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -65,7 +64,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                     Type = TransactionType.Deposit,
                     Description = GlobalConstants.DepositDescription + cardLastDigits.PadLeft(16, '*'),
                     User = user,
-                    //UserId = user.Id,
+                    UserId = user.Id,
                     Amount = convertedAmount,
                     CreatedOn = dateTimeProvider.Now,
                     Currency = userWallet.Currency

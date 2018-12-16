@@ -63,7 +63,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.UserServiceTests
         {
             //Arrange
             var contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
-                .UseInMemoryDatabase(databaseName: "ReturnCorrectData_WhenParamatersAreValidAndUserExists")
+                .UseInMemoryDatabase(databaseName: "ReturnCorrectData_WhenParamatersAreValidAndUserExistsLockoutUser")
                 .UseInternalServiceProvider(serviceProvider)
                 .Options;
 
@@ -103,7 +103,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.UserServiceTests
         {
             //Arrange
             var contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
-                .UseInMemoryDatabase(databaseName: "UpdateUser_WhenParamatersAreValidAndUserExists")
+                .UseInMemoryDatabase(databaseName: "UpdateUser_WhenParamatersAreValidAndUserExistsLockoutUser")
                 .UseInternalServiceProvider(serviceProvider)
                 .Options;
 
@@ -141,7 +141,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.UserServiceTests
         {
             //Arrange
             var contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
-                .UseInMemoryDatabase(databaseName: "ThrowLockoutUserException_WhenUserDoesntExist")
+                .UseInMemoryDatabase(databaseName: "ThrowLockoutUserException_WhenUserDoesntExistLockoutUser")
                 .UseInternalServiceProvider(serviceProvider)
                 .Options;
 

@@ -32,11 +32,7 @@ namespace ItsAllAboutTheGame.Data.Models
 
         public IEnumerable<Transaction> Transactions { get; set; }
 
-        //public ICollection<UserRole> UserRoles { get; set; }/* = new List<UserRole>();*/
-
         public UserRole Role { get; set; }
-
-        //public string Image { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]
