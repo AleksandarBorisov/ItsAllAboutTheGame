@@ -5,18 +5,9 @@ using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data;
 using ItsAllAboutTheGame.Services.Data.Contracts;
-using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
-using ItsAllAboutTheGame.Services.External.Contracts;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
@@ -49,5 +40,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 Assert.IsInstanceOfType(walletToCreate, typeof(Wallet));
             }
         }
+
+        //Add test to check if the wallet was added to the base
     }
 }

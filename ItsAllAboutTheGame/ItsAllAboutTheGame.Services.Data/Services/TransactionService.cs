@@ -82,7 +82,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             {
                 throw new EntryPointNotFoundException("Could not make the deposit!", ex);
             }
-
         }
 
         public async Task<IPagedList<TransactionDTO>> GetAllTransactions(string searchByUsername = null, int page = 1, int size = GlobalConstants.DefultPageSize, string sortOrder = GlobalConstants.DefaultTransactionSorting)
@@ -228,7 +227,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
             var rates = await this.foreignExchangeService.GetConvertionRates();
 
             var convertedAmount = Math.Round(amount / rates.Rates[wallet.Currency.ToString()], 2);
-
 
             var transaction = new Transaction()
             {

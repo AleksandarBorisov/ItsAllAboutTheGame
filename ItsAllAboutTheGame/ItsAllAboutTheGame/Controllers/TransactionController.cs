@@ -150,7 +150,6 @@ namespace ItsAllAboutTheGame.Controllers
             return Json(userCardsForDelete);
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetAllCards()
         {

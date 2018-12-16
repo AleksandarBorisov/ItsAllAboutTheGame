@@ -12,7 +12,6 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using X.PagedList;
 
@@ -125,7 +124,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
             }
         }
 
-
         [TestMethod]
         public async Task ReturnPageList_OfTransactionDTO_WithConcreteUserNameSearch()
         {
@@ -188,7 +186,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
                 Currency = Currency.USD
             };
 
-
             using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
                 await actContext.Users.AddAsync(user);
@@ -209,7 +206,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
                 Assert.IsTrue(pageList.Select(k => k.Username).FirstOrDefault() == userTwo.UserName);
             }
         }
-
 
         [TestMethod]
         public async Task ReturnPageList_OfTransactionDTO_WithConcreteSortOrder()
@@ -295,5 +291,11 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
                 Assert.IsTrue(pageList.Select(c => c.Username).First() == user.UserName);
             }
         }
+
+        //Optional
+
+        //TODO: Add test where pagesize is passed
+
+        //TODO: Add test where pageCount is passed
     }
 }

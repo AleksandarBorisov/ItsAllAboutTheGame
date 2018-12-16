@@ -77,14 +77,12 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             var currencies = foreignExchangeServiceMock.Setup(fesm => fesm.GetConvertionRates()).ReturnsAsync(foreignExchangeDTO);
 
-
             using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
                 await actContext.Users.AddAsync(user);
                 await actContext.Wallets.AddAsync(userWallet);
                 await actContext.SaveChangesAsync();
             }
-
 
             //Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
@@ -93,9 +91,9 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 var updateWallet = await walletService.UpdateUserWallet(user, stake);
 
                 Assert.IsInstanceOfType(updateWallet, typeof(WalletDTO));
+                //TODO: Add Assert checking the user of the returned wallet
             }
         }
-
 
         [TestMethod]
         public async Task ReturnCorrectUpdatedWallet()
@@ -140,14 +138,12 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             var currencies = foreignExchangeServiceMock.Setup(fesm => fesm.GetConvertionRates()).ReturnsAsync(foreignExchangeDTO);
 
-
             using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
                 await actContext.Users.AddAsync(user);
                 await actContext.Wallets.AddAsync(userWallet);
                 await actContext.SaveChangesAsync();
             }
-
 
             //Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
@@ -158,7 +154,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 Assert.AreEqual(stake, updateWallet.Balance);
             }
         }
-
 
         [TestMethod]
         public async Task ThrowException_When_NullValuesArePassed()
@@ -192,7 +187,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 await actContext.Wallets.AddAsync(userWallet);
                 await actContext.SaveChangesAsync();
             }
-
 
             //Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))

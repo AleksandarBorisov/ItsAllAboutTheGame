@@ -2,14 +2,11 @@
 using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.GlobalUtilities;
 using ItsAllAboutTheGame.GlobalUtilities.Contracts;
-using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Exceptions;
 using ItsAllAboutTheGame.Services.Data.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
@@ -35,7 +32,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
             dateTimeProvider = new DateTimeProvider();
 
             //Act & Assert
-
             using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
                 var cardService = new CardService(actContext, dateTimeProvider);
@@ -52,7 +48,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
             contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
             .UseInMemoryDatabase(databaseName: "ReturnCardToDelete_WhenValidParams_Passed")
                 .Options;
-
 
             creditCard = new CreditCard
             {
@@ -71,7 +66,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
                 await actContext.CreditCards.AddAsync(creditCard);
                 await actContext.SaveChangesAsync();
             }
-
 
             //Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))

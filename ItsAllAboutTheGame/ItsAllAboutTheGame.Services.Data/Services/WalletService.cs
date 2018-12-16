@@ -36,9 +36,9 @@ namespace ItsAllAboutTheGame.Services.Data
                 Balance = 0
             };
 
-            context.Wallets.Add(wallet);
+            this.context.Wallets.Add(wallet);
 
-            await context.SaveChangesAsync();
+            await this.context.SaveChangesAsync();
 
             return wallet;
         }

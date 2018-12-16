@@ -74,7 +74,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 Rates = Enum.GetNames(typeof(Currency)).ToDictionary(name => name, value => 0m)
             };
 
-
             using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
                 await actContext.Users.AddAsync(user);
@@ -84,7 +83,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             var getCurrencySymbol = CultureReferences.CurrencySymbols.TryGetValue(userWallet.Currency.ToString(), out string currencySymbol);
             var currencies = foreignExchangeServiceMock.Setup(fesm => fesm.GetConvertionRates()).ReturnsAsync(foreignExchangeDTO);
-
 
             //Act & Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))

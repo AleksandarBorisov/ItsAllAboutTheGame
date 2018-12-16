@@ -88,7 +88,10 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
                 var gameResult = await sut.GameTransaction(user, int.Parse(amount),
                     game, description, (TransactionType)Enum.Parse(typeof(TransactionType), type));
                 Assert.IsInstanceOfType(gameResult, typeof(TransactionDTO));
+                //TODO: Add more Assert to checm if the properties of the result are equal to the passed parameters
             }
         }
+
+        //Add test to check if the Transaction was Added to the base
     }
 }

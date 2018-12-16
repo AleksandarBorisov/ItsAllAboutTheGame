@@ -1,12 +1,10 @@
 ﻿using ItsAllAboutTheGame.Data;
 using ItsAllAboutTheGame.Data.Models;
-using ItsAllAboutTheGame.GlobalUtilities;
 using ItsAllAboutTheGame.GlobalUtilities.Constants;
 using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
-using ItsAllAboutTheGame.Services.Data.Exceptions;
 using ItsAllAboutTheGame.Services.Data.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +12,6 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
@@ -126,8 +123,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
             }
         }
 
-
-
         [TestMethod]
         public async Task ReturnEmptyTransactionListDTO_With_UserWalletCurrency_WhenUserHasNoTransactions()
         {
@@ -204,8 +199,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
                 Assert.IsTrue(listDTO.TotalItemCount == 0);
             }
         }
-
-
 
         [TestMethod]
         public async Task ReturnTransactionListDTO_With_ConcreteUserParamsWithAscSortOrder_OnDateOfCreation()

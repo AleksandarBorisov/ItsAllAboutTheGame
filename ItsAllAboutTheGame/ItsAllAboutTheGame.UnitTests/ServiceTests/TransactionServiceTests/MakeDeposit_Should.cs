@@ -5,7 +5,6 @@ using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
-using ItsAllAboutTheGame.Services.Data.Exceptions;
 using ItsAllAboutTheGame.Services.Data.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -126,7 +125,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
             }
         }
 
-
         [TestMethod]
         public async Task ThrowException_When_CardIsNotFound()
         {
@@ -211,5 +209,9 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
                 await Assert.ThrowsExceptionAsync<EntryPointNotFoundException>(async () => await sut.MakeDeposit(user, creditCard.Id, amount));
             }
         }
+
+        //TODO: Add test where the card doesnt exist in the database at all
+
+        //TODO: Add test where we check if the transaction was added in the database
     }
 }

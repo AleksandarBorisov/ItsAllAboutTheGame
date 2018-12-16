@@ -105,9 +105,10 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 var transactionDTO = await walletService.WithdrawFromUserBalance(user, amount, creditCard.Id);
 
                 Assert.IsInstanceOfType(transactionDTO, typeof(TransactionDTO));
+
+                //TODO: Assert for the Username
             }
         }
-
 
         [TestMethod]
         public async Task NormaliseBalance_After_Withdrawal()
@@ -118,7 +119,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 .Options;
 
             decimal amount = 1000;
-
 
             dateTimeProvider = new DateTimeProvider();
 
@@ -172,7 +172,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 await actContext.SaveChangesAsync();
             }
 
-
             //Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
@@ -213,7 +212,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 CreatedOn = dateTimeProvider.Now
             };
 
-
             foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
 
             foreignExchangeDTO = new ForeignExchangeDTO
@@ -231,7 +229,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 await actContext.CreditCards.AddAsync(creditCard);
                 await actContext.SaveChangesAsync();
             }
-
 
             //Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
@@ -276,7 +273,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 CreatedOn = dateTimeProvider.Now
             };
 
-
             foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
 
             foreignExchangeDTO = new ForeignExchangeDTO
@@ -295,13 +291,15 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 await actContext.SaveChangesAsync();
             }
 
-
             //Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
                 var walletService = new WalletService(assertContext, foreignExchangeServiceMock.Object, dateTimeProvider);
                 await Assert.ThrowsExceptionAsync<EntityNotFoundException>(async () => await walletService.WithdrawFromUserBalance(user, amount, creditCard.Id));
             }
+
+            //TODO Fix test, Throws Exception Because cant find user wallet not bacause card is deleted
+            //Set the IsDeleted on the card to true and add a wallet for the user
         }
     }
 }

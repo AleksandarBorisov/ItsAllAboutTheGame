@@ -53,14 +53,13 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
             };
 
             //Act & Assert
-
             using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
                 var cardService = new CardService(actContext, dateTimeProvider);
                 CreditCard creditCardResult = await cardService.AddCard("3242423532532434", "332", DateTime.Parse("02.03.2020"), user);
                 Assert.IsInstanceOfType(creditCardResult, typeof(CreditCard));
+                //TODO: Check are the properties of the card are properly set
             }
-
         }
 
         [TestMethod]
@@ -110,5 +109,9 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
                 await Assert.ThrowsExceptionAsync<EntityAlreadyExistsException>(async () => await cardService.AddCard("23232141412", "3232", DateTime.Parse("02.03.2020"), user));
             }
         }
+
+        //TODO Add test that checks if the same card is in the base
+
+        //TODO Add test when the card exists in the base and IsDeleted is true and after adding it it set to false
     }
 }
