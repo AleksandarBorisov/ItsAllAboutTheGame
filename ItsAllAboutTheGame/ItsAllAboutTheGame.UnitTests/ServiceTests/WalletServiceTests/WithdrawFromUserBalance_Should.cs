@@ -98,7 +98,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 await actContext.SaveChangesAsync();
             }
 
-
             //Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
