@@ -46,7 +46,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
 
                 if (card.IsDeleted == true)
                 {
-                    throw new Exception("Card is deleted!");
+                    throw new EntityNotFoundException("Card is deleted!");
                 }
 
                 var cardLastDigits = card.LastDigits;
