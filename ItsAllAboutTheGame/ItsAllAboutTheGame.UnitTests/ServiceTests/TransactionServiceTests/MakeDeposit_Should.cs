@@ -26,6 +26,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
         private Mock<IWalletService> walletServiceMock;
         private Mock<IUserService> userServiceMock;
         private Mock<ICardService> cardServiceMock;
+        private Mock<IDateTimeProvider> dateTimeProvider;
         private ForeignExchangeDTO foreignExchangeDTO;
         private User user;
         private string userName = "Koicho";
@@ -38,7 +39,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
         private string lastDigits = "1412";
         private Wallet userWallet;
         private WalletDTO userWalletDTO;
-        private IDateTimeProvider dateTimeProvider;
 
         [TestMethod]
         public async Task ReturnTransactionDTO_When_PassedValidParams()
@@ -48,7 +48,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
             .UseInMemoryDatabase(databaseName: "ReturnTransactionDTO_WhenPassedValidParams")
                 .Options;
 
-            dateTimeProvider = new DateTimeProvider();
+            dateTimeProvider = new Mock<IDateTimeProvider>();
             foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
             walletServiceMock = new Mock<IWalletService>();
             userServiceMock = new Mock<IUserService>();
@@ -60,13 +60,12 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
                 UserName = userName,
-                CreatedOn = dateTimeProvider.Now,
+                CreatedOn = dateTimeProvider.Object.Now,
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
                 DateOfBirth = DateTime.Parse("02.01.1996"),
-                Role = UserRole.None,
-                Wallet = userWallet
+                Role = UserRole.None
             };
 
             userWallet = new Wallet
@@ -74,7 +73,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
                 Currency = Currency.GBP,
                 Balance = 2000, // we put 2000 in balance otherwise the method will return an null DTO (business logic)
                 User = user,
-            };           
+            };
 
             creditCard = new CreditCard
             {
@@ -83,7 +82,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
                 LastDigits = lastDigits,
                 ExpiryDate = DateTime.Parse("03.03.2022"),
                 User = user,
-                CreatedOn = dateTimeProvider.Now
+                CreatedOn = dateTimeProvider.Object.Now
             };
 
             foreignExchangeDTO = new ForeignExchangeDTO
@@ -110,7 +109,8 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
                 var sut = new TransactionService(assertContext, walletServiceMock.Object,
-                    userServiceMock.Object, foreignExchangeServiceMock.Object, cardServiceMock.Object, dateTimeProvider);
+                    userServiceMock.Object, foreignExchangeServiceMock.Object, cardServiceMock.Object, dateTimeProvider.Object);
+                assertContext.Attach(creditCard);
                 var transactionDTO = await sut.MakeDeposit(user, creditCard.Id, amount);
 
                 Assert.IsInstanceOfType(transactionDTO, typeof(TransactionDTO));
