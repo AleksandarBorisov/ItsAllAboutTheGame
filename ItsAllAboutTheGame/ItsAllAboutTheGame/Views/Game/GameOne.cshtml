@@ -3,7 +3,7 @@
     ViewData["Title"] = "GameOne";
 }
 
-<main class="text-dark" id="game-management" style="@(Model.GridSize == GlobalConstants.GameThreeGrid ? "padding-top: 15%; " : "")">
+<main class="text-dark" id="game-management" style="@(Model.GridSize == GlobalConstants.GameThreeGrid ? "padding-top: 15%; " : "")">@*I know it isn't pretty, but desperate times call for desperate measures*@
     <div class="container game-rules-container text-center" style="@(Model.GridSize == GlobalConstants.GameThreeGrid ? "padding-top: unset; " : "")">
         <div class="row">
             <div class="col-8 table-col">
@@ -86,5 +86,4 @@
 
 @section Scripts{
     <script src="~/js/gameone.js"></script>
-    @*@await Html.PartialAsync("_ValidationScriptsPartial")*@
 }

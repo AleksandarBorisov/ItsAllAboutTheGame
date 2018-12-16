@@ -42,6 +42,10 @@ namespace ItsAllAboutTheGame.Middleware
             {
                 context.Response.Redirect("/404");
             }
+            catch (ArgumentNullException)
+            {
+                context.Response.Redirect("/404");
+            }
             catch (ArgumentException)
             {
                 context.Response.Redirect("/404");

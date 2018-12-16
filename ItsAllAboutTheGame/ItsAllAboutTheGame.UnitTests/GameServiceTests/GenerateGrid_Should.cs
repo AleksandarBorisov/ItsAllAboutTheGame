@@ -1,15 +1,13 @@
-﻿using ItsAllAboutTheGame.Data;
-using ItsAllAboutTheGame.GlobalUtilities.Constants;
+﻿using ItsAllAboutTheGame.GlobalUtilities.Constants;
 using ItsAllAboutTheGame.GlobalUtilities.Contracts;
 using ItsAllAboutTheGame.Services.Core.Game;
 using ItsAllAboutTheGame.Services.Game.DTO;
 using ItsAllAboutTheGame.Services.Game.Enums;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace ItsAllAboutTheGame.UnitTests.ServicesGame.Tests
+namespace ItsAllAboutTheGame.UnitTests.GameServiceTests
 {
     [TestClass]
     public class GenerateGrid_Should

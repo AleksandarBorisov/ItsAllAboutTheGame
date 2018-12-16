@@ -30,11 +30,13 @@ namespace ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService
             var currencies = await this.cache.GetOrCreateAsync("ConvertionRates", async entry =>
             {
                 entry.AbsoluteExpiration = dateTimeProvider.UtcNow.AddDays(1);
+
                 string resourceUrl = $"https://api.exchangeratesapi.io/latest?base={GlobalConstants.BaseCurrency}&symbols={GlobalConstants.Currencies}";
+
                 string currenciesString = await foreignExchangeApiCaller.GetCurrencyData(resourceUrl);
+
                 var convertionRates = jsonDeserializer.Deserialize<ForeignExchangeDTO>(currenciesString);
 
-                //throw new HttpRequestException();
                 return convertionRates;
             });
 

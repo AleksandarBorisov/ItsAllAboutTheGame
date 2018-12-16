@@ -9,7 +9,7 @@ using Moq;
 using System.Collections;
 using System.Linq;
 
-namespace ItsAllAboutTheGame.UnitTests.ServicesGame.Tests
+namespace ItsAllAboutTheGame.UnitTests.GameServiceTests
 {
     [TestClass]
     public class Play_Should
