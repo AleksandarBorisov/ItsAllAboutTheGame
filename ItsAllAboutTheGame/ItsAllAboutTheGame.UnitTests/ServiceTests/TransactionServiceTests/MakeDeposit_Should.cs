@@ -6,6 +6,7 @@ using ItsAllAboutTheGame.Services.Data.Contracts;
 using ItsAllAboutTheGame.Services.Data.DTO;
 using ItsAllAboutTheGame.Services.Data.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -49,7 +50,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
         {
             //Arrange
             var contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
-                .UseInMemoryDatabase(databaseName: "ReturnTransactionDTO_When_PassedValidParams")
+                .UseInMemoryDatabase(databaseName: "ReturnTransactionDTO_When_PassedValidParamsMakeDeposit")
                 .UseInternalServiceProvider(serviceProvider)
                 .Options;
 
@@ -77,8 +78,8 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
             //Act
             using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
-                await actContext.AddAsync(userWallet);
-                await actContext.SaveChangesAsync();
+                //await actContext.Wallets.AddAsync(userWallet);
+                //await actContext.SaveChangesAsync();
                 user = new User
                 {
                     Cards = new List<CreditCard>(),
@@ -90,9 +91,11 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
                     LastName = lastName,
                     DateOfBirth = DateTime.Parse(fakeBirthDate),
                     Role = UserRole.None,
-                    Wallet = userWallet
+                    Wallet = userWallet,
+                    WalletId = userWallet.Id
                 };
-
+                await actContext.Users.AddAsync(user);
+                await actContext.SaveChangesAsync();
                 creditCard = new CreditCard
                 {
                     CVV = cvv,
@@ -104,7 +107,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
 
                 await actContext.CreditCards.AddAsync(creditCard);
                 await actContext.SaveChangesAsync();
-                actContext.Entry(creditCard).State = EntityState.Detached;
             }
 
             //Assert

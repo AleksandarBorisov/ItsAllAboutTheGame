@@ -18,8 +18,8 @@ using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Services.Data.Services;
 using ItsAllAboutTheGame.GlobalUtilities;
 using ItsAllAboutTheGame.Services.Game.Contracts.GameOne;
-using ItsAllAboutTheGame.Services.Game.GameOne;
 using ItsAllAboutTheGame.GlobalUtilities.Contracts;
+using ItsAllAboutTheGame.Services.Core.Game;
 
 namespace ItsAllAboutTheGame
 {
