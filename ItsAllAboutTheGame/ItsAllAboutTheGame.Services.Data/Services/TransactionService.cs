@@ -235,7 +235,6 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                 Type = type,
                 Description = description + game,
                 User = user,
-                UserId = user.Id,
                 Amount = convertedAmount,
                 CreatedOn = dateTimeProvider.Now,
                 Currency = wallet.Currency
