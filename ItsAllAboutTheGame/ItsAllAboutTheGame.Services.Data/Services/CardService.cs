@@ -36,6 +36,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
                 creditCard.ExpiryDate = expiryDate;
                 creditCard.CreatedOn = DateTime.Now;
                 creditCard.IsDeleted = false;
+                creditCard.CVV = cvv;
                 this.context.CreditCards.Update(creditCard);
                 await this.context.SaveChangesAsync();
 
@@ -104,7 +105,7 @@ namespace ItsAllAboutTheGame.Services.Data.Services
         {
             // if card is found we return false to display that it exists!
             // if card is NOT found with the current card number, we return true so that the method passes
-            bool result = this.context.CreditCards.Any(c => c.CardNumber == cardNumber);
+            bool result = this.context.CreditCards.Where(card => card.IsDeleted == false).Any(c => c.CardNumber == cardNumber);
 
             if (result == true)
             {
