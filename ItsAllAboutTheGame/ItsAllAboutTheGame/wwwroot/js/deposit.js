@@ -16,6 +16,14 @@ $(function () {
 
         var $buttonName = $depositForm.find("button[type=submit]:focus").val();
 
+        var $button = $depositForm.find("button[type=submit]:focus");
+
+        $button.attr("disabled", true);
+        setTimeout(function () {
+            // enable click after 1 second
+            $button.prop('disabled', false);
+        }, 1000);
+
         event.preventDefault();
 
         if ($buttonName == 'deposit') {

@@ -275,7 +275,7 @@ namespace ItsAllAboutTheGame.Controllers
                 CreatedOn = dateTimeProvider.Now,
                 FirstName = names[0],
                 LastName = names[1],
-                DateOfBirth = model.DateOfBirth,
+                DateOfBirth = DateTime.Parse(model.DateOfBirth),
                 Wallet = wallet,
                 WalletId = wallet.Id,
                 Role = UserRole.None

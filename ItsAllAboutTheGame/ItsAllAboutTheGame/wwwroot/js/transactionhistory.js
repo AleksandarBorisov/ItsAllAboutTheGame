@@ -1,4 +1,12 @@
-﻿
+﻿$(document).ready(function () {
+
+    var paddingForm = $('#transactions-history-management');
+
+    paddingForm.removeClass('initially-hidden');
+
+    new WOW().init();
+});
+
 $(function () {
     debugger;
     //We set an event on all forms

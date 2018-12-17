@@ -1,7 +1,6 @@
 using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using ItsAllAboutTheGame.Utilities.CustomAttributes.UserAttributes;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ItsAllAboutTheGame.Models.AccountViewModels
@@ -17,7 +16,7 @@ namespace ItsAllAboutTheGame.Models.AccountViewModels
         [DataType(DataType.DateTime)]
         [Display(Name = "Date of birth")]
         [Remote(action: "IsBirthDateValid", controller: "Account", ErrorMessage = "Age must be valid and over 18 years!")]
-        public DateTime DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

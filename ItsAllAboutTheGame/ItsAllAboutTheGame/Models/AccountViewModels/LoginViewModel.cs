@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ItsAllAboutTheGame.Models.AccountViewModels
 {

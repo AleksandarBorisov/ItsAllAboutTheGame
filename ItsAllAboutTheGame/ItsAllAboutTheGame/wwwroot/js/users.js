@@ -7,6 +7,15 @@
 }
 //If we wrap the entire jQuery function we will take advantage of document.load event for which jQuery lisens by default 
 
+$(document).ready(function () {
+
+    var paddingForm = $('#users-management');
+
+    paddingForm.removeClass('initially-hidden');
+
+    new WOW().init();
+});
+
 $(function () {
 
     const $container = $('#users-container');

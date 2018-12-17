@@ -6,6 +6,15 @@
     return true;
 }
 
+$(document).ready(function () {
+
+    var paddingForm = $('#transactions-management');
+
+    paddingForm.removeClass('initially-hidden');
+
+    new WOW().init();
+});
+
 $(function () {
 
     const $container = $('#transactions-container');
