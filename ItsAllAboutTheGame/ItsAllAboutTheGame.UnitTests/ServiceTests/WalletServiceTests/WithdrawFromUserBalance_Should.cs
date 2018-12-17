@@ -35,7 +35,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
         private string cardNumber = "23232141412";
         private string cvv = "3232";
         private string lastDigits = "1412";
-        private IDateTimeProvider dateTimeProvider;
+        private Mock<IDateTimeProvider> dateTimeProviderMock;
 
         [TestMethod]
         public async Task ReturnTransactionDTO_WhenPassedValidParams()
@@ -47,7 +47,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             decimal amount = 1000;
 
-            dateTimeProvider = new DateTimeProvider();
+            dateTimeProviderMock = new Mock<IDateTimeProvider>();
 
             user = new User
             {
@@ -55,7 +55,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
                 UserName = userName,
-                CreatedOn = dateTimeProvider.Now,
+                CreatedOn = dateTimeProviderMock.Object.Now,
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
@@ -77,7 +77,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 LastDigits = lastDigits,
                 ExpiryDate = DateTime.Parse("03.03.2022"),
                 User = user,
-                CreatedOn = dateTimeProvider.Now
+                CreatedOn = dateTimeProviderMock.Object.Now
             };
 
             foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
@@ -101,12 +101,11 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
             //Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
-                var walletService = new WalletService(assertContext, foreignExchangeServiceMock.Object, dateTimeProvider);
+                var walletService = new WalletService(assertContext, foreignExchangeServiceMock.Object, dateTimeProviderMock.Object);
                 var transactionDTO = await walletService.WithdrawFromUserBalance(user, amount, creditCard.Id);
 
                 Assert.IsInstanceOfType(transactionDTO, typeof(TransactionDTO));
-
-                //TODO: Assert for the Username
+                Assert.IsTrue(transactionDTO.Username == user.UserName);
             }
         }
 
@@ -120,7 +119,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
 
             decimal amount = 1000;
 
-            dateTimeProvider = new DateTimeProvider();
+            dateTimeProviderMock = new Mock<IDateTimeProvider>();
 
             user = new User
             {
@@ -128,7 +127,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
                 UserName = userName,
-                CreatedOn = dateTimeProvider.Now,
+                CreatedOn = dateTimeProviderMock.Object.Now,
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
@@ -150,7 +149,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 LastDigits = lastDigits,
                 ExpiryDate = DateTime.Parse("03.03.2022"),
                 User = user,
-                CreatedOn = dateTimeProvider.Now
+                CreatedOn = dateTimeProviderMock.Object.Now
             };
 
             foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
@@ -175,7 +174,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
             //Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
-                var walletService = new WalletService(assertContext, foreignExchangeServiceMock.Object, dateTimeProvider);
+                var walletService = new WalletService(assertContext, foreignExchangeServiceMock.Object, dateTimeProviderMock.Object);
                 var transactionDTO = await walletService.WithdrawFromUserBalance(user, amount, creditCard.Id);
                 var currentWalletBalance = await assertContext.Wallets.Where(u => u.User == user).FirstOrDefaultAsync();
                 Assert.AreEqual(1500, currentWalletBalance.Balance);
@@ -191,7 +190,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 .Options;
 
             decimal amount = 1000;
-            dateTimeProvider = new DateTimeProvider();
+            dateTimeProviderMock = new Mock<IDateTimeProvider>();
 
             user = new User();
 
@@ -209,7 +208,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 LastDigits = lastDigits,
                 ExpiryDate = DateTime.Parse("03.03.2022"),
                 User = user,
-                CreatedOn = dateTimeProvider.Now
+                CreatedOn = dateTimeProviderMock.Object.Now
             };
 
             foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
@@ -233,7 +232,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
             //Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
-                var walletService = new WalletService(assertContext, foreignExchangeServiceMock.Object, dateTimeProvider);
+                var walletService = new WalletService(assertContext, foreignExchangeServiceMock.Object, dateTimeProviderMock.Object);
                 await Assert.ThrowsExceptionAsync<EntityNotFoundException>(async () => await walletService.WithdrawFromUserBalance(user, amount, creditCard.Id));
             }
         }
@@ -247,7 +246,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 .Options;
 
             decimal amount = 1000;
-            dateTimeProvider = new DateTimeProvider();
+            dateTimeProviderMock = new Mock<IDateTimeProvider>();
 
             user = new User
             {
@@ -255,7 +254,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
                 UserName = userName,
-                CreatedOn = dateTimeProvider.Now,
+                CreatedOn = dateTimeProviderMock.Object.Now,
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
@@ -270,7 +269,8 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
                 LastDigits = lastDigits,
                 ExpiryDate = DateTime.Parse("03.03.2022"),
                 User = user,
-                CreatedOn = dateTimeProvider.Now
+                CreatedOn = dateTimeProviderMock.Object.Now,
+                IsDeleted = true
             };
 
             foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
@@ -294,12 +294,9 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
             //Assert
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
-                var walletService = new WalletService(assertContext, foreignExchangeServiceMock.Object, dateTimeProvider);
+                var walletService = new WalletService(assertContext, foreignExchangeServiceMock.Object, dateTimeProviderMock.Object);
                 await Assert.ThrowsExceptionAsync<EntityNotFoundException>(async () => await walletService.WithdrawFromUserBalance(user, amount, creditCard.Id));
             }
-
-            //TODO Fix test, Throws Exception Because cant find user wallet not bacause card is deleted
-            //Set the IsDeleted on the card to true and add a wallet for the user
         }
     }
 }

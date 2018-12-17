@@ -42,13 +42,12 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
             .UseInMemoryDatabase(databaseName: "ReturnWalletDTO_When_PassedCorrectParams")
                 .Options;
 
-            decimal stake = 1000;
+            decimal stake = 1500;
 
             dateTimeProvider = new DateTimeProvider();
 
             user = new User
             {
-                Id = userId,
                 Cards = new List<CreditCard>(),
                 Transactions = new List<Transaction>(),
                 UserName = userName,
@@ -88,10 +87,11 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.WalletServiceTests
             using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
                 var walletService = new WalletService(assertContext, foreignExchangeServiceMock.Object, dateTimeProvider);
+                assertContext.Attach(userWallet);
                 var updateWallet = await walletService.UpdateUserWallet(user, stake);
-
+                var userOfReturnedWallet = await assertContext.Users.Where(u => u.Wallet.Balance * 2 == updateWallet.Balance).FirstOrDefaultAsync();
                 Assert.IsInstanceOfType(updateWallet, typeof(WalletDTO));
-                //TODO: Add Assert checking the user of the returned wallet
+                Assert.IsTrue(userOfReturnedWallet == user);
             }
         }
 

@@ -89,7 +89,6 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.CardServiceTests
                 var userCards = await cardService.GetSelectListCards(user);
 
                 Assert.IsInstanceOfType(userCards, typeof(IEnumerable<SelectListItem>));
-                //TODO: Check if the cards in the Collection are the same as the added cards
             }
         }
     }
