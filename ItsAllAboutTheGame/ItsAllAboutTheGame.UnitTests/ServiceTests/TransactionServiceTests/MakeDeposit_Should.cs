@@ -297,6 +297,5 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
                 await Assert.ThrowsExceptionAsync<EntryPointNotFoundException>(async () => await sut.MakeDeposit(user, creditCard.Id + 1, amount));
             }
         }
-        //TODO: Add test where we check if the transaction was added in the database
     }
 }
