@@ -18,7 +18,7 @@ namespace ItsAllAboutTheGame.Models.TransactionViewModels
         public string CVV { get; set; }
 
         [Required]
-        [Remote(action: "IsDateValid", controller: "Transaction", ErrorMessage = "Please enter valid future date!")]
+        [Remote(action: "IsDateValid", controller: "Transaction", ErrorMessage = "Please enter valid future expiry date for your card!")]
         [FutureDate(ErrorMessage = "Please enter valid future date!")]
         public string ExpiryDate { get; set; }
     }

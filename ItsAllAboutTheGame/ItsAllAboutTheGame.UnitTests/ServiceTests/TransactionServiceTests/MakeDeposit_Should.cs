@@ -109,7 +109,9 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
             using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
             {
                 await actContext.Users.AddAsync(user);
-                await actContext.Wallets.AddAsync(userWallet);               
+                await actContext.SaveChangesAsync();
+                await actContext.Wallets.AddAsync(userWallet);
+                await actContext.SaveChangesAsync();
                 await actContext.CreditCards.AddAsync(creditCard);
                 await actContext.SaveChangesAsync();
             }
@@ -119,7 +121,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
             {
                 var sut = new TransactionService(assertContext, walletServiceMock.Object,
                     userServiceMock.Object, foreignExchangeServiceMock.Object, cardServiceMock.Object, dateTimeProvider.Object);
-                assertContext.Attach(creditCard);
+                assertContext.Attach(user);//We tell the context to monitor the selected object
                 var transactionDTO = await sut.MakeDeposit(user, creditCard.Id, amount);
 
                 Assert.IsInstanceOfType(transactionDTO, typeof(TransactionDTO));
@@ -206,7 +208,7 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
             {
                 var sut = new TransactionService(assertContext, walletServiceMock.Object,
                     userServiceMock.Object, foreignExchangeServiceMock.Object, cardServiceMock.Object, dateTimeProvider.Object);
-
+                assertContext.Attach(user);
                 await Assert.ThrowsExceptionAsync<EntryPointNotFoundException>(async () => await sut.MakeDeposit(user, creditCard.Id, amount));
             }
         }

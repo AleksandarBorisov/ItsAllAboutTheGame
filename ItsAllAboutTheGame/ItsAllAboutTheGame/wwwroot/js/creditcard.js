@@ -9,4 +9,10 @@
 $(document).ready(function () {
     $('#card-number').mask('0000 0000 0000 0000');
     $('#expiry-date').mask('00/00');
+
+    var paddingForm = $('.padding-form');
+
+    paddingForm.removeClass('initially-hidden');
+
+    new WOW().init();
 });
