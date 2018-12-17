@@ -292,10 +292,89 @@ namespace ItsAllAboutTheGame.UnitTests.ServiceTests.TransactionServiceTests
             }
         }
 
-        //Optional
 
-        //TODO: Add test where pagesize is passed
+        [TestMethod]
+        public async Task ReturnPageList_OfTransactionDTO_WithConcretePageSize()
+        {
+            //Arrange
+            contextOptions = new DbContextOptionsBuilder<ItsAllAboutTheGameDbContext>()
+            .UseInMemoryDatabase(databaseName: "ReturnPageList_OfTransactionDTO_WithConcretePageSize")
+                .Options;
 
-        //TODO: Add test where pageCount is passed
+            dateTimeProviderMock = new Mock<IDateTimeProvider>();
+            foreignExchangeServiceMock = new Mock<IForeignExchangeService>();
+            walletServiceMock = new Mock<IWalletService>();
+            userServiceMock = new Mock<IUserService>();
+            cardServiceMock = new Mock<ICardService>();
+
+            user = new User
+            {
+                Id = userId,
+                Cards = new List<CreditCard>(),
+                Transactions = new List<Transaction>(),
+                UserName = userName,
+                CreatedOn = dateTimeProviderMock.Object.Now,
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
+                DateOfBirth = DateTime.Parse("02.01.1996"),
+                Role = UserRole.None,
+            };
+
+            userTwo = new User
+            {
+                Id = userIdTwo,
+                Cards = new List<CreditCard>(),
+                Transactions = new List<Transaction>(),
+                UserName = userNameTwo,
+                CreatedOn = dateTimeProviderMock.Object.Now,
+                Email = emailTwo,
+                FirstName = firstNameTwo,
+                LastName = lastNameTwo,
+                DateOfBirth = DateTime.Parse("02.01.1996"),
+                Role = UserRole.None,
+            };
+
+            var transaction = new Transaction
+            {
+                Type = TransactionType.Deposit,
+                Description = GlobalConstants.DepositDescription + "3232".PadLeft(16, '*'),
+                User = user,
+                Amount = 1000,
+                CreatedOn = dateTimeProviderMock.Object.Now,
+                Currency = Currency.BGN
+            };
+
+            var transactionTwo = new Transaction
+            {
+                Type = TransactionType.Deposit,
+                Description = GlobalConstants.DepositDescription + "3102".PadLeft(16, '*'),
+                User = userTwo,
+                Amount = 1500,
+                CreatedOn = dateTimeProviderMock.Object.Now.AddDays(1),
+                Currency = Currency.USD
+            };
+
+
+            using (var actContext = new ItsAllAboutTheGameDbContext(contextOptions))
+            {
+                await actContext.Users.AddAsync(user);
+                await actContext.Users.AddAsync(userTwo);
+                await actContext.Transactions.AddAsync(transaction);
+                await actContext.Transactions.AddAsync(transactionTwo);
+                await actContext.SaveChangesAsync();
+            }
+
+            //Assert
+            using (var assertContext = new ItsAllAboutTheGameDbContext(contextOptions))
+            {
+                var sut = new TransactionService(assertContext, walletServiceMock.Object, userServiceMock.Object,
+                    foreignExchangeServiceMock.Object, cardServiceMock.Object, dateTimeProviderMock.Object);
+                var pageList = await sut.GetAllTransactions(null,1,23); 
+
+                Assert.IsInstanceOfType(pageList, typeof(IPagedList<TransactionDTO>));
+                Assert.IsTrue(pageList.PageSize == 23); // asserting if the pagesize is the same as the one passed (23)
+            }
+        }
     }
 }
