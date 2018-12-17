@@ -6,6 +6,15 @@
     return true;
 }
 
+$(document).ready(function () {
+
+    var paddingForm = $('#game-management');
+
+    paddingForm.removeClass('initially-hidden');
+
+    new WOW().init();
+});
+
 $(function () {
 
     //Client-Side Validation if the Stake is less than the Balance

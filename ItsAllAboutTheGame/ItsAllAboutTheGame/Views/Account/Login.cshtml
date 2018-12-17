@@ -7,7 +7,7 @@
 @{
     ViewData["Title"] = "Log in";
 }
-<main class="padding-form">
+<main class="wow fadeIn slow padding-form initially-hidden">
     <div class="row">
         <div class="col-md-12">
             <section class="login-form mr-auto ml-auto m-0">
@@ -57,7 +57,7 @@
                 <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
                     <div>
                         <p>
-                                <button type="submit" class="btn btn-primary btn-fb" name="provider" value="@loginProvider.Name" title="Log in using your @loginProvider.DisplayName account"><i class="fa fa-facebook pr-1"></i>@loginProvider.Name</button>
+                            <button type="submit" class="btn btn-primary btn-fb" name="provider" value="@loginProvider.Name" title="Log in using your @loginProvider.DisplayName account"><i class="fa fa-facebook pr-1"></i>@loginProvider.Name</button>
                         </p>
                     </div>
                 </form>
@@ -77,5 +77,6 @@
 <!--Main layout-->
 
 @section Scripts {
+    <script src="~/js/login.js"></script>
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }

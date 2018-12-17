@@ -6,7 +6,8 @@ header,
 }
 
 #intro {
-    background: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full%20page/img%20%283%29.jpg") no-repeat center center fixed;
+    /*background: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full%20page/img%20%283%29.jpg") no-repeat center center fixed;*/
+    background: url("../images/CasinoBackground.jpg") no-repeat center center fixed;
     /*Picture requirements for best fit:
     1. Resolution: 1920px / 1280px
     2. JPEG file format

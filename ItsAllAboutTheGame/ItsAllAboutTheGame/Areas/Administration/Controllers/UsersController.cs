@@ -1,9 +1,7 @@
 ﻿using ItsAllAboutTheGame.Areas.Administration.Models;
-using ItsAllAboutTheGame.Data.Models;
 using ItsAllAboutTheGame.GlobalUtilities.Constants;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -14,12 +12,10 @@ namespace ItsAllAboutTheGame.Areas.Administration.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService userService;
-        private readonly UserManager<User> userManager;
 
-        public UsersController(IUserService userService, UserManager<User> userManager)
+        public UsersController(IUserService userService)
         {
             this.userService = userService;
-            this.userManager = userManager;
         }
 
         [HttpGet]
