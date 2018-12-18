@@ -150,6 +150,12 @@ namespace ItsAllAboutTheGame.Controllers
 
             Wallet wallet = await walletService.CreateUserWallet(model.UserCurrency);
 
+            DateTime.TryParseExact(model.DateOfBirth,
+                       "dd.MM.yyyy",
+                       CultureInfo.InvariantCulture,
+                       DateTimeStyles.None,
+                       out DateTime birthDate);
+
             User user = new User
             {
                 Cards = new List<CreditCard>(),
@@ -159,7 +165,7 @@ namespace ItsAllAboutTheGame.Controllers
                 CreatedOn = dateTimeProvider.Now,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                DateOfBirth = DateTime.Parse(model.DateOfBirth),
+                DateOfBirth = birthDate,
                 Wallet = wallet,
                 WalletId = wallet.Id,
                 Role = UserRole.None,
@@ -268,6 +274,12 @@ namespace ItsAllAboutTheGame.Controllers
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
             var names = info.Principal.FindFirstValue(ClaimTypes.Name).Split().ToArray();
 
+            DateTime.TryParseExact(model.DateOfBirth,
+                       "dd.MM.yyyy",
+                       CultureInfo.InvariantCulture,
+                       DateTimeStyles.None,
+                       out DateTime birthDate);
+
             User user = new User
             {
                 UserName = email,
@@ -275,7 +287,7 @@ namespace ItsAllAboutTheGame.Controllers
                 CreatedOn = dateTimeProvider.Now,
                 FirstName = names[0],
                 LastName = names[1],
-                DateOfBirth = DateTime.Parse(model.DateOfBirth),
+                DateOfBirth = birthDate,
                 Wallet = wallet,
                 WalletId = wallet.Id,
                 Role = UserRole.None
@@ -331,7 +343,7 @@ namespace ItsAllAboutTheGame.Controllers
                        "dd.MM.yyyy",
                        CultureInfo.InvariantCulture,
                        DateTimeStyles.None,
-                       out DateTime birthDate);;
+                       out DateTime birthDate);
 
             var now = dateTimeProvider.Now.Year;
 
