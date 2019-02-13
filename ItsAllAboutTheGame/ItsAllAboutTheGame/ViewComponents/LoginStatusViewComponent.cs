@@ -3,7 +3,6 @@ using ItsAllAboutTheGame.Models.AccountViewModels;
 using ItsAllAboutTheGame.Services.Data.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using System.Threading.Tasks;
 
 namespace ItsAllAboutTheGame.ViewComponents
@@ -11,13 +10,14 @@ namespace ItsAllAboutTheGame.ViewComponents
     public class LoginStatusViewComponent : ViewComponent
     {
         private readonly SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
         private readonly IUserService userService;
-        private readonly IMemoryCache cache;
 
-        public LoginStatusViewComponent(IUserService userService, IMemoryCache cache, SignInManager<User> signInManager)
+        public LoginStatusViewComponent(IUserService userService, SignInManager<User> signInManager,
+            UserManager<User> userManager)
         {
-            this.cache = cache;
             this.userService = userService;
+            this.userManager = userManager;
             this.signInManager = signInManager;
         }
 
@@ -25,8 +25,12 @@ namespace ItsAllAboutTheGame.ViewComponents
         {
             if (signInManager.IsSignedIn(HttpContext.User))
             {
-                var userInfo = await this.userService.GetUserInfo(HttpContext.User);
+                var userId = userManager.GetUserId(HttpContext.User);
+
+                var userInfo = await this.userService.GetUserInfo(userId);
+
                 var info = new UserInfoViewModel(userInfo);
+
                 return View("LoggedIn", info);
             }
             return View();

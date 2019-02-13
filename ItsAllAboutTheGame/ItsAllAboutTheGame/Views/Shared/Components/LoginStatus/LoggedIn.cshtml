@@ -1,12 +1,16 @@
 ﻿@model UserInfoViewModel
+@{
+    TempData["Admin"] = Model.Admin;
+}
 
 <li class="ml-auto home-view-color nav-item">
     <div id="balance-section">
-        <span id="user-balance">Balance:</span>@Model.Balance.ToString("0.00") @Model.CurrencySymbol
+        <span id="user-balance" data-balance="@Model.Balance.ToString("0.00")" data-symbol="@Model.CurrencySymbol">Balance:</span>
+        <span id="user-balance-text">@Model.Balance.ToString("0.00") @Model.CurrencySymbol</span>
     </div>
 </li>
 <li class=" nav-item">
-    <a asp-area="" asp-controller="Transaction" asp-action="Deposit" class="btn btn-outline-danger rounded font-weight-bold home-view-color">Deposit<i class="fa fa-credit-card ml-2"></i></a>@*<i class="fa fa-money ml-2"></i>*@
+    <a asp-area="" asp-controller="Transaction" asp-action="Deposit" class="btn btn-outline-danger rounded font-weight-bold home-view-color">Deposit<i class="fa fa-credit-card ml-2"></i></a>
 </li>
 <li class=" nav-item">
     <a asp-area="" asp-controller="Manage" asp-action="Index" asp-route-userId="@Model.UserId" class="btn btn-outline-cyan rounded font-weight-bold home-view-color">@Model.Username</a>

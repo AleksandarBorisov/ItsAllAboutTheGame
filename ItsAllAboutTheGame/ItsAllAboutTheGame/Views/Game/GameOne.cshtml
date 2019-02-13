@@ -1,0 +1,89 @@
+﻿@model WalletViewModel
+@{
+    ViewData["Title"] = "GameOne";
+}
+
+<main class="wow fadeIn slow text-dark initially-hidden" id="game-management" style="@(Model.GridSize == GlobalConstants.GameThreeGrid ? "padding-top: 15%; " : "")">@*I know it isn't pretty, but desperate times call for desperate measures*@
+    <div class="container game-rules-container text-center" style="@(Model.GridSize == GlobalConstants.GameThreeGrid ? "padding-top: unset; " : "")">
+        <div class="row">
+            <div class="col-8 table-col">
+                <div class="game-container">
+                    <partial name="_GameOnePartial" model="Model" />
+                </div>
+                <div class="row m-0">
+                    <div class="col-md-12 spin-row">
+                        <form class="spin-form" asp-controller="Game" asp-action="GameOneSpin" method="post">
+                            <div class="input-group flex-nowrap align-middle flex-center">
+                                <div class="input-group-prepend input-group-text">
+                                    <p class="font-weight-bold">Stake: </p>
+                                </div>
+                                <input asp-for="@Model.Stake" type="text" placeholder="0 @Model.CurrencySymbol" onkeypress="return isNumberKey(event)" class="form-control font-weight-bold users-count" id="stake-amount" maxlength="7" />
+                                <input type="text" asp-for="@Model.Balance" value="@Model.Balance" class="text-hide" id="hidden-balance"/>
+                                <input type="text" asp-for="@Model.GridSize" value="@Model.GridSize" class="text-hide" id="hidden-balance"/>
+                                <div class="input-group-append">
+                                    <button class="btn btn-orange" type="submit">Spin</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <h6 class="m-0 font-weight-bold">General Rules</h6>
+                <div class="rules">
+                    <table class="rules-table">
+                        <tr>
+                            <td class="p-2">
+                                <img src="~/images/@(GameResults.Apple + ".png")" alt="@GameResults.Banana" class="fruit-icon" />
+                            </td>
+                            <td class="p-2">
+                                <i class="fa fa-arrow-right fa-2x"></i>
+                            </td>
+                            <td class="p-2">
+                                <p class="font-weight-bold text-center m-0 rules-table-percentage">0.4 %</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-2">
+                                <img src="~/images/@(GameResults.Banana + ".png")" alt="@GameResults.Banana" class="fruit-icon" />
+                            </td>
+                            <td class="p-2">
+                                <i class="fa fa-arrow-right fa-2x"></i>
+                            </td>
+                            <td class="p-2">
+                                <p class="font-weight-bold text-center m-0 rules-table-percentage">0.6 %</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-2">
+                                <img src="~/images/@(GameResults.Pineapple + ".png")" alt="@GameResults.Pineapple" class="fruit-icon" />
+                            </td>
+                            <td class="p-2">
+                                <i class="fa fa-arrow-right fa-2x"></i>
+                            </td>
+                            <td class="p-2">
+                                <p class="font-weight-bold text-center m-0 rules-table-percentage">0.8 %</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-2">
+                                <img src="~/images/@(GameResults.Wildcard + ".png")" alt="@GameResults.Wildcard" class="fruit-icon" />
+                            </td>
+                            <td class="p-2">
+                                <i class="fa fa-arrow-right fa-2x"></i>
+                            </td>
+                            <td class="p-2">
+                                <p class="font-weight-bold text-center m-0 rules-table-percentage">0.0 %</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <p class="m-0 font-weight-bold rules-table-description">Sum the % of the winning rows and multiply them by the stake</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts{
+    <script src="~/js/gameone.js"></script>
+}

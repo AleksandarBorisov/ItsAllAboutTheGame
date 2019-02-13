@@ -10,7 +10,9 @@ namespace ItsAllAboutTheGame.Models.AccountViewModels
             this.Balance = userInfo.Balance;
             this.Username = userInfo.Username;
             this.CurrencySymbol = userInfo.CurrencySymbol;
+            this.Admin = userInfo.Admin;
         }
+        public bool Admin { get; set; }
 
         public string UserId { get; set; }
 

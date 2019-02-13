@@ -1,0 +1,14 @@
+﻿@model TransactionsViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<main class="wow fadeIn slow text-dark d-flex justify-content-center text-center initially-hidden" id="transactions-management">
+    <div class="container " id="transactions-container">
+        <partial name="_TransactionsTablePartial" model="Model" />
+    </div>
+</main>
+
+@section Scripts{
+    <script src="~/js/transactions.js"></script>
+}

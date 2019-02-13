@@ -1,4 +1,20 @@
-﻿
-<h2>The requested page was not found</h2>
+﻿@{
+    ViewData["Title"] = "PageNotFound";
+    ViewData["ShowLoginStatus"] = false;
+}
 
+<main class="padding text-white">
+    <div class="container-fluid d-flex align-items-center justify-content-center" id="access-denied">
+        <div class="row d-flex justify-content-center text-center">
+            <div class="col-md-12">
+                <h1 class="text-danger">Something unexpected happened...</h1>
+                <h3 class="text-warning">Does this message look familiar</h3>
+                <hr class="my-3">
+                <img src="~/images/ErrorPageProduction.png" alt="PageNotFound" />
+                <h3 class="text-warning">Ooops. Page not found</h3>
+                <h3 class="text-warning">Sorry. It's not you, it's us...</h3>
+            </div>
+        </div>
+    </div>
+</main>
 

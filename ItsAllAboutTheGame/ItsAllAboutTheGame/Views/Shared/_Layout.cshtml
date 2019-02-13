@@ -4,18 +4,22 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ItsAllAboutTheGame</title>
-    <link runat="server" rel="shortcut icon" href="~/images/CardsLogoFavicon.png" type="image/x-icon" style="background-color: black"/>
-    <link runat="server" rel="icon"href="~/images/CardsLogoFavicon.png" type="image/ico" style="background-color: black"/>
+    <link runat="server" rel="shortcut icon" href="~/images/CardsLogoFavicon.png" type="image/x-icon" style="background-color: black" />
+    <link runat="server" rel="icon" href="~/images/CardsLogoFavicon.png" type="image/ico" style="background-color: black" />
     <environment include="Development">
+        <link href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Gamja+Flower" rel="stylesheet">
         <link rel="stylesheet" href="~/lib/mdb/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/lib/mdb/css/mdb.css" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="~/lib/mdb/font/roboto/Roboto-Regular.ttf">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
-        
+
     </environment>
     <environment exclude="Development">
+        <link href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Gamja+Flower" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
               asp-fallback-href="~/lib/mdb/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
@@ -52,10 +56,6 @@
                     {
                         <vc:login-status></vc:login-status>
                     }
-                    @*parameter1="parameter1 value"
-        parameter2="parameter2 value">*@
-
-                    @*@await Html.PartialAsync("_LoginPartial")*@
                 </ul>
             </div>
             <!-- Collapse button -->
@@ -68,27 +68,30 @@
                 <!-- Links -->
                 <ul class="navbar-nav w-100">
                     <li class="nav-item">
-                        <a class="nav-link" href="#best-features">Promotions</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="ResponsibleGambling">Responsible Gambling</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#examples">Responsible Gambling</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="payment-methods">Payment Methods</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#examples">Payment Methods</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="Contact">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="for-partners">Partners</a>
                     </li>
-                    <li class="ml-auto nav-item dropleft">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-gear"></i>
-                            <span class="clearfix d-none d-sm-inline-block">Admin Panel</span>
-                        </a>
-                        <div class="dropdown-menu">
-                            <a asp-area="Administration" asp-controller="Users" asp-action="Index" class="dropdown-item"><i class="fa fa-user mr-2"></i>Manage Users</a>
-                            <a asp-area="Administration" asp-controller="Transactions" asp-action="Index" class="dropdown-item"><i class="fa fa-credit-card mr-2"></i>Manage Transactions</a>
-                        </div>
-                    </li>
+                    @if (TempData["Admin"] != null && TempData["Admin"].ToString() == "True")
+                    {
+                        <li class="ml-auto nav-item dropleft">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-gear"></i>
+                                <span class="clearfix d-none d-sm-inline-block">Admin Panel</span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a asp-area="Administration" asp-controller="Users" asp-action="Index" class="dropdown-item"><i class="fa fa-user mr-2"></i>Manage Users</a>
+                                <a asp-area="Administration" asp-controller="Transactions" asp-action="Index" class="dropdown-item"><i class="fa fa-credit-card mr-2"></i>Manage Transactions</a>
+                            </div>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
@@ -99,113 +102,38 @@
         </div>
     </div>
     <!--/.Mask-->
-
+    
     <div>
         @RenderBody()
+
         <button id="scrollToTopBtn" title="Go to top">Top</button>@*onclick="topFunction()"*@
+        <div class="medium loader fast" id="loading-spinner"></div>
         <hr />
         <!-- Footer -->
         <footer class="page-footer unique-color-dark">
             <!--Footer Links-->
-            <!--Footer Links-->
             <div class="container mt-5 mb-4 text-center text-md-left">
-                <div class="row mt-3">
-
-                    <!--First column-->
-                    <div class="col-md-3 col-lg-4 col-xl-3 mb-4">
-                        <h6 class="text-uppercase font-weight-bold">
-                            <strong>Company name</strong>
-                        </h6>
-                        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-                        <p>
-                            Here you can use rows and columns here to organize your footer content. Lorem ipsum dolor sit
-                            amet, consectetur adipisicing elit.
-                        </p>
-                    </div>
-                    <!--/.First column-->
-                    <!--Second column-->
-                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <h6 class="text-uppercase font-weight-bold">
-                            <strong>Products</strong>
-                        </h6>
-                        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-                        <p>
-                            <a href="#!">MDBootstrap</a>
-                        </p>
-                        <p>
-                            <a href="#!">MDWordPress</a>
-                        </p>
-                        <p>
-                            <a href="#!">BrandFlow</a>
-                        </p>
-                        <p>
-                            <a href="#!">Bootstrap Angular</a>
-                        </p>
-                    </div>
-                    <!--/.Second column-->
-                    <!--Third column-->
-                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <h6 class="text-uppercase font-weight-bold">
-                            <strong>Useful links</strong>
-                        </h6>
-                        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-                        <p>
-                            <a href="#!">Your Account</a>
-                        </p>
-                        <p>
-                            <a href="#!">Become an Affiliate</a>
-                        </p>
-                        <p>
-                            <a href="#!">Shipping Rates</a>
-                        </p>
-                        <p>
-                            <a href="#!">Help</a>
-                        </p>
-                    </div>
-                    <!--/.Third column-->
-                    <!--Fourth column-->
-                    <div class="col-md-4 col-lg-3 col-xl-3">
-                        <h6 class="text-uppercase font-weight-bold">
-                            <strong>Contact</strong>
-                        </h6>
-                        <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-                        <p>
-                            <i class="fa fa-home mr-3"></i> New York, NY 10012, US
-                        </p>
-                        <p>
-                            <i class="fa fa-envelope mr-3"></i> info@example.com
-                        </p>
-                        <p>
-                            <i class="fa fa-phone mr-3"></i> + 01 234 567 88
-                        </p>
-                        <p>
-                            <i class="fa fa-print mr-3"></i> + 01 234 567 89
-                        </p>
-                    </div>
-                    <!--/.Fourth column-->
-
+                <div class="footer-copyright text-center py-3">
+                    © @DateTime.Now.Year Copyright:
+                    <a href="#"> ItsAllAboutTheGame.AzureWebsites.net</a>
                 </div>
             </div>
             <!--/.Footer Links-->
-            <!-- Copyright -->
-            <div class="footer-copyright text-center py-3">
-                © @DateTime.Now.Year Copyright:
-                <a href="#"> ItsAllAboutTheGame.AzureWebsites.net</a>
-            </div>
-            <!-- Copyright -->
-            <!-- Footer -->
         </footer>
     </div>
 
     <environment include="Development">
         <script src="~/lib/mdb/js/jquery-3.3.1.min.js"></script>
+        <script src="~/lib/mdb/js/popper.min.js"></script>
+        <script src="~/lib/mdb/js/bootstrap.min.js"></script>
         <script src="~/lib/mdb/js/mdb.min.js"></script>
-        <script src="~/lib/mdb/js/bootstrap.js"></script>
-        <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+        @*<script src="~/lib/bootstrap/js/bootstrap.js"></script>*@
         <script src="~/js/site.js"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+        <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
@@ -222,6 +150,7 @@
                 crossorigin="anonymous"
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
+        <script src="~/lib/mdb/js/popper.min.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.5.14/js/mdb.min.js"
                 asp-fallback-src="~/lib/mdb/js/mdb.min.js"
@@ -229,6 +158,11 @@
                 crossorigin="anonymous"
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
+        <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+                integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
     </environment>
     <script src="~/js/scrolltotop.js"></script>
     @RenderSection("Scripts", required: false)

@@ -4,44 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<main class="text-dark d-flex justify-content-center text-center" id="users-management">
+<main class="wow fadeIn slow text-dark d-flex justify-content-center text-center initially-hidden" id="users-management">
     <div class="container " id="users-container">
         <partial name="_UsersTablePartial" model="Model" />
     </div>
 </main>
 
-<div>   <button id="test-button">Test button</button></div>
 @section Scripts{
     <script src="~/js/users.js"></script>
-    <script>
-        //function isNumberKey(evt) {
-        //    var charCode = (evt.which) ? evt.which : evt.keyCode;
-        //    if (charCode != 46 && charCode > 31
-        //        && (charCode < 48 || charCode > 57))
-        //        return false;
-        //    return true;
-        //}
-    </script>
-    @*<script>
-        $(function () {
-            const $lockoutForm = $('#lockout-form');
-
-            $lockoutForm.on('submit', function (event) {
-
-                event.preventDefault();
-
-                const $userIdVal = $lockoutForm.find('.user-id').val();
-                const $lockoutForVal = $lockoutForm.find('.lockout-for').val();
-                const $antiForgeryTokenVal = $("input[name=__RequestVerificationToken]").val();
-
-                const dataToSend = 'UserId=' + $userIdVal + '&LockoutFor=' + $lockoutForVal + "&__RequestVerificationToken=" + $antiForgeryTokenVal;
-                debugger;
-                $.post($lockoutForm.attr('action'), dataToSend, function (serverData) {
-
-                });
-            });
-        });
-    </script>*@
 }
 
 

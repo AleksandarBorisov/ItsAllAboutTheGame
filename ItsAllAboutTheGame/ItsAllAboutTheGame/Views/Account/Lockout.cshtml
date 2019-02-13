@@ -1,8 +1,18 @@
-﻿@{
+﻿@model LockedOutViewModel
+@{
     ViewData["Title"] = "Locked out";
 }
 
-<header>
-    <h2 class="text-danger">@ViewData["Title"]</h2>
-    <p class="text-danger">This account has been locked out, please try again later.</p>
-</header>
+<main class="padding text-white">
+    <div class="container-fluid d-flex align-items-center justify-content-center" id="access-denied">
+        <div class="row d-flex justify-content-center text-center">
+            <div class="col-md-12">
+                <h1 class="text-danger">Account Locked Out</h1>
+                <hr class="my-3">
+                <img src="~/images/Lock.png" />
+                <h3>Your Account has been locked out for another @(Model.RemainingHours + 2) hours</h3>
+                <h4>For any questions or problems, please, contact our free support</h4>
+            </div>
+        </div>
+    </div>
+</main>

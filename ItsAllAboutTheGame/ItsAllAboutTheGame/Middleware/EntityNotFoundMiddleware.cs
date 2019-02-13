@@ -30,21 +30,37 @@ namespace ItsAllAboutTheGame.Middleware
                 }
 
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
                 context.Response.Redirect("/404");
             }
-            catch (LockoutUserException ex)
+            catch (EntityAlreadyExistsException)
             {
                 context.Response.Redirect("/404");
             }
-            catch (HttpRequestException ex)
+            catch (LockoutUserException)
+            {
+                context.Response.Redirect("/404");
+            }
+            catch (ArgumentNullException)
+            {
+                context.Response.Redirect("/404");
+            }
+            catch (ArgumentException)
+            {
+                context.Response.Redirect("/404");
+            }
+            catch (HttpRequestException)
             {
                 context.Response.Redirect("/ForeignApiError");
             }
-            catch (HttpStatusCodeException ex)
+            catch (HttpStatusCodeException)
             {
                 context.Response.Redirect("/ForeignApiError");
+            }
+            catch (Exception)
+            {
+                context.Response.Redirect("/Error/Index");
             }
         }
     }

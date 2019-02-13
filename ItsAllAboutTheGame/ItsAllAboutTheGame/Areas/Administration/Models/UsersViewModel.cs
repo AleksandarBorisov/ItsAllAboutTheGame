@@ -1,8 +1,8 @@
-﻿using ItsAllAboutTheGame.Services.Data.DTO;
+﻿using ItsAllAboutTheGame.GlobalUtilities.Constants;
+using ItsAllAboutTheGame.Services.Data.DTO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using X.PagedList;
 
 namespace ItsAllAboutTheGame.Areas.Administration.Models
@@ -14,62 +14,80 @@ namespace ItsAllAboutTheGame.Areas.Administration.Models
 
         }
 
-        public UsersViewModel(IPagedList<UserDTO> users)
+        public UsersViewModel(IPagedList<UserDTO> usersList)
         {
-            this.Users = users.ToList();
-            this.UsersCount = users.Count;
-            this.HasNextPage = users.HasNextPage;
-            this.IsFirstPage = users.IsFirstPage;
-            this.IsLastPage = users.IsLastPage;
-            this.PageCount = users.PageCount;
-            this.PageNumber = users.PageNumber;
-            this.PageSize = users.PageSize;
-            this.TotalItemCount = users.TotalItemCount;
+            this.Users = usersList;
+            this.HasNextPage = usersList.HasNextPage;
+            this.HasPreviousPage = usersList.HasPreviousPage;
+            this.PageCount = usersList.PageCount;
+            this.PageNumber = usersList.PageNumber;
+            this.PageSize = usersList.PageSize;
+            this.TotalItemCount = usersList.TotalItemCount;
+            this.IsFirstPage = usersList.IsFirstPage;
+            this.IsLastPage = usersList.IsLastPage;
+            SetDisplayPages();
         }
 
-        public int UsersCount { get; private set; }
+        private void SetDisplayPages()
+        {
+            int pages = Math.Min(GlobalConstants.MaxPageCount, this.PageCount);
 
-        public bool HasNextPage { get; private set; }
+            FirstDisplayPage = this.PageNumber;
+            LastDisplayPage = this.PageNumber;
 
-        public bool IsFirstPage { get; private set; }
+            while (pages > 1)
+            {
+                if (this.FirstDisplayPage > 1)
+                {
+                    FirstDisplayPage--;
+                    pages--;
+                }
+                if (this.LastDisplayPage < PageCount)
+                {
+                    LastDisplayPage++;
+                    pages--;
+                }
+            }
+        }
 
-        public bool IsLastPage { get; private set; }
+        public bool IsLastPage { get; set; }
 
-        public int PageCount { get; private set; }
+        public bool IsFirstPage { get; set; }
 
-        public int PageNumber { get; }
+        public int FirstDisplayPage { get; set; }
 
-        public int PageSize { get; private set; }
+        public int LastDisplayPage { get; set; }
 
-        public int TotalItemCount { get; private set; }
+        public bool HasNextPage { get; set; }
 
-        public IEnumerable<UserDTO> Users { get; private set; }
+        public bool HasPreviousPage { get; set; }
 
-        [RegularExpression(@"^[0-9]{3}$", ErrorMessage = "Please enter valid days up to 999.")]
+        public int PageCount { get; set; }
+
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "Please enter valid positive Page Number.")]
+        public int PageNumber { get; set; }
+
+        [RegularExpression(@"^(0?[1-9]|[1-9][0-9])$", ErrorMessage = "Please enter valid Page Size up to 99.")]
+        public int PageSize { get;  set; }
+
+        public int TotalItemCount { get; set; }
+
+        public IEnumerable<UserDTO> Users { get; set; }
+
+        [RegularExpression(@"^[0-9]?[0-9]?[0-9]?$", ErrorMessage = "Please enter valid days up to 999.")]
         public int LockoutFor { get; set; }
 
         public string Username { get; set; }
 
-        public string Email { get; set; }
-
-        public string PhoneNumber { get; set; }
-
         public bool Deleted { get; set; }
-
-        public string Firstname { get; set; }
-
-        public string Lastname { get; set; }
-
-        public string DateOfBirth { get; set; }
-
-        public string Currency { get; set; }
-
-        public decimal Balance { get; set; }
-
-        public int RegisteredCards { get; set; }
 
         public bool Admin { get; set; }
 
         public string UserId { get; set; }
+
+        public string  SearchString { get; set; }
+
+        [Required]
+        public string SortOrder { get; set; }
     }
 }

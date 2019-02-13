@@ -13,10 +13,13 @@ using ItsAllAboutTheGame.Services.External.Contracts;
 using ItsAllAboutTheGame.Services.External;
 using ItsAllAboutTheGame.Services.Data.ForeignExchangeApiService;
 using ItsAllAboutTheGame.Services.Data.Contracts.ForeignExchangeApiService;
-using ItsAllAboutTheGame.Services.Data.Constants;
 using ItsAllAboutTheGame.Extensions;
 using ItsAllAboutTheGame.Services;
 using ItsAllAboutTheGame.Services.Data.Services;
+using ItsAllAboutTheGame.GlobalUtilities;
+using ItsAllAboutTheGame.Services.Game.Contracts.GameOne;
+using ItsAllAboutTheGame.GlobalUtilities.Contracts;
+using ItsAllAboutTheGame.Services.Core.Game;
 
 namespace ItsAllAboutTheGame
 {
@@ -44,8 +47,6 @@ namespace ItsAllAboutTheGame
 
         private void RegisterMainComponents(IServiceCollection services)
         {
-            //services.AddMvc();
-
             services.AddHttpClient();
 
             services.AddResponseCaching();
@@ -53,14 +54,6 @@ namespace ItsAllAboutTheGame
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //services.AddMvc(options =>
-            //{
-            //    options.CacheProfiles.Add("Default",
-            //    new CacheProfile()
-            //    {
-            //        Duration = 3600
-            //    });
-            //});
             services.AddMemoryCache();
         }
 
@@ -76,6 +69,9 @@ namespace ItsAllAboutTheGame
             services.AddScoped<IForeignExchangeService, ForeignExchangeService>();
             services.AddScoped<IJsonDeserializer, JsonDeserializer>();
             services.AddScoped<IForeignExchangeApiCaller, ForeignExchangeApiCaller>();
+            services.AddSingleton<IGame, Game>();
+            services.AddSingleton<IGameRandomizer, GameRandomizer>();
+            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         }
 
         private void RegisterAuthentication(IServiceCollection services)
@@ -95,9 +91,9 @@ namespace ItsAllAboutTheGame
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
+        public void Configure(IApplicationBuilder app,
             IHostingEnvironment env,
-            UserManager<User> userManager, 
+            UserManager<User> userManager,
             ItsAllAboutTheGameDbContext context)
         {
             if (env.IsDevelopment())

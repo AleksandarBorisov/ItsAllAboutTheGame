@@ -1,0 +1,35 @@
+﻿@model WalletViewModel
+@{
+    ViewData["Title"] = "_GameOnePartial";
+}
+
+<div class="game-one-table">
+    <table class="table @(Model.GridSize == GlobalConstants.GameThreeGrid ? "mb-0" : "")">
+        @for (int row = 0; row < Model.Grid.GetLength(0); row++)
+        {
+            <tr class="row @(Model.WinningRows[row] == true ? "winning-row" : "") m-0">
+                @for (int col = 0; col < Model.Grid.GetLength(1); col++)
+                {
+                    <td class="col p-1">
+                        <img src="~/images/@(Model.Grid[row, col] + ".png")" alt="@Model.Grid[row, col]" class="@(Model.GridSize == GlobalConstants.GameThreeGrid ?"fruit-icon-third-game" : "fruit-icon")" />
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+    <div class="money-row ">
+        <div class="row m-0">
+            <div class="align-middle d-inline-flex">
+                <div class="mr-1 font-weight-bold">Balance:</div>
+                <div class="mr-1 font-weight-bold" id="balance" data-balance="@Model.Balance.ToString("0.00")" data-symbol="@Model.CurrencySymbol">@Model.Balance</div>
+                <div id="currency-symbol" class="font-weight-bold">@Model.CurrencySymbol</div>
+            </div>
+            <div class="align-middle d-inline-flex ml-auto">
+                <div class="mr-1 font-weight-bold">Win:</div>
+                <div class="mr-1 font-weight-bold" id="win"> @Model.Win.ToString("0.00")</div>
+                <div id="currency-symbol" class="font-weight-bold">@Model.CurrencySymbol</div>
+            </div>
+        </div>
+    </div>
+</div>
+

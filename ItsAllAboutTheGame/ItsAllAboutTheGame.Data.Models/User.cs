@@ -1,4 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data.Models.Abstract;
+using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace ItsAllAboutTheGame.Data.Models
 
         public IEnumerable<Transaction> Transactions { get; set; }
 
-        public string Image { get; set; }
+        public UserRole Role { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]

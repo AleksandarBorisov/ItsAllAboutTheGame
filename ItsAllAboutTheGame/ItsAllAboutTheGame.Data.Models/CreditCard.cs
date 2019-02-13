@@ -1,6 +1,5 @@
-﻿using ItsAllAboutTheGame.Data.Models.Abstract;
-using ItsAllAboutTheGame.Data.Models.Utilities.CustomAttributes;
-using System;
+﻿using System;
+using ItsAllAboutTheGame.Data.Models.Abstract;
 using System.ComponentModel.DataAnnotations;
 
 namespace ItsAllAboutTheGame.Data.Models
@@ -26,7 +25,6 @@ namespace ItsAllAboutTheGame.Data.Models
         public string LastDigits { get; set; }
 
         [Required]
-        [FutureDate(ErrorMessage = "Date should be at least 1 month in the future!")]
         [DataType(DataType.DateTime)]
         public DateTime ExpiryDate { get; set; }
      

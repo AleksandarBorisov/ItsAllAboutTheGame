@@ -6,7 +6,8 @@ header,
 }
 
 #intro {
-    background: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full%20page/img%20%283%29.jpg") no-repeat center center fixed;
+    /*background: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full%20page/img%20%283%29.jpg") no-repeat center center fixed;*/
+    background: url("../images/CasinoBackground.jpg") no-repeat center center fixed;
     /*Picture requirements for best fit:
     1. Resolution: 1920px / 1280px
     2. JPEG file format
@@ -31,6 +32,10 @@ body {
 
 .padding {
     padding: 10%;
+}
+
+.padding-form {
+    padding: 16%;
 }
 
 .top-nav-collapse {
@@ -72,10 +77,6 @@ body {
     line-height: normal;
 }
 
-.home-view-color {
-    color: aqua;
-}
-
 #user-balance {
     margin: 10px;
     font-size: 20px;
@@ -87,13 +88,7 @@ body {
 }
 
 .login-form {
-    width: 30%;
-}
-
-@media (max-width: 768px) {
-    .index-page {
-        margin-top: 50%;
-    }
+    width: 45%;
 }
 
 @media (max-width: 768px) {
@@ -105,6 +100,12 @@ body {
 
 #play-button {
     padding: 25%;
+}
+
+@media (max-width: 768px) {
+    #play-button {
+        width: auto;
+    }
 }
 
 #scrollToTopBtn {
@@ -158,13 +159,17 @@ body {
     overflow-y: auto;
 }
 
-#users-table th, #users-table td {
+#users-table th, #users-table tr {
     padding: 10px;
     border-bottom: 2px solid #ddd;
 }
 
+#users-table td {
+    border: none;
+}
+
 #users-table tbody tr:hover {
-    background-color: darkorange;
+    background-color: #eee;
 }
 
 #users-table {
@@ -176,16 +181,314 @@ body {
     border-top-right-radius: 5px;
 }
 
-    #users-table thead {
+    #users-table thead tr:first-child {
         background-color: #24355C;
     }
 
-        #users-table thead tr {
-            color: aqua;
-        }
+    #users-table thead tr {
+        color: aqua;
+    }
 
     #users-table th, #users-table td {
         font-weight: bold;
     }
+
+.page-item.active {
+    color: teal;
+}
+
+.pagination {
+    color: black;
+    font-weight: bold;
+}
+
+.navigational-disabled {
+    color: black;
+    font-weight: normal;
+    pointer-events: none;
+    cursor: default;
+}
+
+#user-lockout-button {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.lockout-for {
+    width: 55px;
+}
+
+.users-count {
+    min-width: 50px;
+    width: 20%;
+}
+
+.page-count-form {
+    width: 20%;
+}
+
+.makealink {
+    background: transparent;
+    border: 0px;
+    color: aqua;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+
+#transactions-history-container {
+    border-radius: 5px;
+    background-color: gray;
+    padding: 20px;
+    display: block;
+    width: 80%;
+    /*max-height: 200px;*/
+    overflow-y: auto;
+}
+
+#transactions-history-management {
+    padding-top: 20%;
+}
+
+
+.game-rules-container {
+    border-radius: 5px;
+    background-color: white;
+    padding: 20px;
+    display: block;
+    /*overflow-y: auto;*/
+    width: 55%;
+}
+
+@media (max-width: 768px) {
+    .game-rules-container {
+        width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .table-col {
+        flex: none;
+        max-width: none;
+    }
+}
+
+@media (max-width: 768px) {
+    * {
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+    }
+
+        *:before,
+        *:after {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+}
+
+.money-row {
+    border-top: 4px solid black;
+    border-bottom: 4px solid black;
+}
+
+#game-management {
+    padding-top: 17%;
+}
+
+.spin-form input[name="Balance"] {
+    opacity: 0;
+}
+
+.initially-hidden {
+    opacity: 0;
+}
+
+.game-one-table {
+    border-collapse: collapse;
+    /*height: 100%;*/
+    width: 100%;
+    overflow: hidden;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.fruit-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.fruit-icon-third-game {
+    width: 35px;
+    height: 35px;
+}
+
+.winning-row {
+    background-color: forestgreen;
+    border-radius: 10px;
+}
+
+.rules-table {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.rules-table-percentage {
+    font-size: 20px;
+}
+
+.rules-table-description {
+    font-size: 13px;
+}
+
+.game-heading {
+    font-family: 'Gamja Flower', cursive;
+    font-size: 30px;
+    color: darkgoldenrod;
+}
+
+#first-game-image {
+    border: 10px solid darkgreen;
+    border-radius: 7px;
+}
+
+#second-game-image {
+    border: 10px solid dodgerblue;
+    border-radius: 7px;
+}
+
+#third-game-image {
+    border: 10px solid purple;
+    border-radius: 7px;
+}
+
+.contact-page {
+    padding: 15%;
+}
+
+.responsible-gambling-page {
+    padding: 15%;
+}
+
+#transactions-container {
+    border-radius: 5px;
+    background-color: gray;
+    padding: 20px;
+    display: block;
+    overflow-y: auto;
+}
+
+#transactions-management {
+    padding-top: 20%;
+}
+
+.transactions-count {
+    min-width: 50px;
+    width: 20%;
+}
+
+.transactions-table th, .transactions-table tr {
+    padding: 10px;
+    border-bottom: 2px solid #ddd;
+}
+
+.transactions-table td {
+    border: none;
+}
+
+.transactions-table tbody tr:hover {
+    background-color: #eee;
+}
+
+.transactions-table {
+    border-collapse: collapse;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+    .transactions-table thead tr:first-child {
+        background-color: #24355C;
+    }
+
+    .transactions-table thead tr {
+        color: aqua;
+    }
+
+    .transactions-table th, .transactions-table td {
+        font-weight: bold;
+    }
+
+.stake {
+    background-color: indianred;
+}
+
+.win {
+    background-color: darkseagreen;
+}
+
+.deposit {
+    background-color: lightgoldenrodyellow;
+}
+
+.withdraw {
+    background-color: darkorange;
+}
+
+#loading-spinner {
+    width: 50px; 
+    height:50px; 
+    position: fixed; 
+    z-index: 1000; 
+    top: 45%; 
+    left: 48%;
+    display: none;
+}
+
+/*.blur { //If we decide to also blur the screen
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
+    background-color: #ccc;
+}*/
+
+.validation-text {
+    position: absolute; 
+    width: auto;
+    padding: 4px 6px 4px 6px;
+    color: #D8000C;
+}
+
+.credit-card {
+    width: 41%;
+}
+
+@media (max-width: 768px) {
+    .credit-card {
+        width: auto;
+    }
+    .login-form {
+        width: auto;
+    }
+    .padding-form {
+        width: auto;
+    }
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.w-60 {
+    width: 60%;
+}
 
 

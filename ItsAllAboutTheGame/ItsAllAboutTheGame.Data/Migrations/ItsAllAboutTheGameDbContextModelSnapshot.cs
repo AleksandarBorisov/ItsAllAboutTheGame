@@ -68,6 +68,10 @@ namespace ItsAllAboutTheGame.Data.Migrations
 
                     b.Property<DateTime?>("CreatedOn");
 
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3);
+
                     b.Property<DateTime?>("DeletedOn");
 
                     b.Property<string>("Description")
@@ -116,8 +120,6 @@ namespace ItsAllAboutTheGame.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("Image");
-
                     b.Property<bool>("IsDeleted");
 
                     b.Property<string>("LastName")
@@ -141,6 +143,10 @@ namespace ItsAllAboutTheGame.Data.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<string>("SecurityStamp");
 
@@ -212,8 +218,13 @@ namespace ItsAllAboutTheGame.Data.Migrations
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
+<<<<<<< HEAD
                         new { Id = "4901627d-334c-4528-9648-514e3b983294", ConcurrencyStamp = "87fac042-617a-443b-9386-5d4c3fce1705", Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
                        new { Id = "206b8c29-579b-43f6-975e-b8d39cafbf07", ConcurrencyStamp = "8c3a04e2-7112-41c6-a63f-b1d9de3eb5f0", Name = "MasterAdministrator", NormalizedName = "MASTERADMINISTRATOR" }
+=======
+                        new { Id = "6db218f5-8151-45f9-81f1-b33628296aa0", ConcurrencyStamp = "9017dc8f-b371-44f0-a87f-122f19d3e5a7", Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
+                        new { Id = "1d9f51ad-2e9b-4472-a92e-9aa7c2f11edc", ConcurrencyStamp = "e406f80a-2fe2-4149-a1b2-5f46a60e923e", Name = "MasterAdministrator", NormalizedName = "MASTERADMINISTRATOR" }
+>>>>>>> 351f3d6a760ab5884374f3ecf50f806154481164
                     );
                 });
 

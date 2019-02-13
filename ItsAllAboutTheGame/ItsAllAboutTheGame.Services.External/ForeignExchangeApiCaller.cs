@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using ItsAllAboutTheGame.Services.External.Contracts;
 using ItsAllAboutTheGame.Services.External.Exceptions;
@@ -19,7 +18,6 @@ namespace ItsAllAboutTheGame.Services.External
         {
             try
             {
-                //throw new HttpRequestException();
                 var request = new HttpRequestMessage(HttpMethod.Get, resourceUrl);
                 //Add headers to request here if needed
                 var client = clientFactory.CreateClient();

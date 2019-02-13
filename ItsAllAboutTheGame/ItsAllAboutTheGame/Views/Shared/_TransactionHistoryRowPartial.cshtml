@@ -1,0 +1,14 @@
+﻿@model ItsAllAboutTheGame.Services.Data.DTO.TransactionDTO
+@{
+    ViewData["Title"] = "TransactionHistoryRowPartial";
+}
+
+<tr class="@Model.Type.ToString().ToLower()">
+    <td class="align-middle">@Model.CreatedOn</td>
+    <td class="align-middle" >@Model.Type</td>
+    <td class="align-middle"><span class="mr-1">@Model.Amount</span>@ViewData["CurrencySymbol"]</td>
+    <td class="align-middle">@Model.Description</td>
+</tr>
+
+
+

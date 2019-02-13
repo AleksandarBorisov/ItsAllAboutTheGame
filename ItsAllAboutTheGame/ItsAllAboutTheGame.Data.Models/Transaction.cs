@@ -1,5 +1,5 @@
 ﻿using ItsAllAboutTheGame.Data.Models.Abstract;
-using ItsAllAboutTheGame.Data.Models.Enums;
+using ItsAllAboutTheGame.GlobalUtilities.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,6 +13,9 @@ namespace ItsAllAboutTheGame.Data.Models
 
         [Required]
         public TransactionType Type { get; set; }
+
+        [Required]
+        public Currency Currency { get; set; }
 
         [Required]
         public string Description { get; set; }

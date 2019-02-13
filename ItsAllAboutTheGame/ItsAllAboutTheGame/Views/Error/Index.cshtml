@@ -1,13 +1,17 @@
 ﻿@model ErrorViewModel
 @{
     ViewData["Title"] = "Index";
+    ViewData["ShowLoginStatus"] = false;
 }
 
-
-<div style="text-align: center">
-    <h1>@Model.ShowRequestId</h1>
-    <h1 class="text-dark">Something unexpected happened...</h1>
-    <div><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></div>
-    <img src="~/images/Oops.png">
-</div>
-
+<main class="padding text-white">
+    <div class="container-fluid d-flex align-items-center justify-content-center" id="access-denied">
+        <div class="row d-flex justify-content-center text-center">
+            <div class="col-md-12">
+                <h1 class="text-danger">The requested page is missing</h1>
+                <hr class="my-3">
+                <img src="~/images/PageNotFound.png" alt="PageNotFound" />
+            </div>
+        </div>
+    </div>
+</main>
